@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    Image
 } from "react-native";
 
 export default function Login({ navigation }) {
@@ -15,6 +16,7 @@ export default function Login({ navigation }) {
     const [loading, setLoading] = useState(false);
 
     const handleLogin = () => {
+
         if (!email || !password) {
             Alert.alert('Error', 'Por favor completa todos los campos');
             return;
@@ -32,6 +34,13 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
+
+            <Image
+                source={{ uri: 'https://cdn-icons-png.freepik.com/512/5778/5778840.png'}}
+                style={styles.logo}
+                resizeMode="contain"
+            />
+
             <Text style={styles.header}>Bienvenido</Text>
 
             <Text style={styles.label}>Correo Electrónico:</Text>
@@ -68,6 +77,13 @@ export default function Login({ navigation }) {
 };
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 120,
+        height: 120,
+        alignSelf: 'center',
+        marginBottom: 20,
+        borderRadius: 60
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
