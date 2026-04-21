@@ -7,6 +7,7 @@ import {
     StyleSheet,
     ScrollView
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const HabitItem = ({ title, type, streak, completed, onPress }) => (
     <TouchableOpacity
@@ -34,9 +35,9 @@ const HabitItem = ({ title, type, streak, completed, onPress }) => (
 export default function Habits() {
 
     const [listHabt, setListHabt] = useState([
-        { id: 1, title: "Estudiar Matemáticas", type: "Diario", streak: "9", completed: true},
-        { id: 2, title: "Correr", type: "Diario", streak: "11", completed: false},
-        { id: 3, title: "Meditar en Parque", type: "Diario", streak: "3", completed: true},
+        { id: 1, title: "Estudiar Matemáticas", type: "Diario", streak: 9, completed: true },
+        { id: 2, title: "Correr", type: "Diario", streak: 11, completed: false },
+        { id: 3, title: "Meditar en Parque", type: "Diario", streak: 3, completed: true },
     ]);
 
     const toggleHabit = (id) => {
@@ -47,7 +48,7 @@ export default function Habits() {
             return hab;
         });
         setListHabt(newList);
-    };
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -72,11 +73,16 @@ export default function Habits() {
                 </View>
             </View>
 
-            <View style={styles.banner}>
-                <Text style={styles.bannerText}>🔥 Un día a la vez, un logro a la vez 🔥</Text>
-            </View>
+            <LinearGradient
+                colors={['#10b981', '#059669']}
+                style={styles.banner}
+            >
+                <Text style={styles.bannerText}>
+                    🔥 Un día a la vez, un logro a la vez 🔥
+                </Text>
+            </LinearGradient>
 
-            {listHabt.map((hab) => (
+            {listHabt?.map((hab) => (
                 <HabitItem
                     key={hab.id}
                     title={hab.title}
@@ -144,7 +150,6 @@ const styles = StyleSheet.create({
     statValue: { color: '#1e293b', fontSize: 25, fontWeight: 'bold'},
 
     banner: {
-        backgroundGradient: 'linear-gradient',
         backgroundColor: '#10b981',
         padding: 15,
         borderRadius: 12,
