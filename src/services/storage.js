@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Serializa y persiste informacion en el almacenamiento local del dispositivo por llave
 export async function saveData(key, value) {
-
     try {
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem(key, jsonValue);
@@ -10,10 +10,11 @@ export async function saveData(key, value) {
     }
 }
 
+// Recupera y deserializa informacion desde el almacenamiento local mediante su llave
 export async function getData(key) {
-
     try {
         const jsonValue = await AsyncStorage.getItem(key);
+        // Retorna el objeto parseado o null si la llave no registra datos
         return jsonValue != null
             ? JSON.parse(jsonValue)
             : null;
@@ -23,8 +24,8 @@ export async function getData(key) {
     }
 }
 
+// Remueve permanentemente el registro vinculado a la llave provista
 export async function removeData(key) {
-
     try {
         await AsyncStorage.removeItem(key);
     } catch (error) {

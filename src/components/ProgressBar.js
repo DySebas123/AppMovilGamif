@@ -16,6 +16,7 @@ export default function ProgressBar({
 }) {
 
     return (
+        /* Contenedor base que determina el ancho total y el fondo de la barra de progreso */
         <View
             style={[
                 styles.background,
@@ -26,6 +27,7 @@ export default function ProgressBar({
                 }
             ]}
         >
+            {/* Capa interna cuyo ancho porcentual dinamico representa el porcentaje de avance */}
             <View
                 style={[
                     styles.fill,
@@ -43,9 +45,8 @@ export default function ProgressBar({
 const styles = StyleSheet.create({
     background: {
         width: '100%',
-        overflow: 'hidden',
+        overflow: 'hidden', // Asegura que la capa interna no sobresalga de los bordes redondeados
     },
-
     fill: {
         height: '100%',
     },

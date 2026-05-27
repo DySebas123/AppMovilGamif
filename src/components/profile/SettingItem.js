@@ -20,6 +20,7 @@ export default function SettingItem({
     onPress,
 }) {
     return (
+        /* Componente tactil que remueve el borde inferior de forma condicional si es el ultimo elemento */
         <TouchableOpacity
             style={[
                 styles.item,
@@ -29,6 +30,7 @@ export default function SettingItem({
             activeOpacity={0.7}
         >
             <View style={styles.left}>
+                {/* Contenedor del icono con inyeccion de estilos especificos*/}
                 <View
                     style={[
                         styles.iconContainer,
@@ -41,7 +43,6 @@ export default function SettingItem({
                         color={isDestructive ? COLORS.danger : COLORS.textSecondary}
                     />
                 </View>
-
                 <View>
                     <Text
                         style={[
@@ -51,7 +52,6 @@ export default function SettingItem({
                     >
                         {label}
                     </Text>
-
                     {value ? (
                         <Text style={styles.value}>
                             {value}
@@ -59,7 +59,6 @@ export default function SettingItem({
                     ) : null}
                 </View>
             </View>
-
             <Ionicons
                 name="chevron-forward"
                 size={20}
@@ -78,12 +77,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#f1f5f9",
     },
-
     left: {
         flexDirection: "row",
         alignItems: "center",
     },
-
     iconContainer: {
         width: 35,
         height: 35,
@@ -91,23 +88,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginRight: 12,
     },
-
     iconContainerDestructive: {
         backgroundColor: "#fee2e2",
         borderRadius: 10,
     },
-
     label: {
         fontSize: 15,
         fontWeight: "600",
         color: "#334155",
     },
-
     labelDestructive: {
         color: COLORS.danger,
         fontWeight: "600",
     },
-
     value: {
         fontSize: 12,
         color: COLORS.success,

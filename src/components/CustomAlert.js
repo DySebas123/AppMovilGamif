@@ -22,16 +22,19 @@ export default function CustomAlert({
     onClose,
     onConfirm,
 }) {
+    // Evalúa el tipo de alerta para condicionar la interfaz visual
     const isSuccess = type === "success";
     const isError = type === "error";
     const isWarning = type === "warning";
 
+    // Asigna la paleta de colores del degradado según el estado de la alerta
     const gradientColors = isSuccess
         ? ["#10b981", "#059669"]
         : isWarning
             ? ["#f97316", "#ea580c"]
             : ["#ef4444", "#dc2626"];
 
+    // Determina el icono correspondiente al comportamiento configurado
     const iconName = isSuccess
         ? "checkmark"
         : isWarning
@@ -44,27 +47,22 @@ export default function CustomAlert({
             animationType="fade"
             visible={visible}
         >
+            {/* Contenedor oscuro semitransparente para bloquear la interfaz trasera */}
             <View style={styles.overlay}>
                 <View style={styles.container}>
+                    {/* Contenedor del icono con fondo degradado dinámico */}
                     <LinearGradient
                         colors={gradientColors}
                         style={styles.iconContainer}
                     >
-                        <Ionicons
-                            name={iconName}
-                            size={34}
-                            color="#fff"
-                        />
+                        <Ionicons name={iconName} size={34} color="#fff"/>
                     </LinearGradient>
 
-                    <Text style={styles.title}>
-                        {title}
-                    </Text>
+                    <Text style={styles.title}>{title} </Text>
 
-                    <Text style={styles.message}>
-                        {message}
-                    </Text>
+                    <Text style={styles.message}>{message}</Text>
 
+                    {/* Renderizado condicional: botones gemelos de confirmación o botón único de cierre */}
                     {confirmMode ? (
                         <View style={styles.confirmRow}>
                             <TouchableOpacity

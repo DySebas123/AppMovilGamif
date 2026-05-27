@@ -18,7 +18,9 @@ export default function SettingsSwitchItem({
     onChange,
 }) {
     return (
+        /* Elemento de fila con distribucion horizontal para separar el bloque informativo del control interactivo */
         <View style={styles.item}>
+            {/* Bloque alineado a la izquierda que consolida el icono descriptivo y la etiqueta de la opcion */}
             <View style={styles.itemLeft}>
                 <View style={styles.iconCircle}>
                     <Ionicons
@@ -27,12 +29,11 @@ export default function SettingsSwitchItem({
                         color="#0f766e"
                     />
                 </View>
-
                 <Text style={styles.itemText}>
                     {label}
                 </Text>
             </View>
-
+            {/* Interruptor booleano nativo controlado directamente por el estado global de configuracion */}
             <Switch
                 value={value}
                 onValueChange={onChange}
@@ -47,12 +48,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
-
     itemLeft: {
         flexDirection: "row",
         alignItems: "center",
     },
-
     iconCircle: {
         width: 38,
         height: 38,
@@ -62,7 +61,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginRight: 12,
     },
-
     itemText: {
         fontSize: 15,
         fontWeight: "600",

@@ -13,6 +13,7 @@ import SHADOWS from "../../styles/shadows";
 
 export default function QuoteBanner({ quote }) {
     return (
+        /* Banner con degradado lineal horizontal y propiedades de sombra ligera */
         <LinearGradient
             colors={COLORS.gradientPrimary}
             start={{ x: 0, y: 0 }}
@@ -24,7 +25,7 @@ export default function QuoteBanner({ quote }) {
                 size={20}
                 color={COLORS.white}
             />
-
+            {/* Texto dinámico con respaldo integrado para evitar campos vacíos en la interfaz */}
             <Text style={styles.bannerText}>
                 {quote || "Un día a la vez, un logro a la vez"}
             </Text>
@@ -45,12 +46,11 @@ const styles = StyleSheet.create({
         gap: 8,
         ...SHADOWS.small,
     },
-
     bannerText: {
         color: COLORS.white,
         fontSize: 15,
         fontWeight: "700",
-        flex: 1,
+        flex: 1, // Absorbe el espacio disponible permitiendo el centrado correcto junto al icono
         textAlign: "center",
     },
 });

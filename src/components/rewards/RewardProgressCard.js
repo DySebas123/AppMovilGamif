@@ -16,6 +16,7 @@ export default function RewardProgressCard({
     progressPercentage,
 }) {
     return (
+        /* Contenedor principal con fondo degradado diagonal de tres colores y sombra media */
         <LinearGradient
             colors={["#0f4c5c", "#0096c7", "#2a9d8f"]}
             start={{ x: 0, y: 0 }}
@@ -33,6 +34,7 @@ export default function RewardProgressCard({
                     </Text>
                 </View>
 
+                {/* Contenedor circular con fondo traslúcido para destacar el icono del trofeo */}
                 <View style={styles.iconCircle}>
                     <Ionicons
                         name="trophy-outline"
@@ -42,6 +44,7 @@ export default function RewardProgressCard({
                 </View>
             </View>
 
+            {/* Barra de progreso con fondo de opacidad reducida y relleno dinámico basado en el porcentaje */}
             <View style={styles.barBackground}>
                 <View
                     style={[
@@ -62,14 +65,12 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         ...SHADOWS.medium,
     },
-
     row: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 20,
     },
-
     label: {
         color: "rgba(255,255,255,0.8)",
         fontSize: 13,
@@ -77,14 +78,12 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         letterSpacing: 0.5,
     },
-
     percentage: {
         color: COLORS.white,
         fontSize: 36,
         fontWeight: "800",
         marginTop: 4,
     },
-
     iconCircle: {
         width: 55,
         height: 55,
@@ -93,14 +92,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     barBackground: {
         height: 8,
         backgroundColor: "rgba(255,255,255,0.2)",
         borderRadius: 4,
-        overflow: "hidden",
+        overflow: "hidden", // Recorta el avance para mantener el radio de curvatura
     },
-
     barFill: {
         height: "100%",
         backgroundColor: "#facc15",

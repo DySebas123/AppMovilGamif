@@ -22,6 +22,7 @@ import SPACING from "../../styles/spacing";
 
 export default function ProfileScreen({ navigation }) {
 
+    // Extrae las metricas de progreso, nivel y habitos del contexto global
     const {
         xp,
         level,
@@ -30,26 +31,27 @@ export default function ProfileScreen({ navigation }) {
         habits,
     } = useHabits();
 
-    const {
-        user,
-        logout,
-    } = useAuth();
+    // Extrae los datos de usuario y el metodo de desautenticacion del contexto
+    const { user, logout } = useAuth();
 
+    // Estado local para controlar la visualizacion del modal de confirmacion de salida
     const [logoutAlertVisible, setLogoutAlertVisible] = useState(false);
 
+    // Configura los datos de respaldo en caso de que las propiedades del usuario esten ausentes
     const userName = user?.name || "Usuario";
     const userEmail = user?.email || "correo@demo.com";
     const userInitial = userName.charAt(0).toUpperCase();
 
+    // Activa la visualizacion de la alerta para confirmar el cierre de sesion
     const handleLogout = () => {
         setLogoutAlertVisible(true);
     };
 
+    // Remueve las credenciales locales y redirige de forma estricta al flujo de login
     const confirmLogout = async () => {
         await logout();
-
         setLogoutAlertVisible(false);
-
+        // Desmonta el flujo de la app para evitar el retorno con el boton nativo
         navigation.replace("Auth");
     };
 
@@ -66,8 +68,8 @@ export default function ProfileScreen({ navigation }) {
                     userInitial={userInitial}
                     level={level}
                 />
-
                 <View style={styles.contentContainer}>
+                    {/* Contenedores horizontales de tarjetas con estadisticas acumuladas */}
                     <View style={styles.statsRow}>
                         <ProfileStatCard
                             icon="trophy-outline"
@@ -76,7 +78,6 @@ export default function ProfileScreen({ navigation }) {
                             value={xp}
                             label="XP Total"
                         />
-
                         <ProfileStatCard
                             icon="checkmark-circle-outline"
                             iconColor="#22c55e"
@@ -116,23 +117,19 @@ export default function ProfileScreen({ navigation }) {
                         Cuenta
                     </Text>
 
+                    {/* Bloque agrupador de opciones de navegacion y configuracion */}
                     <View style={styles.menuGroup}>
                         <SettingItem
                             icon="person-outline"
                             label="Editar perfil"
-                            onPress={() =>
-                                navigation.navigate("Editar")
-                            }
+                            onPress={() => navigation.navigate("Editar")}
                         />
-
+                        {/* Enlace directo a la pantalla oculta del Tab sin romper el scroll web */}
                         <SettingItem
                             icon="settings-outline"
                             label="Configuración"
-                            onPress={() => {
-                                navigation.navigate("Configuración");
-                            }}
+                            onPress={() => {navigation.navigate("Configuración");}}
                         />
-
                         <SettingItem
                             icon="log-out-outline"
                             label="Cerrar sesión"
@@ -141,7 +138,6 @@ export default function ProfileScreen({ navigation }) {
                             onPress={handleLogout}
                         />
                     </View>
-
                     <View style={{ height: 100 }} />
                 </View>
             </ScrollView>

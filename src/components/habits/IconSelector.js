@@ -17,8 +17,10 @@ export default function IconSelector({
     onSelectIcon,
 }) {
     return (
+        /* Cuadrícula flexible adaptada para distribuir las opciones de íconos en filas de cuatro columnas */
         <View style={styles.iconGrid}>
             {icons.map((icon) => {
+                // Evalúa si el ícono iterado coincide con el identificador del estado seleccionado
                 const isSelected = selectedIcon === icon.id;
 
                 return (
@@ -28,6 +30,7 @@ export default function IconSelector({
                         activeOpacity={0.8}
                         onPress={() => onSelectIcon(icon.id)}
                     >
+                        {/* Renderizado condicional: contenedor con degradado primario o caja con borde neutro */}
                         {isSelected ? (
                             <LinearGradient
                                 colors={COLORS.gradientPrimary}
@@ -63,11 +66,9 @@ const styles = StyleSheet.create({
         rowGap: 12,
         marginBottom: 20,
     },
-
     iconWrapper: {
-        width: "22%",
+        width: "22%", // Define un ancho del 22% para dejar un margen distribuido y formar 4 columnas
     },
-
     iconBox: {
         width: "100%",
         height: 65,
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     iconBoxSelected: {
         width: "100%",
         height: 65,

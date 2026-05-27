@@ -8,8 +8,8 @@ import {
 import COLORS from "../styles/colors";
 
 export default function SectionTitle({ title }) {
-
     return (
+        /* Componente de texto plano optimizado para estandarizar los titulos de secciones */
         <Text style={styles.title}>
             {title}
         </Text>

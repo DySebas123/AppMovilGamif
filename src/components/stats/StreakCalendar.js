@@ -13,6 +13,7 @@ import SHADOWS from "../../styles/shadows";
 
 export default function StreakCalendar({ data }) {
     return (
+        /* Contenedor principal del calendario con bordes suavizados y sombra de profundidad media */
         <View style={styles.card}>
             <Text style={styles.title}>
                 Calendario de Rachas
@@ -22,12 +23,14 @@ export default function StreakCalendar({ data }) {
                 Últimos 28 días según historial real
             </Text>
 
+            {/* Cuadrícula de distribución dinámica basada en flexWrap para organizar las celdas */}
             <View style={styles.grid}>
                 {data.map((item) => (
                     <View
                         key={item.date}
                         style={styles.cell}
                     >
+                        {/* Renderizado condicional: degradado para días activos o contenedor gris para días vacíos */}
                         {item.completed ? (
                             <LinearGradient
                                 colors={COLORS.gradientPrimary}
@@ -42,6 +45,7 @@ export default function StreakCalendar({ data }) {
                 ))}
             </View>
 
+            {/* Fila inferior de referencias visuales para la interpretación de los estados del mapa de calor */}
             <View style={styles.legendRow}>
                 <View style={styles.legendItem}>
                     <View style={styles.legendEmpty} />
@@ -73,19 +77,16 @@ const styles = StyleSheet.create({
         padding: 20,
         ...SHADOWS.medium,
     },
-
     title: {
         fontSize: 18,
         fontWeight: "800",
         color: COLORS.textPrimary,
     },
-
     subtitle: {
         fontSize: 13,
         color: COLORS.textSecondary,
         marginTop: 4,
     },
-
     grid: {
         marginTop: 18,
         flexDirection: "row",
@@ -93,36 +94,30 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         rowGap: 10,
     },
-
     cell: {
-        width: "12.5%",
-        aspectRatio: 1,
+        width: "12.5%", // Define la proporción exacta para la alineación de columnas equidistantes
+        aspectRatio: 1, // Forzar relación de aspecto cuadrada en cada celda del calendario
         padding: 2,
     },
-
     completed: {
         flex: 1,
         borderRadius: 8,
     },
-
     empty: {
         flex: 1,
         borderRadius: 8,
         backgroundColor: "#f1f5f9",
     },
-
     legendRow: {
         flexDirection: "row",
         justifyContent: "center",
         gap: 18,
         marginTop: 18,
     },
-
     legendItem: {
         flexDirection: "row",
         alignItems: "center",
     },
-
     legendEmpty: {
         width: 12,
         height: 12,
@@ -130,14 +125,12 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginRight: 6,
     },
-
     legendCompleted: {
         width: 12,
         height: 12,
         borderRadius: 4,
         marginRight: 6,
     },
-
     legendText: {
         fontSize: 12,
         color: COLORS.textSecondary,

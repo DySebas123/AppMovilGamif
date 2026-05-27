@@ -22,18 +22,18 @@ export default function ProfileInput({
     autoCapitalize,
 }) {
     return (
+        /* Fragmento estructural para agrupar los elementos sin alterar la jerarquia flex del contenedor padre */
         <>
             <Text style={styles.label}>
                 {label}
             </Text>
-
             <View style={styles.inputContainer}>
                 <Ionicons
                     name={icon}
                     size={20}
                     color={COLORS.textSecondary}
                 />
-
+                {/* Contenedor horizontal que alinea el icono tematico junto al area de entrada de texto */}
                 <TextInput
                     style={styles.input}
                     value={value}
@@ -44,7 +44,7 @@ export default function ProfileInput({
                     autoCapitalize={autoCapitalize}
                 />
             </View>
-
+            {/* Alerta de validacion inyectada de manera condicional debajo de la caja de texto */}
             {error ? (
                 <Text style={styles.error}>
                     {error}
@@ -60,28 +60,25 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: "#334155",
         marginBottom: 10,
-        marginTop: 10,
+        marginTop: 10, // Define un margen simetrico para distanciar el campo de controles adyacentes
     },
-
     inputContainer: {
         backgroundColor: COLORS.background,
         borderWidth: 1,
         borderColor: COLORS.border,
         borderRadius: 18,
         paddingHorizontal: 16,
-        height: 58,
+        height: 58, // Fija una altura estatica comoda para la interaccion tactil en pantallas moviles
         flexDirection: "row",
         alignItems: "center",
     },
-
     input: {
-        flex: 1,
+        flex: 1, // Absorbe todo el espacio horizontal remanente a la derecha del icono
         marginLeft: 12,
         fontSize: 15,
         color: COLORS.textPrimary,
         fontWeight: "500",
     },
-
     error: {
         color: COLORS.danger,
         fontSize: 12,

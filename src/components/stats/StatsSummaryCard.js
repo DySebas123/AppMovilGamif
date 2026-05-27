@@ -19,7 +19,10 @@ export default function StatsSummaryCard({
     colors,
 }) {
     return (
+        /* Tarjeta de resumen con ancho fijo del 48% optimizada para layouts de dos columnas */
         <View style={styles.card}>
+
+            {/* Contenedor del icono con degradado diagonal personalizado basado en el arreglo de colores recibido */}
             <LinearGradient
                 colors={colors}
                 start={{ x: 0, y: 0 }}
@@ -33,6 +36,7 @@ export default function StatsSummaryCard({
                 />
             </LinearGradient>
 
+            {/* Renderizado de la metrica principal y su etiqueta descriptiva correspondiente */}
             <Text style={styles.value}>
                 {value}
             </Text>
@@ -46,13 +50,12 @@ export default function StatsSummaryCard({
 
 const styles = StyleSheet.create({
     card: {
-        width: "48%",
+        width: "48%", // Sincroniza con estructuras de contenedor que implementen flexWrap
         backgroundColor: COLORS.white,
         borderRadius: 22,
         padding: 18,
         ...SHADOWS.small,
     },
-
     iconBox: {
         width: 50,
         height: 50,
@@ -61,14 +64,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 12,
     },
-
     value: {
         fontSize: 25,
         fontWeight: "800",
         color: COLORS.textPrimary,
         marginBottom: 2,
     },
-
     label: {
         fontSize: 13,
         color: COLORS.textSecondary,

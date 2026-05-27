@@ -25,119 +25,100 @@ import TYPOGRAPHY from "../../styles/typography";
 
 export default function RegisterScreen({ navigation }) {
 
+    // Extrae la funcion de registro del contexto global de autenticacion
     const { register } = useAuth();
 
+    // Estados para almacenar los valores de los campos del formulario
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Estados para gestionar de forma independiente los errores de cada input
     const [errorName, setErrorName] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
     const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
 
+    // Estado para controlar la animacion de carga en el boton de envio
     const [loading, setLoading] = useState(false);
 
+    // Estado para controlar la visibilidad de la alerta de exito
     const [alertVisible, setAlertVisible] = useState(false);
 
+    // Evalua que la cadena cumpla con el formato de correo estandar
     const validateEmail = (value) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(value);
     };
 
+    // Evalua el requisito de longitud minima para la contraseña
     const validatePassword = (value) => {
         return value.length >= 8;
     };
 
+    // Valida exhaustivamente cada campo antes de procesar el registro
     const handleRegisterAction = async () => {
-
         let isValid = true;
 
+        // Validacion del campo nombre
         if (!name.trim()) {
-
-            setErrorName(
-                "El nombre es obligatorio."
-            );
-
+            setErrorName("El nombre es obligatorio.");
             isValid = false;
-
         } else if (name.trim().length < 3) {
-
-            setErrorName(
-                "El nombre debe tener mínimo 3 caracteres."
-            );
-
+            setErrorName("El nombre debe tener mínimo 3 caracteres.");
             isValid = false;
-
         } else {
             setErrorName("");
         }
 
+        // Validacion del campo correo
         if (!email.trim()) {
-
-            setErrorEmail(
-                "El correo electrónico es obligatorio."
-            );
-
+            setErrorEmail("El correo electrónico es obligatorio.");
             isValid = false;
-
         } else if (!validateEmail(email.trim())) {
-
-            setErrorEmail(
-                "Ingresa un correo válido."
-            );
-
+            setErrorEmail("Ingresa un correo válido.");
             isValid = false;
-
         } else {
             setErrorEmail("");
         }
 
+        // Validacion del campo contraseña
         if (!password.trim()) {
-
             setErrorPassword(
                 "La contraseña es obligatoria."
             );
-
             isValid = false;
-
         } else if (!validatePassword(password)) {
-
             setErrorPassword(
                 "La contraseña debe tener mínimo 8 caracteres."
             );
-
             isValid = false;
-
         } else {
             setErrorPassword("");
         }
 
+        // Validacion de la confirmación de contraseña
         if (!confirmPassword.trim()) {
-
             setErrorConfirmPassword(
                 "Debes confirmar la contraseña."
             );
-
             isValid = false;
-
         } else if (password !== confirmPassword) {
-
             setErrorConfirmPassword(
                 "Las contraseñas no coinciden."
             );
-
             isValid = false;
-
         } else {
             setErrorConfirmPassword("");
         }
 
+        // Detiene el proceso si al menos una regla de validacion fallo
         if (!isValid) return;
 
         setLoading(true);
 
+        // Envia los datos limpios al servicio de registro
         const result = await register({
             name: name.trim(),
             email: email.trim(),
@@ -146,11 +127,13 @@ export default function RegisterScreen({ navigation }) {
 
         setLoading(false);
 
+        // Muestra la alerta de exito si el servidor aprobo el registro
         if (result.success) {
             setAlertVisible(true);
         }
     };
 
+    // Oculta la alerta y redirige al usuario a la pantalla de login
     const handleCloseAlert = () => {
         setAlertVisible(false);
         navigation.navigate("Login");
@@ -166,6 +149,7 @@ export default function RegisterScreen({ navigation }) {
                     subtitle="Únete a HabitQuest y empieza a construir mejores hábitos"
                 />
 
+                {/* Inputs con limpieza de mensajes de error reactiva al escribir */}
                 <AuthInput
                     label="Nombre completo"
                     icon="person-outline"
@@ -250,7 +234,6 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-
     footerText: {
         color: COLORS.textSecondary,
         fontSize: TYPOGRAPHY.bodyMD.fontSize,

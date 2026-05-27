@@ -19,7 +19,10 @@ export default function ProfileStatCard({
     label,
 }) {
     return (
+        /* Contenedor adaptativo optimizado para distribuirse de forma equivalente dentro de filas contenedoras */
         <View style={styles.card}>
+
+            {/* Contenedor circular con fondo dinamico inyectado mediante propiedades directas */}
             <View
                 style={[
                     styles.iconCircle,
@@ -33,13 +36,9 @@ export default function ProfileStatCard({
                 />
             </View>
 
-            <Text style={styles.number}>
-                {value}
-            </Text>
-
-            <Text style={styles.label}>
-                {label}
-            </Text>
+            {/* Bloque metrico de texto para el despliegue del valor cuantitativo y su descripcion */}
+            <Text style={styles.number}>{value}</Text>
+            <Text style={styles.label}>{label}</Text>
         </View>
     );
 }
@@ -47,28 +46,25 @@ export default function ProfileStatCard({
 const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.white,
-        flex: 1,
+        flex: 1, // Permite que la tarjeta se expanda equitativamente junto a otros elementos hermanos
         paddingVertical: 12,
         borderRadius: 18,
         alignItems: "center",
         ...SHADOWS.medium,
     },
-
     iconCircle: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: 20, // Forzado de geometria circular exacta basada en el radio medio del diametro
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 8,
     },
-
     number: {
         fontSize: 18,
         fontWeight: "bold",
         color: COLORS.textPrimary,
     },
-
     label: {
         fontSize: 12,
         color: COLORS.textSecondary,

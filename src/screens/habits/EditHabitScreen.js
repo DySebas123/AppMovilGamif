@@ -30,18 +30,23 @@ import TYPOGRAPHY from "../../styles/typography";
 
 export default function EditHabitScreen({ navigation, route }) {
 
+    // Recibe el objeto del habito desde los parametros de la ruta
     const { habit } = route.params;
+    // Extrae el metodo de actualizacion del contexto global de habitos
     const { updateHabit } = useHabits();
 
+    // Inicializa los estados con los valores actuales del habito seleccionado
     const [title, setTitle] = useState(habit.title);
     const [frequency, setFrequency] = useState(habit.type);
 
+    // Estados para controlar la configuracion y visibilidad de la alerta
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setAlertType] = useState("success");
     const [alertTitle, setAlertTitle] = useState("");
     const [alertMessage, setAlertMessage] = useState("");
     const [goBackAfterAlert, setGoBackAfterAlert] = useState(false);
 
+    // Modifica las propiedades y muestra la alerta en pantalla
     const showAlert = (
         type,
         title,
@@ -55,17 +60,16 @@ export default function EditHabitScreen({ navigation, route }) {
         setAlertVisible(true);
     };
 
+    // Valida la informacion y procesa los cambios del habito
     const handleUpdateHabit = () => {
+        // Valida que el titulo modificado no este vacio
         if (!title.trim()) {
-            showAlert(
-                "error",
-                "Campo requerido",
-                "El nombre del hábito no puede estar vacío."
-            );
-
+            showAlert("error", "Campo requerido",
+                "El nombre del hábito no puede estar vacío.");
             return;
         }
 
+        // Invoca el metodo del contexto para actualizar el registro por ID
         updateHabit(habit.id, {
             title: title.trim(),
             type: frequency,
@@ -79,6 +83,7 @@ export default function EditHabitScreen({ navigation, route }) {
         );
     };
 
+    // Oculta la alerta y gestiona el retorno de pantalla si es necesario
     const handleCloseAlert = () => {
         setAlertVisible(false);
 
@@ -90,33 +95,29 @@ export default function EditHabitScreen({ navigation, route }) {
     return (
         <>
             <SafeAreaView style={styles.container}>
-
                 <AppHeader
                     title="Editar hábito"
                     icon="arrow-back"
                     onBack={() => navigation.goBack()}
                 />
-
                 <ScrollView
                     style={styles.content}
                     showsVerticalScrollIndicator={false}
                 >
+                    {/* Tarjeta de previsualizacion con los cambios en tiempo real */}
                     <HabitPreviewCard
                         label="Hábito seleccionado"
                         title={title}
                         frequency={frequency}
                         icon={habit.icon || "checkmark-circle-outline"}
                     />
-
                     <Card>
                         <Text style={styles.sectionTitle}>
                             Información del hábito
                         </Text>
-
                         <Text style={styles.label}>
                             Nombre
                         </Text>
-
                         <View style={styles.inputContainer}>
                             <Ionicons
                                 name="create-outline"
@@ -124,7 +125,6 @@ export default function EditHabitScreen({ navigation, route }) {
                                 color={COLORS.textSecondary}
                                 style={styles.inputIcon}
                             />
-
                             <TextInput
                                 value={title}
                                 onChangeText={setTitle}
@@ -133,29 +133,23 @@ export default function EditHabitScreen({ navigation, route }) {
                                 placeholderTextColor="#94a3b8"
                             />
                         </View>
-
                         <Text style={styles.label}>
                             Frecuencia
                         </Text>
-
                         <FrequencySelector
                             frequency={frequency}
                             onChangeFrequency={setFrequency}
                         />
-
                         <InfoBox
                             text="Mantén el hábito actualizado para que tus estadísticas, rachas y recompensas reflejen mejor tu progreso."
                         />
-
                         <MainButton
                             title="Guardar cambios"
                             onPress={handleUpdateHabit}
                         />
                     </Card>
-
                     <View style={{ height: 120 }} />
                 </ScrollView>
-
             </SafeAreaView>
 
             <CustomAlert

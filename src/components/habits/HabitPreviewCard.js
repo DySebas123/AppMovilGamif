@@ -19,12 +19,14 @@ export default function HabitPreviewCard({
     label = "Nuevo hábito",
 }) {
     return (
+        /* Contenedor principal con fondo degradado diagonal oscuro y sombra de profundidad media */
         <LinearGradient
             colors={COLORS.gradientDark}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.previewCard}
         >
+            {/* Contenedor del icono con un fondo traslucido para contrastar sobre el degradado oscuro */}
             <View style={styles.previewIcon}>
                 <Ionicons
                     name={icon || "checkmark-circle-outline"}
@@ -32,19 +34,11 @@ export default function HabitPreviewCard({
                     color={COLORS.white}
                 />
             </View>
-
+            {/* Bloque informativo con textos optimizados con valores por defecto para la previsualizacion */}
             <View style={styles.previewInfo}>
-                <Text style={styles.previewLabel}>
-                    {label}
-                </Text>
-
-                <Text style={styles.previewTitle}>
-                    {title || "Nombre del hábito"}
-                </Text>
-
-                <Text style={styles.previewSubtitle}>
-                    Frecuencia: {frequency}
-                </Text>
+                <Text style={styles.previewLabel}>{label}</Text>
+                <Text style={styles.previewTitle}>{title || "Nombre del hábito"}</Text>
+                <Text style={styles.previewSubtitle}>Frecuencia: {frequency}</Text>
             </View>
         </LinearGradient>
     );
@@ -59,7 +53,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         ...SHADOWS.medium,
     },
-
     previewIcon: {
         width: 62,
         height: 62,
@@ -69,11 +62,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginRight: 14,
     },
-
     previewInfo: {
-        flex: 1,
+        flex: 1, // Permite que el contenedor de texto ocupe todo el espacio restante sin desbordar la tarjeta
     },
-
     previewLabel: {
         color: "rgba(255,255,255,0.75)",
         fontSize: 12,
@@ -81,13 +72,11 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         marginBottom: 4,
     },
-
     previewTitle: {
         color: COLORS.white,
         fontSize: 20,
         fontWeight: "800",
     },
-
     previewSubtitle: {
         color: "rgba(255,255,255,0.85)",
         fontSize: 13,

@@ -20,6 +20,7 @@ import SPACING from "../../styles/spacing";
 import TYPOGRAPHY from "../../styles/typography";
 import SHADOWS from "../../styles/shadows";
 
+// Transforma un objeto Date en una cadena con formato estandarizado YYYY-MM-DD
 const formatDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -28,6 +29,7 @@ const formatDate = (date) => {
     return `${year}-${month}-${day}`;
 };
 
+// Genera un arreglo de fechas secuenciales hacia atras partiendo de una fecha base
 const getLastDaysFromDate = (baseDateString, amount) => {
     const baseDate = new Date(`${baseDateString}T00:00:00`);
 
@@ -39,6 +41,7 @@ const getLastDaysFromDate = (baseDateString, amount) => {
     });
 };
 
+// Retorna la etiqueta abreviada del dia de la semana correspondiente a la fecha dada
 const getDayLabel = (dateString) => {
     const days = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
     const date = new Date(`${dateString}T00:00:00`);
@@ -47,6 +50,7 @@ const getDayLabel = (dateString) => {
 };
 
 export default function StatsScreen() {
+    // Consume las estadisticas acumuladas e informacion global del contexto de habitos
     const {
         habits,
         completedHabits,
@@ -58,12 +62,15 @@ export default function StatsScreen() {
         currentDate,
     } = useHabits();
 
+    // Obtiene la cantidad de habitos que aun no han sido completados en el dia actual
     const pendingHabits = totalHabits - completedHabits;
 
+    // Procesa y memoriza la cantidad de habitos completados en los ultimos 7 dias
     const weeklyData = useMemo(() => {
         const last7Days = getLastDaysFromDate(currentDate, 7);
 
         return last7Days.map((date) => {
+            // Cuenta cuantos habitos registran ejecucion en la fecha iterada
             const completed = habits.filter((habit) => {
                 return habit.history && habit.history[date];
             }).length;
@@ -72,15 +79,17 @@ export default function StatsScreen() {
                 date,
                 day: getDayLabel(date),
                 completed,
-                total: totalHabits || 1,
+                total: totalHabits || 1, // Evita division por cero en componentes hijos
             };
         });
     }, [habits, totalHabits, currentDate]);
 
+    // Mapea y memoriza el estado de cumplimiento de los ultimos 28 dias para el calendario
     const calendarData = useMemo(() => {
         const last28Days = getLastDaysFromDate(currentDate, 28);
 
         return last28Days.map((date) => {
+            // Determina si al menos un habito fue completado en este dia
             const completed = habits.some((habit) => {
                 return habit.history && habit.history[date];
             });
@@ -92,18 +101,21 @@ export default function StatsScreen() {
         });
     }, [habits, currentDate]);
 
+    // Obtiene el consolidado historico de todas las repeticiones guardadas en la app
     const totalCompletedHistory = useMemo(() => {
         return habits.reduce((total, habit) => {
             return total + (habit.totalCompletions || 0);
         }, 0);
     }, [habits]);
 
+    // Calcula el porcentaje de efectividad de ejecucion diaria del usuario
     const successRate = useMemo(() => {
         if (totalHabits === 0) return 0;
 
         return Math.round((completedHabits / totalHabits) * 100);
     }, [completedHabits, totalHabits]);
 
+    // Matriz de configuracion visual para renderizar las tarjetas metricas principales
     const stats = [
         {
             label: "Completados Totales",
@@ -147,11 +159,13 @@ export default function StatsScreen() {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.content}
             >
+                {/* Grafico de barras lineal del desempeño semanal */}
                 <WeeklyActivityChart
                     data={weeklyData}
                     level={level}
                 />
 
+                {/* Cuadricula adaptativa de tarjetas informativas */}
                 <View style={styles.statsGrid}>
                     {stats.map((stat) => (
                         <StatsSummaryCard
@@ -164,6 +178,7 @@ export default function StatsScreen() {
                     ))}
                 </View>
 
+                {/* Contenedor tipo lista con el desglose de totales de la cuenta */}
                 <Card style={styles.summaryCard}>
                     <Text style={styles.cardTitle}>
                         Resumen General
@@ -204,6 +219,7 @@ export default function StatsScreen() {
                     </View>
                 </Card>
 
+                {/* Mapa de calor de consistencia basado en los ultimos 28 dias */}
                 <StreakCalendar data={calendarData} />
 
                 <View style={{ height: 100 }} />

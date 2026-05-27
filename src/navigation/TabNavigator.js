@@ -17,6 +17,7 @@ export default function TabNavigator() {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
+                // Asigna de forma dinamica la variante del icono (relleno/lineal) segun el enfoque
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
@@ -33,6 +34,7 @@ export default function TabNavigator() {
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
                 
+                // Definicion de la paleta de colores y el formato visual de la barra de pestañas
                 tabBarActiveTintColor: '#1d4ed8',
                 tabBarInactiveTintColor: '#94a3b8',
                 tabBarStyle: {
@@ -42,42 +44,32 @@ export default function TabNavigator() {
                     height: 90,
                     paddingTop: 4,
                 },
-                tabBarLabelStyle: {
-                    fontSize: 11,
-                    fontWeight: '500',
-                },
+                tabBarLabelStyle: { fontSize: 11, fontWeight: '500' },
                 headerShown: false,
             })}
         >
+            {/* Pestañas primarias visibles de forma explicita en el menu inferior */}
             <Tab.Screen name="Inicio" component={HomeScreen}/>
             <Tab.Screen name="Estadísticas" component={StatsScreen}/>
             <Tab.Screen name="Recompensas" component={RewardsScreen}/>
             <Tab.Screen name="Perfil" component={ProfileScreen}/>
 
-            <Tab.Screen 
-                name="Configuración" 
-                component={SettingsScreen}
-                options={{
-                    tabBarButton: () => null,
+            {/* Rutas secundarias integradas al Tab para heredar su arbol de navegacion sin mostrar botones */}
+            <Tab.Screen name="Configuración" component={SettingsScreen}
+                options={{ tabBarButton: () => null,
                     tabBarItemStyle: { display: 'none' }
                 }}
             />
-            <Tab.Screen 
-                name="CrearHábito" 
-                component={CreateHabitScreen}
-                options={{
-                    tabBarButton: () => null,
+            <Tab.Screen name="CrearHábito" component={CreateHabitScreen}
+                options={{ tabBarButton: () => null,
                     tabBarItemStyle: { display: 'none' }
                 }}
             />
-            <Tab.Screen 
-                name="Editar" 
-                component={EditProfileScreen}
-                options={{
-                    tabBarButton: () => null,
+            <Tab.Screen name="Editar" component={EditProfileScreen}
+                options={{ tabBarButton: () => null,
                     tabBarItemStyle: { display: 'none' }
                 }}
             />
         </Tab.Navigator>
     )
-} 
+}

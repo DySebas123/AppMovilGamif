@@ -21,13 +21,10 @@ export default function HabitCard({
     onLongPress,
     onDelete,
 }) {
-
     return (
-
+        /* Contenedor fila que alinea la tarjeta interactiva con el boton lateral de borrado */
         <View style={styles.wrapper}>
-
-            {/* CARD */}
-
+            {/* Contenedor principal del habito con soporte para pulsacion corta y prolongada (edicion) */}
             <TouchableOpacity
                 style={[
                     styles.card,
@@ -37,9 +34,8 @@ export default function HabitCard({
                 onLongPress={onLongPress}
                 activeOpacity={0.7}
             >
-
                 <View style={styles.leftContent}>
-
+                    {/* Icono de estado de seleccion dinamica segun la bandera de completado */}
                     <Ionicons
                         name={
                             completed
@@ -54,9 +50,8 @@ export default function HabitCard({
                         }
                         style={styles.icon}
                     />
-
                     <View>
-
+                        {/* Texto del titulo con estilo tachado condicional si esta completado */}
                         <Text
                             style={[
                                 styles.title,
@@ -66,136 +61,94 @@ export default function HabitCard({
                             {title}
                         </Text>
 
-                        <Text style={styles.type}>
-                            {type}
-                        </Text>
-
+                        <Text style={styles.type}>{type}</Text>
                     </View>
-
                 </View>
 
+                {/* Indicador de racha actual con contador de dias acumulados */}
                 <View style={styles.streakBadge}>
-
-                    <Ionicons
-                        name="flame"
-                        size={16}
-                        color="#f97316"
-                    />
-
+                    <Ionicons name="flame" size={16} color="#f97316"/>
                     <Text style={styles.streakText}>
                         {streak}
                     </Text>
-
                 </View>
-
             </TouchableOpacity>
 
-            {/* DELETE */}
-
+            {/* Boton de eliminacion directa que dispara el flujo del modal de advertencia */}
             <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => onDelete()}
                 activeOpacity={0.7}
             >
-
-                <Ionicons
-                    name="trash-outline"
-                    size={20}
-                    color="#ef4444"
-                />
-
+                <Ionicons name="trash-outline" size={20} color="#ef4444"/>
             </TouchableOpacity>
-
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
     wrapper: {
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 14,
     },
-
     card: {
         flex: 1,
-
         backgroundColor: COLORS.white,
-
         paddingVertical: 15,
         paddingHorizontal: 16,
-
         borderRadius: 18,
-
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-
         ...SHADOWS.small,
     },
-
     cardCompleted: {
         opacity: 0.75,
     },
-
     leftContent: {
         flexDirection: "row",
         alignItems: "center",
         flex: 1,
     },
-
     icon: {
         marginRight: 12,
     },
-
     title: {
         fontSize: 13,
         fontWeight: "700",
         color: COLORS.textPrimary,
     },
-
     textCompleted: {
         textDecorationLine: "line-through",
         color: COLORS.textSecondary,
     },
-
     type: {
         fontSize: 11,
         color: COLORS.textSecondary,
         marginTop: 2,
     },
-
     streakBadge: {
         flexDirection: "row",
         alignItems: "center",
-
         backgroundColor: "#fff7ed",
-
         paddingHorizontal: 10,
         paddingVertical: 5,
-
         borderRadius: 20,
     },
-
     streakText: {
         marginLeft: 4,
         color: "#f97316",
         fontWeight: "700",
         fontSize: 13,
     },
-
     deleteButton: {
         width: 42,
         height: 42,
-
         borderRadius: 12,
-
         backgroundColor: "#fee2e2",
-
         justifyContent: "center",
         alignItems: "center",
-
         marginLeft: 10,
     },
 });

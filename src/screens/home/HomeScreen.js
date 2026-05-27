@@ -23,7 +23,7 @@ import SHADOWS from "../../styles/shadows";
 import SPACING from "../../styles/spacing";
 
 export default function HomeScreen({ navigation }) {
-
+    // Extrae los estados globales y metodos para la gestion de habitos y progreso
     const {
         habits,
         toggleHabit,
@@ -36,85 +36,89 @@ export default function HomeScreen({ navigation }) {
         deleteHabit,
     } = useHabits();
 
+    // Obtiene los datos del usuario actualmente autenticado
     const { user } = useAuth();
 
+    // Estado local para almacenar la frase motivacional del dia
     const [quote, setQuote] = useState(null);
 
+    // Estados para controlar el flujo de eliminacion y la alerta de confirmacion
     const [deleteAlertVisible, setDeleteAlertVisible] = useState(false);
     const [habitToDelete, setHabitToDelete] = useState(null);
 
+    // Define el nombre a mostrar y extrae la inicial para el avatar del perfil
     const userName = user?.name || "Usuario";
     const userInitial = userName.charAt(0).toUpperCase();
 
+    // Carga de forma unica una frase aleatoria al montar el componente
     useEffect(() => {
         const randomQuote = getRandomQuote();
         setQuote(randomQuote);
     }, []);
 
+    // Almacena temporalmente el habito seleccionado y abre la alerta de eliminacion
     const handleDeleteHabit = (habit) => {
         setHabitToDelete(habit);
         setDeleteAlertVisible(true);
     };
 
+    // Confirma la eliminacion permanente e invoca el metodo del contexto
     const confirmDeleteHabit = () => {
         if (habitToDelete) {
             deleteHabit(habitToDelete.id);
         }
-
         setDeleteAlertVisible(false);
         setHabitToDelete(null);
     };
 
+    // Cancela el proceso de eliminacion limpiando los estados temporales
     const cancelDeleteHabit = () => {
         setDeleteAlertVisible(false);
         setHabitToDelete(null);
     };
 
+    // Redirige a la pantalla de edicion pasando el objeto del habito por ruta
     const handleEditHabit = (habit) => {
         navigation.navigate("EditHabit", { habit });
     };
 
+    // Redirige a la pestaña de perfil del usuario
     const handleGoProfile = () => {
         navigation.navigate("Profile");
     };
 
+    // Renderiza una pantalla de carga mientras se obtienen los datos del contexto
     if (loading) {
         return (
             <View style={styles.loaderContainer}>
-                <ActivityIndicator
-                    size="large"
-                    color={COLORS.primary}
-                />
+                <ActivityIndicator size="large" color={COLORS.primary}/>
             </View>
         );
     }
 
     return (
         <SafeAreaView style={styles.container}>
-
             <StatusBar
                 barStyle="dark-content"
                 backgroundColor={COLORS.white}
             />
-
             <View style={styles.headerContainer}>
                 <HomeHeader
                     userName={userName}
                     userInitial={userInitial}
                     onPressProfile={handleGoProfile}
                 />
-
                 <LevelProgressCard
                     level={level}
                     xp={xp}
                     progressPercentage={progressPercentage}
                 />
             </View>
-
             <ScrollView
                 style={styles.content}
                 showsVerticalScrollIndicator={false}
             >
+                {/* Bloque de tarjetas informativas con las estadisticas del usuario */}
                 <View style={styles.statsRow}>
                     <StatsCard
                         icon="trophy-outline"
@@ -123,7 +127,6 @@ export default function HomeScreen({ navigation }) {
                         title="Puntos"
                         value={`${xp}`}
                     />
-
                     <StatsCard
                         icon="flame-outline"
                         iconColor="#ea580c"
@@ -132,7 +135,6 @@ export default function HomeScreen({ navigation }) {
                         value={`${bestStreak} días`}
                     />
                 </View>
-
                 <View style={styles.statsRow}>
                     <StatsCard
                         icon="checkmark-circle-outline"
@@ -141,7 +143,6 @@ export default function HomeScreen({ navigation }) {
                         title="Completados"
                         value={`${completedHabits}`}
                     />
-
                     <StatsCard
                         icon="star-outline"
                         iconColor="#9333ea"
@@ -150,17 +151,15 @@ export default function HomeScreen({ navigation }) {
                         value={`${level}`}
                     />
                 </View>
-
+                {/* Banner de texto motivacional obtenido desde el servicio externo */}
                 <QuoteBanner quote={quote?.text} />
-
                 <View style={styles.sectionHeader}>
                     <SectionTitle title="Hábitos de Hoy" />
-
                     <Text style={styles.completedText}>
                         {completedHabits}/{habits.length} completados
                     </Text>
                 </View>
-
+                {/* Renderiza iterativamente la lista de habitos actuales mediante un mapeo */}
                 {habits.map((habit) => (
                     <HabitCard
                         key={habit.id}
@@ -173,16 +172,14 @@ export default function HomeScreen({ navigation }) {
                         onLongPress={() => handleEditHabit(habit)}
                     />
                 ))}
-
                 <View style={{ height: 120 }} />
             </ScrollView>
-
+            {/* Boton flotante vinculado a la pantalla de creacion de habitos del Tab */}
             <FloatingAddButton
                 onPress={() => {
                     navigation.navigate("CrearHábito");
                 }}
             />
-
             <CustomAlert
                 visible={deleteAlertVisible}
                 title="Eliminar hábito"
@@ -194,7 +191,6 @@ export default function HomeScreen({ navigation }) {
                 onClose={cancelDeleteHabit}
                 onConfirm={confirmDeleteHabit}
             />
-
         </SafeAreaView>
     );
 }

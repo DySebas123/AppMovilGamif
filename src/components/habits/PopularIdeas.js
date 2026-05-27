@@ -16,8 +16,10 @@ export default function PopularIdeas({
     onSelectIdea,
 }) {
     return (
+        /* Cuadrícula flex con envoltura automática para posicionar las sugerencias en dos columnas */
         <View style={styles.grid}>
             {ideas.map((idea) => (
+                /* Botón táctil que retorna el título de la idea seleccionada mediante un callback */
                 <TouchableOpacity
                     key={idea.id}
                     style={styles.item}
@@ -47,7 +49,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         rowGap: 10,
     },
-
     item: {
         flexDirection: "row",
         alignItems: "center",
@@ -57,9 +58,8 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         paddingVertical: 12,
         paddingHorizontal: 16,
-        width: "48%",
+        width: "48%", // Sincroniza con el space-between del contenedor para mantener la simetría
     },
-
     text: {
         fontSize: 14,
         color: COLORS.textSecondary,

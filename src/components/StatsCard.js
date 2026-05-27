@@ -18,33 +18,23 @@ export default function StatsCard({
     title,
     value,
 }) {
-
     return (
+        /* Tarjeta con ancho relativo adaptada para layouts de cuadricula de dos columnas */
         <View style={styles.card}>
-
+            {/* Contenedor del icono con color de fondo configurable dinamicamente */}
             <View
                 style={[
                     styles.iconContainer,
                     { backgroundColor }
                 ]}
             >
-                <Ionicons
-                    name={icon}
-                    size={22}
-                    color={iconColor}
-                />
+                <Ionicons name={icon} size={22} color={iconColor}/>
             </View>
-
+            {/* Contenedor flex para evitar el desbordamiento de las etiquetas de texto */}
             <View style={styles.textContainer}>
-                <Text style={styles.title}>
-                    {title}
-                </Text>
-
-                <Text style={styles.value}>
-                    {value}
-                </Text>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.value}>{value}</Text>
             </View>
-
         </View>
     );
 }
@@ -52,41 +42,29 @@ export default function StatsCard({
 const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.white,
-
-        width: '48%',
-
+        width: '48%', // Permite el espaciado automatico si se combina con un flexWrap 'space-between'
         padding: 16,
-
         borderRadius: 18,
-
         flexDirection: 'row',
         alignItems: 'center',
-
         ...SHADOWS.small,
     },
-
     iconContainer: {
         width: 46,
         height: 46,
-
         borderRadius: 14,
-
         justifyContent: 'center',
         alignItems: 'center',
-
         marginRight: 12,
     },
-
     textContainer: {
         flex: 1,
     },
-
     title: {
         fontSize: 13,
         color: COLORS.textSecondary,
         marginBottom: 2,
     },
-
     value: {
         fontSize: 20,
         fontWeight: '800',

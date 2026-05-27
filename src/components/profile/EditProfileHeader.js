@@ -19,6 +19,7 @@ export default function EditProfileHeader({
     onBack,
 }) {
     return (
+        /* Encabezado superior con degradado e inclinacion curva en la base para el area de perfil */
         <LinearGradient
             colors={["#0f766e", "#10b981"]}
             style={styles.header}
@@ -40,15 +41,17 @@ export default function EditProfileHeader({
                     Editar Perfil
                 </Text>
 
+                {/* Elemento de balance para contrarrestar el ancho del boton de retorno en la distribucion flex */}
                 <View style={{ width: 42 }} />
             </View>
 
+            {/* Contenedor circular del avatar con borde traslucido de contraste */}
             <View style={styles.avatarContainer}>
                 <Text style={styles.avatarText}>
                     {userInitial}
                 </Text>
             </View>
-
+            {/* Despliegue de credenciales del usuario con valores de respaldo para evitar vacios */}
             <Text style={styles.userName}>
                 {name || "Usuario"}
             </Text>
@@ -62,14 +65,13 @@ export default function EditProfileHeader({
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: 60,
+        paddingTop: 60, // Aislamiento superior preventivo para el notch o la barra de estado del dispositivo
         paddingBottom: 40,
         paddingHorizontal: 20,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
         alignItems: "center",
     },
-
     headerTop: {
         width: "100%",
         flexDirection: "row",
@@ -77,7 +79,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 30,
     },
-
     backButton: {
         width: 42,
         height: 42,
@@ -86,17 +87,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     headerTitle: {
         fontSize: 20,
         fontWeight: "800",
         color: COLORS.white,
     },
-
     avatarContainer: {
         width: 110,
         height: 110,
-        borderRadius: 55,
+        borderRadius: 55, // Forzado de simetria circular exacta basada en la mitad del ancho del componente
         backgroundColor: "#134e4a",
         justifyContent: "center",
         alignItems: "center",
@@ -104,19 +103,16 @@ const styles = StyleSheet.create({
         borderColor: "rgba(255,255,255,0.2)",
         marginBottom: 15,
     },
-
     avatarText: {
         fontSize: 42,
         fontWeight: "800",
         color: COLORS.white,
     },
-
     userName: {
         fontSize: 24,
         fontWeight: "800",
         color: COLORS.white,
     },
-
     userEmail: {
         fontSize: 14,
         color: "rgba(255,255,255,0.8)",

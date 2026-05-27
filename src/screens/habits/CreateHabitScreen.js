@@ -31,6 +31,7 @@ import SHADOWS from "../../styles/shadows";
 import SPACING from "../../styles/spacing";
 import TYPOGRAPHY from "../../styles/typography";
 
+// Diccionario para vincular los nombres de identificadores con iconos de Ionicons
 const ICON_MAP = {
     fitness: "fitness-outline",
     book: "book-outline",
@@ -42,8 +43,10 @@ const ICON_MAP = {
     briefcase: "briefcase-outline",
 };
 
+// Convierte las llaves del mapa de iconos en un array mapeado para los selectores
 const AVAILABLE_ICONS = Object.keys(ICON_MAP).map(id => ({ id, name: ICON_MAP[id] }));
 
+// Listado de sugerencias predefinidas para la creacion rapida de habitos
 const POPULAR_IDEAS = [
     { id: "1", title: "Ejercicio", icon: "fitness-outline" },
     { id: "2", title: "Leer", icon: "book-outline" },
@@ -54,21 +57,26 @@ const POPULAR_IDEAS = [
 ];
 
 export default function CreateHabitScreen({ navigation }) {
+    // Extrae el metodo de creacion del contexto global de habitos
     const { addHabit } = useHabits();
 
+    // Estados para controlar los atributos del nuevo habito
     const [habitName, setHabitName] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("fitness");
     const [frequency, setFrequency] = useState("Diario");
     const [loading, setLoading] = useState(false);
 
+    // Estados para gestionar la configuracion y visibilidad de la alerta
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setAlertType] = useState("success");
     const [alertTitle, setAlertTitle] = useState("");
     const [alertMessage, setAlertMessage] = useState("");
     const [goBackAfterAlert, setGoBackAfterAlert] = useState(false);
 
+    // Obtiene de forma directa el nombre del icono actual o usa uno por defecto
     const selectedIconName = ICON_MAP[selectedIcon] || "star-outline";
 
+    // Modifica las propiedades y muestra la alerta en pantalla
     const showAlert = (type, title, message, goBack = false) => {
         setAlertType(type);
         setAlertTitle(title);
@@ -77,7 +85,9 @@ export default function CreateHabitScreen({ navigation }) {
         setAlertVisible(true);
     };
 
+    // Valida la informacion y almacena el nuevo habito
     const handleSaveHabit = async () => {
+        // Verifica que el campo de texto no este vacio
         if (!habitName.trim()) {
             showAlert(
                 "error",
@@ -89,6 +99,7 @@ export default function CreateHabitScreen({ navigation }) {
 
         setLoading(true);
 
+        // Invoca el metodo del contexto para guardar el registro
         addHabit({
             title: habitName.trim(),
             type: frequency,
@@ -105,6 +116,7 @@ export default function CreateHabitScreen({ navigation }) {
         );
     };
 
+    // Oculta la alerta y gestiona el retorno de pantalla si es necesario
     const handleCloseAlert = () => {
         setAlertVisible(false);
         if (goBackAfterAlert) {
@@ -119,11 +131,13 @@ export default function CreateHabitScreen({ navigation }) {
                 icon="close-outline"
                 onBack={() => navigation.goBack()}
             />
+            {/* Contenedor con scroll forzado por estilos para evitar bloqueos en web */}
             <ScrollView
                 style={styles.scrollArea}
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
+                {/* Visualizacion en tiempo real de la tarjeta del habito */}
                 <HabitPreviewCard
                     title={habitName}
                     frequency={frequency}
@@ -220,6 +234,7 @@ const styles = StyleSheet.create({
     scrollArea: {
         flex: 1,
         backgroundColor: COLORS.background,
+        // Habilita el desplazamiento del mouse de forma explicita en entornos web
         ...Platform.select({
             web: {
                 overflow: 'auto',

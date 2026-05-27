@@ -9,26 +9,18 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export default function InfoBox({ text }) {
-
     return (
+        /* Contenedor horizontal con colores de fondo y bordes configurados para estilo informativo */
         <View style={styles.container}>
+            <Ionicons name="information-circle-outline" size={18} color="#2563eb"/>
 
-            <Ionicons
-                name="information-circle-outline"
-                size={18}
-                color="#2563eb"
-            />
-
-            <Text style={styles.text}>
-                {text}
-            </Text>
-
+            {/* Contenedor flex para ajustar y ajustar automaticamente las lineas de texto largo */}
+            <Text style={styles.text}>{text}</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
     container: {
         backgroundColor: "#eff6ff",
         borderWidth: 1,
@@ -40,7 +32,6 @@ const styles = StyleSheet.create({
         marginTop: 8,
         marginBottom: 12,
     },
-
     text: {
         flex: 1,
         marginLeft: 8,

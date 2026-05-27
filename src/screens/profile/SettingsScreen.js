@@ -26,12 +26,14 @@ import SHADOWS from "../../styles/shadows";
 
 export default function SettingsScreen({ navigation }) {
 
+    // Extrae las preferencias del usuario y sus metodos de modificacion del contexto de configuraciones
     const {
         settings,
         toggleNotifications,
         toggleDarkMode,
     } = useSettings();
 
+    // Extrae los estados y metodos de simulacion temporal del contexto global de habitos
     const {
         currentDate,
         demoDayOffset,
@@ -39,8 +41,10 @@ export default function SettingsScreen({ navigation }) {
         resetData,
     } = useHabits();
 
+    // Estado local para controlar la visibilidad del modal de advertencia para reinicio de datos
     const [resetAlertVisible, setResetAlertVisible] = useState(false);
 
+    // Ejecuta el borrado total de la informacion y cierra la alerta de confirmacion
     const handleReset = () => {
         resetData();
         setResetAlertVisible(false);
@@ -52,6 +56,7 @@ export default function SettingsScreen({ navigation }) {
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
             >
+                {/* Encabezado con retorno explicito hacia la pestaña de Perfil del TabNavigator */}
                 <SettingsHeader
                     onBack={() => navigation.navigate("Perfil")}
                 />
@@ -60,6 +65,7 @@ export default function SettingsScreen({ navigation }) {
                     Preferencias
                 </Text>
 
+                {/* Seccion de componentes interactivos switch para alternar configuraciones */}
                 <Card style={styles.card}>
                     <SettingsSwitchItem
                         icon="notifications-outline"
@@ -82,6 +88,7 @@ export default function SettingsScreen({ navigation }) {
                     Privacidad y experiencia
                 </Text>
 
+                {/* Bloque estatico de elementos informativos sobre la aplicacion */}
                 <Card style={styles.card}>
                     <SettingsInfoItem
                         icon="shield-checkmark-outline"
@@ -110,6 +117,7 @@ export default function SettingsScreen({ navigation }) {
                     Simulación
                 </Text>
 
+                {/* Tarjeta de herramientas de depuracion para el control del tiempo en fase de desarrollo */}
                 <Card style={styles.card}>
                     <Text style={styles.demoDate}>
                         Fecha actual: {currentDate}
@@ -140,6 +148,7 @@ export default function SettingsScreen({ navigation }) {
                     Datos
                 </Text>
 
+                {/* Seccion destructiva para restaurar por completo la base de datos local */}
                 <Card style={styles.card}>
                     <TouchableOpacity
                         style={styles.resetButton}

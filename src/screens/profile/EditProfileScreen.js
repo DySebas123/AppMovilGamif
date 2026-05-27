@@ -26,24 +26,31 @@ import TYPOGRAPHY from "../../styles/typography";
 
 export default function EditProfileScreen({ navigation }) {
 
+    // Extrae los datos del usuario actual y el metodo para actualizar su informacion del contexto global
     const { user, updateUser } = useAuth();
 
+    // Estados inicializados con la informacion existente del usuario o valores vacios por seguridad
     const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
 
+    // Estados individuales para capturar y desplegar errores de validacion en los inputs
     const [errorName, setErrorName] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
 
+    // Estado para controlar la visibilidad de la alerta de confirmacion
     const [alertVisible, setAlertVisible] = useState(false);
 
+    // Evalua la estructura de la cadena para confirmar un formato de correo electronico valido
     const validateEmail = (value) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(value);
     };
 
+    // Valida los campos modificados e invoca la persistencia de cambios en el contexto
     const handleSave = async () => {
         let valid = true;
 
+        // Comprobacion del campo de nombre vacio
         if (!name.trim()) {
             setErrorName("El nombre es obligatorio.");
             valid = false;
@@ -51,6 +58,7 @@ export default function EditProfileScreen({ navigation }) {
             setErrorName("");
         }
 
+        // Comprobacion del campo de correo vacio y formato correcto
         if (!email.trim()) {
             setErrorEmail("El correo es obligatorio.");
             valid = false;
@@ -61,8 +69,10 @@ export default function EditProfileScreen({ navigation }) {
             setErrorEmail("");
         }
 
+        // Interrumpe la ejecucion si alguna validacion previa no fue exitosa
         if (!valid) return;
 
+        // Combina el estado actual del usuario con los datos limpios y modificados del formulario
         await updateUser({
             ...user,
             name: name.trim(),
@@ -72,6 +82,7 @@ export default function EditProfileScreen({ navigation }) {
         setAlertVisible(true);
     };
 
+    // Obtiene de forma segura la inicial del nombre para el contenedor del avatar
     const userInitial =
         name?.charAt(0)?.toUpperCase() || "U";
 
@@ -79,6 +90,7 @@ export default function EditProfileScreen({ navigation }) {
         <>
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    {/* Encabezado del perfil con retorno implicito a la pestaña de Perfil del Tab */}
                     <EditProfileHeader
                         name={name}
                         email={email}
@@ -92,6 +104,7 @@ export default function EditProfileScreen({ navigation }) {
                                 Información personal
                             </Text>
 
+                            {/* Campo de texto para el nombre con borrado de error inmediato al escribir */}
                             <ProfileInput
                                 label="Nombre completo"
                                 icon="person-outline"
@@ -104,6 +117,7 @@ export default function EditProfileScreen({ navigation }) {
                                 }}
                             />
 
+                            {/* Campo de texto para el correo con borrado de error inmediato al escribir */}
                             <ProfileInput
                                 label="Correo electrónico"
                                 icon="mail-outline"
@@ -126,6 +140,7 @@ export default function EditProfileScreen({ navigation }) {
                             </View>
                         </Card>
 
+                        {/* Bloque informativo secundario sobre seguridad de la cuenta */}
                         <View style={styles.infoCard}>
                             <View style={styles.infoIcon}>
                                 <Ionicons
@@ -151,6 +166,7 @@ export default function EditProfileScreen({ navigation }) {
                 </ScrollView>
             </SafeAreaView>
 
+            {/* Alerta de confirmacion que cierra el modal y redirige a la pantalla previa */}
             <CustomAlert
                 visible={alertVisible}
                 title="Perfil actualizado"

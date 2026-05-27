@@ -16,8 +16,10 @@ export default function FrequencySelector({
     onChangeFrequency,
 }) {
     return (
+        /* Fila horizontal con espaciado uniforme para albergar los botones de seleccion equitativos */
         <View style={styles.row}>
             {["Diario", "Semanal"].map((item) => {
+                // Compara la opcion actual del mapeo con el estado de frecuencia activo
                 const isActive = frequency === item;
 
                 return (
@@ -27,6 +29,7 @@ export default function FrequencySelector({
                         activeOpacity={0.8}
                         onPress={() => onChangeFrequency(item)}
                     >
+                        {/* Renderizado condicional: boton con degradado */}
                         {isActive ? (
                             <LinearGradient
                                 colors={COLORS.gradientDark}
@@ -56,24 +59,20 @@ const styles = StyleSheet.create({
         gap: 12,
         marginBottom: 25,
     },
-
     flexBtn: {
-        flex: 1,
+        flex: 1, // Distribuye el ancho de los botones de manera proporcional para llenar el contenedor
     },
-
     activeButton: {
         height: 50,
         borderRadius: 16,
         justifyContent: "center",
         alignItems: "center",
     },
-
     activeText: {
         color: COLORS.white,
         fontWeight: "700",
         fontSize: 16,
     },
-
     inactiveButton: {
         height: 50,
         borderRadius: 16,
@@ -83,7 +82,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     inactiveText: {
         color: COLORS.textSecondary,
         fontWeight: "600",

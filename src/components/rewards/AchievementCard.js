@@ -14,12 +14,14 @@ import SHADOWS from "../../styles/shadows";
 
 export default function AchievementCard({ item }) {
     return (
+        /* Estructura de tarjeta con dimensiones para cuadriculas de dos columnas y atenuacion si esta bloqueada */
         <View
             style={[
                 styles.card,
                 !item.unlocked && styles.lockedCard,
             ]}
         >
+            {/* Contenedor del icono con degradado dinamico o paleta gris neutra segun el estado del logro */}
             <LinearGradient
                 colors={
                     item.unlocked
@@ -45,6 +47,7 @@ export default function AchievementCard({ item }) {
                 {item.description}
             </Text>
 
+            {/* Renderizado condicional: etiqueta de exito o contador acotado de progreso actual contra meta */}
             {item.unlocked ? (
                 <View style={styles.unlockedBadge}>
                     <Text style={styles.unlockedText}>
@@ -72,7 +75,7 @@ export default function AchievementCard({ item }) {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.white,
-        width: "48%",
+        width: "48%", // Sincroniza con distribuciones flexWrap 'space-between'
         borderRadius: 20,
         padding: 16,
         alignItems: "center",
@@ -80,11 +83,9 @@ const styles = StyleSheet.create({
         borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
-
     lockedCard: {
         opacity: 0.85,
     },
-
     iconBadge: {
         width: 60,
         height: 60,
@@ -93,7 +94,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginBottom: 12,
     },
-
     title: {
         fontSize: 15,
         fontWeight: "700",
@@ -101,29 +101,25 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginBottom: 4,
     },
-
     description: {
         fontSize: 12,
         color: COLORS.textSecondary,
         textAlign: "center",
         lineHeight: 16,
         marginBottom: 12,
-        flex: 1,
+        flex: 1, // Desplaza las etiquetas inferiores para mantener la alineacion vertical uniforme
     },
-
     unlockedBadge: {
         backgroundColor: "#f0fdf4",
         paddingVertical: 6,
         paddingHorizontal: 12,
         borderRadius: 12,
     },
-
     unlockedText: {
         color: COLORS.success,
         fontSize: 11,
         fontWeight: "700",
     },
-
     lockedBadge: {
         backgroundColor: "#f1f5f9",
         paddingVertical: 6,
@@ -132,7 +128,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-
     lockedText: {
         color: "#94a3b8",
         fontSize: 11,

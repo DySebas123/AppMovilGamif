@@ -20,23 +20,19 @@ export default function AppHeader({
     onBack,
 }) {
     return (
+        /* Contenedor del encabezado con esquinas inferiores redondeadas y sombra ligera */
         <View style={styles.header}>
             <TouchableOpacity
                 style={styles.backButton}
                 onPress={onBack}
                 activeOpacity={0.7}
             >
-                <Ionicons
-                    name={icon}
-                    size={28}
-                    color={COLORS.textPrimary}
-                />
+                <Ionicons name={icon} size={28} color={COLORS.textPrimary}/>
             </TouchableOpacity>
 
-            <Text style={styles.title}>
-                {title}
-            </Text>
+            <Text style={styles.title}>{title}</Text>
 
+            {/* Espaciador con el mismo ancho que el boton para simular una distribucion simetrica equilibrada */}
             <View style={{ width: 42 }} />
         </View>
     );
@@ -45,20 +41,16 @@ export default function AppHeader({
 const styles = StyleSheet.create({
     header: {
         backgroundColor: COLORS.white,
-        paddingTop: 55,
+        paddingTop: 55, // Espaciado superior estatico para librar la barra de estado nativa
         paddingBottom: 18,
         paddingHorizontal: SPACING.lg,
-
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-
         borderBottomLeftRadius: 24,
         borderBottomRightRadius: 24,
-
         ...SHADOWS.small,
     },
-
     backButton: {
         width: 42,
         height: 42,
@@ -67,7 +59,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     title: {
         ...TYPOGRAPHY.titleMD,
         color: COLORS.textPrimary,

@@ -16,7 +16,9 @@ export default function SettingsInfoItem({
     description,
 }) {
     return (
+        /* Fila contenedora alineada al inicio superior para soportar descripciones de multiples lineas */
         <View style={styles.infoRow}>
+            {/* Bloque circular que opera como contenedor del icono con un fondo verde suave de contraste */}
             <View style={styles.infoIcon}>
                 <Ionicons
                     name={icon}
@@ -24,12 +26,11 @@ export default function SettingsInfoItem({
                     color="#0f766e"
                 />
             </View>
-
+            {/* Bloque de texto estructurado con flex para forzar el ajuste de linea y prevenir desbordes */}
             <View style={{ flex: 1 }}>
                 <Text style={styles.infoTitle}>
                     {title}
                 </Text>
-
                 <Text style={styles.infoDescription}>
                     {description}
                 </Text>
@@ -41,29 +42,26 @@ export default function SettingsInfoItem({
 const styles = StyleSheet.create({
     infoRow: {
         flexDirection: "row",
-        alignItems: "flex-start",
+        alignItems: "flex-start", // Mantiene el icono fijo arriba si la descripcion se extiende verticalmente
     },
-
     infoIcon: {
         width: 42,
         height: 42,
-        borderRadius: 21,
+        borderRadius: 21, // Forzado de geometria circular exacta basada en la mitad del ancho del componente
         backgroundColor: "#ecfdf5",
         justifyContent: "center",
         alignItems: "center",
         marginRight: 14,
     },
-
     infoTitle: {
         fontSize: 15,
         fontWeight: "700",
         color: COLORS.textPrimary,
         marginBottom: 4,
     },
-
     infoDescription: {
         fontSize: 13,
         color: COLORS.textSecondary,
-        lineHeight: 18,
+        lineHeight: 18, // Incrementa la separacion entre lineas para mejorar la legibilidad del parrafo
     },
 });

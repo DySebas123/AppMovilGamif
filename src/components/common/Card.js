@@ -10,9 +10,8 @@ import SHADOWS from "../../styles/shadows";
 
 export default function Card({ children, style }) {
     return (
-        <View style={[styles.card, style]}>
-            {children}
-        </View>
+        /* Contenedor base que permite la sobreescritura de estilos externos mediante un arreglo */
+        <View style={[styles.card, style]}>{children}</View>
     );
 }
 
@@ -21,6 +20,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: 26,
         padding: 20,
-        ...SHADOWS.small,
+        ...SHADOWS.small, // Aplica la elevacion de sombra predefinida en el archivo de estilos globales
     },
 });
