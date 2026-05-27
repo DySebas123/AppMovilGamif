@@ -52,7 +52,7 @@ Desarrollar una aplicación móvil moderna utilizando React Native y Expo aplica
 
 # 📂 Estructura General
 
-\```bash
+```bash
 src/
 │
 ├── components/
@@ -63,29 +63,28 @@ src/
 ├── styles/
 ├── data/
 └── assets/
-\```
-
+```
 ---
 
 # 📦 Instalación del Proyecto
 
 ## 1️⃣ Clonar repositorio
 
-\```bash
+```bash
 git clone <URL_DEL_REPOSITORIO>
-\```
+```
 
 ## 2️⃣ Instalar dependencias
 
-\```bash
+```bash
 npm install
-\```
+```
 
 o
 
-\```bash
+```bash
 yarn install
-\```
+```
 
 ---
 
@@ -93,24 +92,24 @@ yarn install
 
 ## Expo
 
-\```bash
+```bash
 npx expo install expo-linear-gradient
 npx expo install @expo/vector-icons
-\```
+```
 
 ## Navegación
 
-\```bash
+```bash
 npm install @react-navigation/native
 npx expo install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native-stack
-\```
+```
 
 ## Async Storage
 
-\```bash
+```bash
 npx expo install @react-native-async-storage/async-storage
-\```
+```
 
 ---
 
@@ -118,21 +117,21 @@ npx expo install @react-native-async-storage/async-storage
 
 ## Iniciar servidor Expo
 
-\```bash
+```bash
 npx expo start
-\```
+```
 
 ## Ejecutar en Android
 
-\```bash
+```bash
 npx expo run:android
-\```
+```
 
 ## Ejecutar en Web
 
-\```bash
+```bash
 npx expo start --web
-\```
+```
 
 ---
 
@@ -193,15 +192,15 @@ Se implementó consumo de datos dinámicos mediante archivo JSON local.
 
 ## Archivo utilizado
 
-\```bash
+```bash
 src/data/quotes.json
-\```
+```
 
 ## Servicio
 
-\```bash
+```bash
 src/services/quoteService.js
-\```
+```
 
 ## Características implementadas
 
