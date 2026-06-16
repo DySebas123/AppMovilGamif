@@ -15,12 +15,14 @@ import SettingItem from "../../components/profile/SettingItem";
 
 import { useHabits } from "../../context/HabitContext";
 import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
 import SPACING from "../../styles/spacing";
 
 export default function ProfileScreen({ navigation }) {
+    const { theme } = useSettings();
 
     // Extrae las metricas de progreso, nivel y habitos del contexto global
     const {
@@ -58,7 +60,7 @@ export default function ProfileScreen({ navigation }) {
     return (
         <>
             <ScrollView
-                style={styles.container}
+                style={[styles.container, { backgroundColor: theme.background }]}
                 bounces={false}
                 showsVerticalScrollIndicator={false}
             >
@@ -77,6 +79,9 @@ export default function ProfileScreen({ navigation }) {
                             backgroundColor="#eff6ff"
                             value={xp}
                             label="XP Total"
+                            theme={theme}
+                            numberColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
                         <ProfileStatCard
                             icon="checkmark-circle-outline"
@@ -84,6 +89,9 @@ export default function ProfileScreen({ navigation }) {
                             backgroundColor="#f0fdf4"
                             value={completedHabits}
                             label="Completados"
+                            theme={theme}
+                            numberColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
 
                         <ProfileStatCard
@@ -92,6 +100,9 @@ export default function ProfileScreen({ navigation }) {
                             backgroundColor="#faf5ff"
                             value={level}
                             label="Nivel"
+                            theme={theme}
+                            numberColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
                     </View>
 
@@ -102,6 +113,9 @@ export default function ProfileScreen({ navigation }) {
                             backgroundColor="#fff7ed"
                             value={bestStreak}
                             label="Mejor Racha"
+                            theme={theme}
+                            numberColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
 
                         <ProfileStatCard
@@ -110,25 +124,30 @@ export default function ProfileScreen({ navigation }) {
                             backgroundColor="#ecfeff"
                             value={habits.length}
                             label="Hábitos"
+                            theme={theme}
+                            numberColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
                     </View>
 
-                    <Text style={styles.sectionTitle}>
+                    <Text style={[styles.sectionTitle, { color: theme.textPrimary }] }>
                         Cuenta
                     </Text>
 
                     {/* Bloque agrupador de opciones de navegacion y configuracion */}
-                    <View style={styles.menuGroup}>
+                    <View style={[styles.menuGroup, { backgroundColor: theme.secondarySurface }] }>
                         <SettingItem
                             icon="person-outline"
                             label="Editar perfil"
                             onPress={() => navigation.navigate("Editar")}
+                            labelColor={theme.textPrimary}
                         />
                         {/* Enlace directo a la pantalla oculta del Tab sin romper el scroll web */}
                         <SettingItem
                             icon="settings-outline"
                             label="Configuración"
                             onPress={() => {navigation.navigate("Configuración");}}
+                            labelColor={theme.textPrimary}
                         />
                         <SettingItem
                             icon="log-out-outline"
@@ -136,6 +155,7 @@ export default function ProfileScreen({ navigation }) {
                             isDestructive
                             last
                             onPress={handleLogout}
+                            labelColor={"#ef4444"}
                         />
                     </View>
                     <View style={{ height: 100 }} />
@@ -152,6 +172,9 @@ export default function ProfileScreen({ navigation }) {
                 cancelText="Cancelar"
                 onClose={() => setLogoutAlertVisible(false)}
                 onConfirm={confirmLogout}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );
@@ -188,6 +211,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: 20,
         paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
 });

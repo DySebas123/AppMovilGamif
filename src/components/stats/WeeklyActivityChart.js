@@ -15,17 +15,20 @@ import SHADOWS from "../../styles/shadows";
 export default function WeeklyActivityChart({
     data,
     level,
+    titleColor,
+    subtitleColor,
+    cardColor,
 }) {
     return (
         /* Contenedor principal de la tarjeta con esquinas suavizadas y profundidad de sombra media */
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: cardColor }]}>
             <View style={styles.header}>
                 <View>
-                    <Text style={styles.title}>
+                    <Text style={[styles.title, { color: titleColor }]}>
                         Actividad Semanal
                     </Text>
 
-                    <Text style={styles.subtitle}>
+                    <Text style={[styles.subtitle, { color: subtitleColor}]}>
                         Progreso de los últimos 7 días
                     </Text>
                 </View>
@@ -89,6 +92,8 @@ const styles = StyleSheet.create({
         borderRadius: 28,
         padding: 20,
         marginBottom: 20,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.medium,
     },
     header: {
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
     barBackground: {
         width: "100%",
         height: 135,
-        backgroundColor: "#f1f5f9",
+        backgroundColor: "#dedbdb",
         borderRadius: 14,
         overflow: "hidden", // Contiene los bordes del LinearGradient interno
         justifyContent: "flex-end", // Fuerza el crecimiento de la barra desde abajo hacia arriba

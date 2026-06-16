@@ -17,17 +17,19 @@ export default function HomeHeader({
     userName,
     userInitial,
     onPressProfile,
+    theme,
+    textColor
 }) {
     return (
         /* Fila de encabezado principal con distribucion horizontal y alineacion centralizada */
         <View style={styles.headerRow}>
             {/* Contenedor de bienvenida estructurado con flex para evitar desbordes ante nombres largos */}
             <View style={styles.greetingContainer}>
-                <Text style={styles.greeting}>
+                <Text style={[styles.greeting, { color: "#ffffff" }] }>
                     Buenos días, {userName} 👋
                 </Text>
 
-                <Text style={styles.subtitle}>
+                <Text style={[styles.subtitle, { color: "#a0a0a0" }]}>
                     Sigue construyendo tu mejor versión
                 </Text>
             </View>
@@ -65,14 +67,12 @@ const styles = StyleSheet.create({
         marginRight: 12
     },
     greeting: {
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: "800",
-        color: COLORS.textPrimary,
     },
     subtitle: {
         marginTop: 4,
-        fontSize: 14,
-        color: COLORS.textSecondary,
+        fontSize: 15,
     },
     avatarContainer: {
         width: 58,

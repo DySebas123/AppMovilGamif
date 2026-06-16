@@ -12,13 +12,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
 
-export default function AchievementCard({ item }) {
+export default function AchievementCard({
+    item,
+    cardColor,
+    titleColor,
+    descriptionColor
+}) {
     return (
         /* Estructura de tarjeta con dimensiones para cuadriculas de dos columnas y atenuacion si esta bloqueada */
         <View
             style={[
                 styles.card,
                 !item.unlocked && styles.lockedCard,
+                { backgroundColor: cardColor }
             ]}
         >
             {/* Contenedor del icono con degradado dinamico o paleta gris neutra segun el estado del logro */}
@@ -39,11 +45,11 @@ export default function AchievementCard({ item }) {
                 />
             </LinearGradient>
 
-            <Text style={styles.title}>
+            <Text style={[styles.title, {color: titleColor}]}>
                 {item.title}
             </Text>
 
-            <Text style={styles.description}>
+            <Text style={[styles.description, {color: descriptionColor}]}>
                 {item.description}
             </Text>
 

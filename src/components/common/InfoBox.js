@@ -7,15 +7,30 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { useSettings } from "../../context/SettingsContext";
 
 export default function InfoBox({ text }) {
+    const { theme } = useSettings();
+
     return (
         /* Contenedor horizontal con colores de fondo y bordes configurados para estilo informativo */
-        <View style={styles.container}>
-            <Ionicons name="information-circle-outline" size={18} color="#2563eb"/>
+        <View
+            style={[
+                styles.container,
+                {
+                    backgroundColor: theme.secondarySurface,
+                    borderColor: theme.border,
+                },
+            ]}
+        >
+            <Ionicons
+                name="information-circle-outline"
+                size={18}
+                color={theme.primary}
+            />
 
             {/* Contenedor flex para ajustar y ajustar automaticamente las lineas de texto largo */}
-            <Text style={styles.text}>{text}</Text>
+            <Text style={[styles.text, { color: theme.textSecondary }]}>{text}</Text>
         </View>
     );
 }

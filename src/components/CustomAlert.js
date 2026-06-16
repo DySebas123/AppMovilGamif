@@ -10,6 +10,7 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useSettings } from "../context/SettingsContext";
 
 export default function CustomAlert({
     visible,
@@ -21,7 +22,13 @@ export default function CustomAlert({
     cancelText = "Cancelar",
     onClose,
     onConfirm,
+    containerColor,
+    titleColor,
+    messageColor,
 }) {
+
+    const { theme } = useSettings();
+
     // Evalúa el tipo de alerta para condicionar la interfaz visual
     const isSuccess = type === "success";
     const isError = type === "error";
@@ -49,7 +56,10 @@ export default function CustomAlert({
         >
             {/* Contenedor oscuro semitransparente para bloquear la interfaz trasera */}
             <View style={styles.overlay}>
-                <View style={styles.container}>
+                <View style={[
+                    styles.container, 
+                    { backgroundColor: containerColor || theme?.surface || "#ffffff" }
+                ]}>
                     {/* Contenedor del icono con fondo degradado dinámico */}
                     <LinearGradient
                         colors={gradientColors}
@@ -58,9 +68,9 @@ export default function CustomAlert({
                         <Ionicons name={iconName} size={34} color="#fff"/>
                     </LinearGradient>
 
-                    <Text style={styles.title}>{title} </Text>
+                    <Text style={[styles.title, { color: titleColor }]}>{title} </Text>
 
-                    <Text style={styles.message}>{message}</Text>
+                    <Text style={[styles.message, { color: messageColor }]}>{message}</Text>
 
                     {/* Renderizado condicional: botones gemelos de confirmación o botón único de cierre */}
                     {confirmMode ? (
@@ -87,11 +97,11 @@ export default function CustomAlert({
                         </View>
                     ) : (
                         <TouchableOpacity
-                            style={styles.button}
+                            style={[styles.button, { backgroundColor: theme.buttonBackground }]}
                             activeOpacity={0.8}
                             onPress={onClose}
                         >
-                            <Text style={styles.buttonText}>
+                            <Text style={[styles.buttonText]}>
                                 Continuar
                             </Text>
                         </TouchableOpacity>
@@ -118,6 +128,7 @@ const styles = StyleSheet.create({
         borderRadius: 28,
         padding: 28,
         alignItems: "center",
+        elevation: 5, // Necesario en Android para que la superficie sea opaca y tenga profundidad
     },
 
     iconContainer: {
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: "#0f172a",
+        backgroundColor: "#fff",
         width: "100%",
         paddingVertical: 16,
         borderRadius: 18,

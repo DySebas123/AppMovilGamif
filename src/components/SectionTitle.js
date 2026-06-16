@@ -5,12 +5,15 @@ import {
     StyleSheet,
 } from "react-native";
 
+import { useSettings } from "../context/SettingsContext";
 import COLORS from "../styles/colors";
 
 export default function SectionTitle({ title }) {
+    const { theme } = useSettings();
+
     return (
         /* Componente de texto plano optimizado para estandarizar los titulos de secciones */
-        <Text style={styles.title}>
+        <Text style={[styles.title, { color: theme.textPrimary || COLORS.textPrimary }] }>
             {title}
         </Text>
     );

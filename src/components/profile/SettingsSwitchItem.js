@@ -16,6 +16,7 @@ export default function SettingsSwitchItem({
     label,
     value,
     onChange,
+    text
 }) {
     return (
         /* Elemento de fila con distribucion horizontal para separar el bloque informativo del control interactivo */
@@ -29,7 +30,7 @@ export default function SettingsSwitchItem({
                         color="#0f766e"
                     />
                 </View>
-                <Text style={styles.itemText}>
+                <Text style={[styles.itemText, { color: text}]}>
                     {label}
                 </Text>
             </View>

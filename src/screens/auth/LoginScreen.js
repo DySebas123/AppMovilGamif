@@ -11,8 +11,11 @@ import AuthFooterLink from "../../components/auth/AuthFooterLink";
 import InfoBox from "../../components/common/InfoBox";
 
 import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
 
 export default function LoginScreen({ navigation }) {
+
+    const { theme } = useSettings();
 
     // Extrae la funcion de inicio de sesion del contexto global
     const { login } = useAuth();
@@ -20,6 +23,8 @@ export default function LoginScreen({ navigation }) {
     // Estados para almacenar los datos ingresados en el formulario
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
 
     // Estados para almacenar los mensajes de error de validacion
     const [errorEmail, setErrorEmail] = useState("");
@@ -142,8 +147,10 @@ export default function LoginScreen({ navigation }) {
                         setPassword(text);
                         setErrorPassword("");
                     }}
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     error={errorPassword}
+                    rightIcon={showPassword ? "eye-off-outline" : "eye-outline"}
+                    onRightIconPress={() => setShowPassword(!showPassword)}
                 />
                 <InfoBox
                     text="Usa el correo y contraseña que registraste previamente."
@@ -167,6 +174,9 @@ export default function LoginScreen({ navigation }) {
                 message={alertMessage}
                 type={alertType}
                 onClose={handleCloseAlert}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );

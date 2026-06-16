@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 
@@ -15,6 +16,9 @@ export default function AuthHeader({
     title,
     subtitle,
 }) {
+
+    const { theme } = useSettings();
+
     return (
         /* Contenedor principal orientado verticalmente para centrar el bloque de identidad de la pantalla */
         <View style={styles.container}>
@@ -31,8 +35,8 @@ export default function AuthHeader({
                 />
             </LinearGradient>
             {/* Bloque de textos descriptivos para el encabezado del formulario de acceso */}
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.subtitle}>{subtitle}</Text>
+            <Text style={[styles.title, { color: theme.textPrimary }]}>{title}</Text>
+            <Text style={[styles.subtitle, { color: theme.textSecondary }]}>{subtitle}</Text>
         </View>
     );
 }

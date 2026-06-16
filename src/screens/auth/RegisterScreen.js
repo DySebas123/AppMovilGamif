@@ -18,12 +18,15 @@ import AuthFooterLink from "../../components/auth/AuthFooterLink";
 import InfoBox from "../../components/common/InfoBox";
 
 import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SPACING from "../../styles/spacing";
 import TYPOGRAPHY from "../../styles/typography";
 
 export default function RegisterScreen({ navigation }) {
+
+    const { theme } = useSettings();
 
     // Extrae la funcion de registro del contexto global de autenticacion
     const { register } = useAuth();
@@ -33,6 +36,9 @@ export default function RegisterScreen({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     // Estados para gestionar de forma independiente los errores de cada input
     const [errorName, setErrorName] = useState("");
@@ -181,12 +187,14 @@ export default function RegisterScreen({ navigation }) {
                     icon="lock-closed-outline"
                     placeholder="Mínimo 8 caracteres"
                     value={password}
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                     onChangeText={(text) => {
                         setPassword(text);
                         setErrorPassword("");
                     }}
                     error={errorPassword}
+                    rightIcon={showPassword ? "eye-off-outline" : "eye-outline"}
+                    onRightIconPress={() => setShowPassword(!showPassword)}
                 />
 
                 <AuthInput
@@ -194,12 +202,14 @@ export default function RegisterScreen({ navigation }) {
                     icon="shield-checkmark-outline"
                     placeholder="Repite tu contraseña"
                     value={confirmPassword}
-                    secureTextEntry
+                    secureTextEntry={!showConfirmPassword}
                     onChangeText={(text) => {
                         setConfirmPassword(text);
                         setErrorConfirmPassword("");
                     }}
                     error={errorConfirmPassword}
+                    rightIcon={showConfirmPassword ? "eye-off-outline" : "eye-outline"}
+                    onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
                 />
 
                 <InfoBox
@@ -228,6 +238,9 @@ export default function RegisterScreen({ navigation }) {
                 message="Tu cuenta fue registrada correctamente. Ahora puedes iniciar sesión."
                 type="success"
                 onClose={handleCloseAlert}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );

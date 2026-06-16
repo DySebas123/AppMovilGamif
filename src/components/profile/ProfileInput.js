@@ -20,14 +20,17 @@ export default function ProfileInput({
     error,
     keyboardType,
     autoCapitalize,
+    labelColor,
+    inputColor,
+    valueColor
 }) {
     return (
         /* Fragmento estructural para agrupar los elementos sin alterar la jerarquia flex del contenedor padre */
         <>
-            <Text style={styles.label}>
+            <Text style={[styles.label, { color: labelColor }]}>
                 {label}
             </Text>
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, { backgroundColor: inputColor }]}>
                 <Ionicons
                     name={icon}
                     size={20}
@@ -35,7 +38,7 @@ export default function ProfileInput({
                 />
                 {/* Contenedor horizontal que alinea el icono tematico junto al area de entrada de texto */}
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, { color: valueColor }]}
                     value={value}
                     onChangeText={onChangeText}
                     placeholder={placeholder}

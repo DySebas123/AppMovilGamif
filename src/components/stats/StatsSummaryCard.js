@@ -17,10 +17,13 @@ export default function StatsSummaryCard({
     value,
     icon,
     colors,
+    cardColor,
+    valueColor,
+    labelColor
 }) {
     return (
         /* Tarjeta de resumen con ancho fijo del 48% optimizada para layouts de dos columnas */
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: cardColor }]}>
 
             {/* Contenedor del icono con degradado diagonal personalizado basado en el arreglo de colores recibido */}
             <LinearGradient
@@ -37,11 +40,11 @@ export default function StatsSummaryCard({
             </LinearGradient>
 
             {/* Renderizado de la metrica principal y su etiqueta descriptiva correspondiente */}
-            <Text style={styles.value}>
+            <Text style={[styles.value, { color: valueColor }]}>
                 {value}
             </Text>
 
-            <Text style={styles.label}>
+            <Text style={[styles.label, { color: labelColor }]}>
                 {label}
             </Text>
         </View>
@@ -54,6 +57,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderRadius: 22,
         padding: 18,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
     iconBox: {

@@ -12,7 +12,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
 
-export default function NextAchievementCard({ achievement }) {
+export default function NextAchievementCard({
+    achievement,
+    cardColor,
+    titleColor,
+    descriptionColor,
+}) {
     // Retorno temprano de seguridad si el objeto de logro proximo no esta definido
     if (!achievement) return null;
 
@@ -23,8 +28,8 @@ export default function NextAchievementCard({ achievement }) {
     );
 
     return (
-        <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Próximo Logro</Text>
+        <View style={[styles.card, { backgroundColor: cardColor}]}>
+            <Text style={[styles.sectionTitle, { color: titleColor }]}>Próximo Logro</Text>
 
             <View style={styles.content}>
                 {/* Emblema con fondo degradado personalizado importado desde las propiedades del objeto */}
@@ -40,22 +45,22 @@ export default function NextAchievementCard({ achievement }) {
                 </LinearGradient>
 
                 <View style={styles.details}>
-                    <Text style={styles.title}>{achievement.title}</Text>
+                    <Text style={[styles.title, { color: titleColor }]}>{achievement.title}</Text>
 
-                    <Text style={styles.description}>{achievement.description}</Text>
+                    <Text style={[styles.description, { color: descriptionColor }]}>{achievement.description}</Text>
 
                     {/* Barra de progreso horizontal con calculo dinamico de su ancho en base a la meta */}
                     <View style={styles.progressBackground}>
                         <View
                             style={[
                                 styles.progressFill,
-                                { width: `${progress}%` },
+                                { width: `${progress}%`},
                             ]}
                         />
                     </View>
 
                     {/* Texto informativo que valida que el valor actual no exceda el objetivo final */}
-                    <Text style={styles.progressText}>
+                    <Text style={[styles.progressText, { color: descriptionColor }]}>
                         {Math.min(achievement.progress, achievement.goal)} de {achievement.goal}
                     </Text>
                 </View>
@@ -70,6 +75,8 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         padding: 20,
         marginTop: 20,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
     sectionTitle: {
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
     },
     progressFill: {
         height: "100%",
-        backgroundColor: "#0f4c5c",
+        backgroundColor: "#22c55e",
         borderRadius: 3,
     },
     progressText: {

@@ -4,10 +4,12 @@ import {
     View,
     Text,
     TextInput,
+    Pressable,
     StyleSheet,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 
@@ -21,11 +23,16 @@ export default function AuthInput({
     secureTextEntry,
     autoCapitalize,
     error,
+    rightIcon,
+    onRightIconPress,
 }) {
+
+    const { theme } = useSettings();
+
     return (
         /* Contenedor del campo con espaciado inferior predeterminado para formularios estructurados */
         <View style={styles.wrapper}>
-            <Text style={styles.label}>
+            <Text style={[styles.label, { color: theme.textPrimary }]}>
                 {label}
             </Text>
 
@@ -53,6 +60,11 @@ export default function AuthInput({
                     secureTextEntry={secureTextEntry}
                     autoCapitalize={autoCapitalize}
                 />
+                {rightIcon ? (
+                    <Pressable onPress={onRightIconPress} style={styles.rightIcon}>
+                        <Ionicons name={rightIcon} size={20} color="#64748b" />
+                    </Pressable>
+                ) : null}
             </View>
             {/* Mensaje de retroalimentacion condicional inyectado bajo la caja de texto */}
             {error ? (
@@ -102,4 +114,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         marginTop: 6,
     },
+    rightIcon: {
+        padding: 8,
+    }
 });

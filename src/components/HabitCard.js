@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { useSettings } from "../context/SettingsContext";
 
 import COLORS from "../styles/colors";
 import SHADOWS from "../styles/shadows";
@@ -20,7 +21,10 @@ export default function HabitCard({
     onPress,
     onLongPress,
     onDelete,
+    cardColor,
 }) {
+    const { theme } = useSettings() || {};
+
     return (
         /* Contenedor fila que alinea la tarjeta interactiva con el boton lateral de borrado */
         <View style={styles.wrapper}>
@@ -28,6 +32,7 @@ export default function HabitCard({
             <TouchableOpacity
                 style={[
                     styles.card,
+                    { backgroundColor: cardColor || COLORS.white },
                     completed && styles.cardCompleted,
                 ]}
                 onPress={onPress}
@@ -45,8 +50,8 @@ export default function HabitCard({
                         size={30}
                         color={
                             completed
-                                ? COLORS.success
-                                : "#94a3b8"
+                                ? theme.success
+                                : theme.textSecondary
                         }
                         style={styles.icon}
                     />
@@ -55,13 +60,16 @@ export default function HabitCard({
                         <Text
                             style={[
                                 styles.title,
+                                { color: theme.textPrimary },
                                 completed && styles.textCompleted,
                             ]}
                         >
                             {title}
                         </Text>
 
-                        <Text style={styles.type}>{type}</Text>
+                        <Text style={[styles.type, { color: theme.textSecondary }]}>
+                            {type}
+                        </Text>
                     </View>
                 </View>
 
@@ -101,6 +109,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
     cardCompleted: {
@@ -131,14 +141,14 @@ const styles = StyleSheet.create({
     streakBadge: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#fff7ed",
+        backgroundColor: "#fde68a",
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 20,
     },
     streakText: {
         marginLeft: 4,
-        color: "#f97316",
+        color: "#b45309",
         fontWeight: "700",
         fontSize: 13,
     },

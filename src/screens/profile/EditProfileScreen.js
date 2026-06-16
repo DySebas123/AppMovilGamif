@@ -18,6 +18,7 @@ import EditProfileHeader from "../../components/profile/EditProfileHeader";
 import ProfileInput from "../../components/profile/ProfileInput";
 
 import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
@@ -86,10 +87,15 @@ export default function EditProfileScreen({ navigation }) {
     const userInitial =
         name?.charAt(0)?.toUpperCase() || "U";
 
+    const { theme } = useSettings();
+
     return (
         <>
-            <SafeAreaView style={styles.container}>
-                <ScrollView showsVerticalScrollIndicator={false}>
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+                <ScrollView
+                    style={[styles.container, { backgroundColor: theme.background }]}
+                    showsVerticalScrollIndicator={false}
+                >
                     {/* Encabezado del perfil con retorno implicito a la pestaña de Perfil del Tab */}
                     <EditProfileHeader
                         name={name}
@@ -97,10 +103,9 @@ export default function EditProfileScreen({ navigation }) {
                         userInitial={userInitial}
                         onBack={() => navigation.navigate("Perfil")}
                     />
-
-                    <View style={styles.content}>
+                    <View style={[styles.content]}>
                         <Card style={styles.card}>
-                            <Text style={styles.sectionTitle}>
+                            <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
                                 Información personal
                             </Text>
 
@@ -115,6 +120,9 @@ export default function EditProfileScreen({ navigation }) {
                                     setName(text);
                                     setErrorName("");
                                 }}
+                                labelColor={theme.textPrimary}
+                                inputColor={theme.surface}
+                                valueColor={theme.textSecondary}
                             />
 
                             {/* Campo de texto para el correo con borrado de error inmediato al escribir */}
@@ -130,6 +138,9 @@ export default function EditProfileScreen({ navigation }) {
                                     setEmail(text);
                                     setErrorEmail("");
                                 }}
+                                labelColor={theme.textPrimary}
+                                inputColor={theme.surface}
+                                valueColor={theme.textSecondary}
                             />
 
                             <View style={styles.buttonContainer}>
@@ -141,7 +152,7 @@ export default function EditProfileScreen({ navigation }) {
                         </Card>
 
                         {/* Bloque informativo secundario sobre seguridad de la cuenta */}
-                        <View style={styles.infoCard}>
+                        <View style={[styles.infoCard, { backgroundColor: theme.surface }]}>
                             <View style={styles.infoIcon}>
                                 <Ionicons
                                     name="shield-checkmark-outline"
@@ -150,12 +161,12 @@ export default function EditProfileScreen({ navigation }) {
                                 />
                             </View>
 
-                            <View style={{ flex: 1 }}>
-                                <Text style={styles.infoTitle}>
+                            <View style={[{ flex: 1 }]}>
+                                <Text style={[styles.infoTitle, { color: theme.textPrimary }]}>
                                     Perfil seguro
                                 </Text>
 
-                                <Text style={styles.infoText}>
+                                <Text style={[styles.infoText, { color: theme.textSecondary }]}>
                                     Mantén tu información actualizada para una mejor experiencia dentro de la aplicación.
                                 </Text>
                             </View>
@@ -176,6 +187,9 @@ export default function EditProfileScreen({ navigation }) {
                     setAlertVisible(false);
                     navigation.goBack();
                 }}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );

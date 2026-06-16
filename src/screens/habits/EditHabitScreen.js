@@ -22,6 +22,7 @@ import HabitPreviewCard from "../../components/habits/HabitPreviewCard";
 import FrequencySelector from "../../components/habits/FrequencySelector";
 
 import { useHabits } from "../../context/HabitContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
@@ -34,6 +35,8 @@ export default function EditHabitScreen({ navigation, route }) {
     const { habit } = route.params;
     // Extrae el metodo de actualizacion del contexto global de habitos
     const { updateHabit } = useHabits();
+
+    const { theme } = useSettings();
 
     // Inicializa los estados con los valores actuales del habito seleccionado
     const [title, setTitle] = useState(habit.title);
@@ -94,7 +97,7 @@ export default function EditHabitScreen({ navigation, route }) {
 
     return (
         <>
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
                 <AppHeader
                     title="Editar hábito"
                     icon="arrow-back"
@@ -112,10 +115,10 @@ export default function EditHabitScreen({ navigation, route }) {
                         icon={habit.icon || "checkmark-circle-outline"}
                     />
                     <Card>
-                        <Text style={styles.sectionTitle}>
+                        <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
                             Información del hábito
                         </Text>
-                        <Text style={styles.label}>
+                        <Text style={[styles.label, { color: theme.textSecondary }]}>
                             Nombre
                         </Text>
                         <View style={styles.inputContainer}>
@@ -133,7 +136,7 @@ export default function EditHabitScreen({ navigation, route }) {
                                 placeholderTextColor="#94a3b8"
                             />
                         </View>
-                        <Text style={styles.label}>
+                        <Text style={[styles.label, { color: theme.textSecondary }]}>
                             Frecuencia
                         </Text>
                         <FrequencySelector
@@ -158,6 +161,9 @@ export default function EditHabitScreen({ navigation, route }) {
                 message={alertMessage}
                 type={alertType}
                 onClose={handleCloseAlert}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );

@@ -20,7 +20,7 @@ export default function ProfileHeader({
     return (
         /* Contenedor superior con degradado esmeralda y curvatura en la base inferior */
         <LinearGradient
-            colors={["#065f46", "#10b981"]}
+            colors={["#065f46", "#10b982"]}
             style={styles.headerGradient}
         >
             {/* Contenedor centralizado para alinear verticalmente los elementos del perfil */}

@@ -25,13 +25,9 @@ import SPACING from "../../styles/spacing";
 import SHADOWS from "../../styles/shadows";
 
 export default function SettingsScreen({ navigation }) {
+    const { settings, theme, toggleNotifications, toggleDarkMode } = useSettings();
 
-    // Extrae las preferencias del usuario y sus metodos de modificacion del contexto de configuraciones
-    const {
-        settings,
-        toggleNotifications,
-        toggleDarkMode,
-    } = useSettings();
+    // Extrae los estados y metodos de simulacion temporal del contexto global de habitos
 
     // Extrae los estados y metodos de simulacion temporal del contexto global de habitos
     const {
@@ -53,7 +49,7 @@ export default function SettingsScreen({ navigation }) {
     return (
         <>
             <ScrollView
-                style={styles.container}
+                style={[styles.container, { backgroundColor: theme.background }]}
                 showsVerticalScrollIndicator={false}
             >
                 {/* Encabezado con retorno explicito hacia la pestaña de Perfil del TabNavigator */}
@@ -61,7 +57,7 @@ export default function SettingsScreen({ navigation }) {
                     onBack={() => navigation.navigate("Perfil")}
                 />
 
-                <Text style={styles.sectionTitle}>
+                <Text style={[styles.sectionTitle, { color: theme.textPrimary }] }>
                     Preferencias
                 </Text>
 
@@ -72,19 +68,21 @@ export default function SettingsScreen({ navigation }) {
                         label="Notificaciones"
                         value={settings.notifications}
                         onChange={toggleNotifications}
+                        text={theme.textPrimary}
                     />
 
-                    <View style={styles.divider} />
+                    <View style={[styles.divider, { backgroundColor: theme.secondarySurface }]} />
 
                     <SettingsSwitchItem
                         icon="moon-outline"
                         label="Tema oscuro"
                         value={settings.darkMode}
                         onChange={toggleDarkMode}
+                        text={theme.textPrimary}
                     />
                 </Card>
 
-                <Text style={styles.sectionTitle}>
+                <Text style={[styles.sectionTitle, {color: theme.textPrimary }] }>
                     Privacidad y experiencia
                 </Text>
 
@@ -94,57 +92,63 @@ export default function SettingsScreen({ navigation }) {
                         icon="shield-checkmark-outline"
                         title="Privacidad protegida"
                         description="Tu información y hábitos permanecen seguros dentro de la aplicación."
+                        titleColor={theme.textPrimary}
+                        descrColor={theme.textSecondary}
                     />
 
-                    <View style={styles.divider} />
+                    <View style={[styles.divider, { backgroundColor: theme.secondarySurface }]} />
 
                     <SettingsInfoItem
                         icon="color-palette-outline"
                         title="Personalización visual"
                         description="Ajusta la apariencia y preferencias para una experiencia más cómoda."
+                        titleColor={theme.textPrimary}
+                        descrColor={theme.textSecondary}
                     />
 
-                    <View style={styles.divider} />
+                    <View style={[styles.divider, { backgroundColor: theme.secondarySurface }]} />
 
                     <SettingsInfoItem
                         icon="sparkles-outline"
                         title="Experiencia optimizada"
                         description="La aplicación está diseñada para ayudarte a mantener tus hábitos diariamente."
+                        titleColor={theme.textPrimary}
+                        descrColor={theme.textSecondary}
                     />
                 </Card>
 
-                <Text style={styles.sectionTitle}>
+                <Text style={[styles.sectionTitle, { color: theme.textPrimary }] }>
                     Simulación
                 </Text>
 
                 {/* Tarjeta de herramientas de depuracion para el control del tiempo en fase de desarrollo */}
                 <Card style={styles.card}>
-                    <Text style={styles.demoDate}>
+                    <Text style={[styles.demoDate, { color: theme.textPrimary }] }>
                         Fecha actual: {currentDate}
                     </Text>
 
-                    <Text style={styles.demoSubtext}>
+                    <Text style={[styles.demoSubtext, { color: theme.textSecondary }] }>
                         Días simulados: {demoDayOffset}
                     </Text>
 
                     <TouchableOpacity
-                        style={styles.demoButton}
+                        style={[styles.demoButton, { backgroundColor: theme.primary }]}
                         activeOpacity={0.8}
                         onPress={simulateNextDay}
                     >
                         <Ionicons
                             name="play-forward-outline"
                             size={18}
-                            color={COLORS.white}
+                            color={theme.white}
                         />
 
-                        <Text style={styles.demoButtonText}>
+                        <Text style={[styles.demoButtonText, { color: theme.white }] }>
                             Simular siguiente día
                         </Text>
                     </TouchableOpacity>
                 </Card>
 
-                <Text style={styles.sectionTitle}>
+                <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
                     Datos
                 </Text>
 
@@ -158,10 +162,10 @@ export default function SettingsScreen({ navigation }) {
                         <Ionicons
                             name="refresh-outline"
                             size={20}
-                            color={COLORS.danger}
+                            color={theme.danger}
                         />
 
-                        <Text style={styles.resetText}>
+                        <Text style={[styles.resetText, { color: theme.danger }] }>
                             Reiniciar progreso
                         </Text>
                     </TouchableOpacity>
@@ -180,6 +184,9 @@ export default function SettingsScreen({ navigation }) {
                 cancelText="Cancelar"
                 onClose={() => setResetAlertVisible(false)}
                 onConfirm={handleReset}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </>
     );
@@ -188,7 +195,6 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f1f5f9",
     },
 
     sectionTitle: {
@@ -208,7 +214,7 @@ const styles = StyleSheet.create({
 
     divider: {
         height: 1,
-        backgroundColor: "#f1f5f9",
+        backgroundColor: COLORS.secBackground,
         marginVertical: 15,
     },
 

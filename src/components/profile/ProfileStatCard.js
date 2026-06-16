@@ -17,10 +17,13 @@ export default function ProfileStatCard({
     backgroundColor,
     value,
     label,
+    theme,
+    numberColor,
+    labelColor
 }) {
     return (
         /* Contenedor adaptativo optimizado para distribuirse de forma equivalente dentro de filas contenedoras */
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: theme?.secondarySurface || COLORS.white}]}>
 
             {/* Contenedor circular con fondo dinamico inyectado mediante propiedades directas */}
             <View
@@ -37,8 +40,8 @@ export default function ProfileStatCard({
             </View>
 
             {/* Bloque metrico de texto para el despliegue del valor cuantitativo y su descripcion */}
-            <Text style={styles.number}>{value}</Text>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={[styles.number, { color: numberColor }]}>{value}</Text>
+            <Text style={[styles.label, { color: labelColor }]}>{label}</Text>
         </View>
     );
 }
@@ -50,7 +53,9 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 18,
         alignItems: "center",
-        ...SHADOWS.medium,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
+        ...SHADOWS.small,
     },
     iconCircle: {
         width: 40,

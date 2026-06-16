@@ -14,26 +14,30 @@ import SHADOWS from "../styles/shadows";
 export default function StatsCard({
     icon,
     iconColor,
-    backgroundColor,
+    cardColor,
     title,
     value,
+    theme,
+    titleColor,
+    valueColor,
+    iconContColor
 }) {
     return (
         /* Tarjeta con ancho relativo adaptada para layouts de cuadricula de dos columnas */
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: cardColor }]}> 
             {/* Contenedor del icono con color de fondo configurable dinamicamente */}
             <View
                 style={[
                     styles.iconContainer,
-                    { backgroundColor }
+                    { backgroundColor: iconContColor }
                 ]}
             >
                 <Ionicons name={icon} size={22} color={iconColor}/>
             </View>
             {/* Contenedor flex para evitar el desbordamiento de las etiquetas de texto */}
             <View style={styles.textContainer}>
-                <Text style={styles.title}>{title}</Text>
-                <Text style={styles.value}>{value}</Text>
+                <Text style={[styles.title, { color: titleColor }]}>{title}</Text>
+                <Text style={[styles.value, { color: valueColor }]}>{value}</Text>
             </View>
         </View>
     );
@@ -47,6 +51,8 @@ const styles = StyleSheet.create({
         borderRadius: 18,
         flexDirection: 'row',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.small,
     },
     iconContainer: {

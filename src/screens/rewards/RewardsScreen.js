@@ -13,6 +13,8 @@ import AchievementCard from "../../components/rewards/AchievementCard";
 import NextAchievementCard from "../../components/rewards/NextAchievementCard";
 
 import { useHabits } from "../../context/HabitContext";
+import { useSettings } from "../../context/SettingsContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 import COLORS from "../../styles/colors";
 import SPACING from "../../styles/spacing";
@@ -98,6 +100,8 @@ export default function RewardsScreen() {
         habits,
     } = useHabits();
 
+    const { theme } = useSettings();
+
     // Calcula y memoriza la sumatoria acumulada de todas las finalizaciones historicas
     const totalCompletedHistory = useMemo(() => {
         return habits.reduce((total, habit) => {
@@ -138,15 +142,18 @@ export default function RewardsScreen() {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerTitle}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <LinearGradient
+                colors={["#06402B", "#065f46"]}
+                style={[styles.headerContainer]}
+            >
+                <Text style={[styles.headerTitle, { color: "#ffffff" }]}>
                     Recompensas
                 </Text>
-                <Text style={styles.headerSubtitle}>
+                <Text style={[styles.headerSubtitle, { color: "#e4e4e4" }]}>
                     {unlockedAchievements} de {achievements.length} logros desbloqueados
                 </Text>
-            </View>
+            </LinearGradient>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
@@ -162,6 +169,9 @@ export default function RewardsScreen() {
                         <AchievementCard
                             key={item.id}
                             item={item}
+                            cardColor={theme.secondarySurface}
+                            titleColor={theme.textPrimary}
+                            descriptionColor={theme.textSecondary}
                         />
                     ))}
                 </View>
@@ -169,6 +179,9 @@ export default function RewardsScreen() {
                 {/* Tarjeta inferior que destaca el proximo objetivo a desbloquear */}
                 <NextAchievementCard
                     achievement={nextAchievement}
+                    cardColor={theme.secondarySurface}
+                    titleColor={theme.textPrimary}
+                    descriptionColor={theme.textSecondary}
                 />
 
                 <View style={{ height: 100 }} />
@@ -189,7 +202,6 @@ const styles = StyleSheet.create({
         paddingBottom: SPACING.lg,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
-        backgroundColor: COLORS.background,
         ...SHADOWS.medium
     },
 
@@ -199,7 +211,7 @@ const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
-        fontSize: 14,
+        fontSize: 16,
         color: COLORS.textSecondary,
         fontWeight: "500",
         marginTop: 2,

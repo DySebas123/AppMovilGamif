@@ -14,6 +14,8 @@ export default function SettingsInfoItem({
     icon,
     title,
     description,
+    titleColor,
+    descrColor,
 }) {
     return (
         /* Fila contenedora alineada al inicio superior para soportar descripciones de multiples lineas */
@@ -28,10 +30,10 @@ export default function SettingsInfoItem({
             </View>
             {/* Bloque de texto estructurado con flex para forzar el ajuste de linea y prevenir desbordes */}
             <View style={{ flex: 1 }}>
-                <Text style={styles.infoTitle}>
+                <Text style={[styles.infoTitle, { color: titleColor}]}>
                     {title}
                 </Text>
-                <Text style={styles.infoDescription}>
+                <Text style={[styles.infoDescription, { color: descrColor}]}>
                     {description}
                 </Text>
             </View>

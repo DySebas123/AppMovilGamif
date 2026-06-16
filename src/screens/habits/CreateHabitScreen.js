@@ -25,6 +25,7 @@ import FrequencySelector from "../../components/habits/FrequencySelector";
 import PopularIdeas from "../../components/habits/PopularIdeas";
 
 import { useHabits } from "../../context/HabitContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
@@ -59,6 +60,7 @@ const POPULAR_IDEAS = [
 export default function CreateHabitScreen({ navigation }) {
     // Extrae el metodo de creacion del contexto global de habitos
     const { addHabit } = useHabits();
+    const { theme } = useSettings();
 
     // Estados para controlar los atributos del nuevo habito
     const [habitName, setHabitName] = useState("");
@@ -125,7 +127,7 @@ export default function CreateHabitScreen({ navigation }) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }] }>
             <AppHeader
                 title="Crear Hábito"
                 icon="close-outline"
@@ -133,7 +135,7 @@ export default function CreateHabitScreen({ navigation }) {
             />
             {/* Contenedor con scroll forzado por estilos para evitar bloqueos en web */}
             <ScrollView
-                style={styles.scrollArea}
+                style={[styles.scrollArea, { backgroundColor: theme.background }]}
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
@@ -144,28 +146,28 @@ export default function CreateHabitScreen({ navigation }) {
                     icon={selectedIconName}
                 />
                 <Card style={styles.formCard}>
-                    <Text style={styles.sectionTitle}>
+                    <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
                         Información del hábito
                     </Text>
-                    <Text style={styles.label}>
+                    <Text style={[styles.label, { color: theme.textPrimary }] }>
                         Nombre del hábito
                     </Text>
-                    <View style={styles.inputContainer}>
+                    <View style={[styles.inputContainer, { backgroundColor: theme.surface, borderColor: theme.border }] }>
                         <Ionicons
                             name="create-outline"
                             size={20}
-                            color={COLORS.textSecondary}
+                            color={theme.textSecondary}
                             style={styles.inputIcon}
                         />
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, { color: theme.textPrimary }]}
                             placeholder="Ej: Estudiar inglés, correr, leer..."
-                            placeholderTextColor="#94a3b8"
+                            placeholderTextColor={theme.textSecondary}
                             value={habitName}
                             onChangeText={setHabitName}
                         />
                     </View>
-                    <Text style={styles.label}>
+                    <Text style={[styles.label, { color: theme.textPrimary }] }>
                         Elige un icono
                     </Text>
                     <IconSelector
@@ -173,7 +175,7 @@ export default function CreateHabitScreen({ navigation }) {
                         selectedIcon={selectedIcon}
                         onSelectIcon={setSelectedIcon}
                     />
-                    <Text style={styles.label}>
+                    <Text style={[styles.label, { color: theme.textPrimary }] }>
                         Frecuencia
                     </Text>
                     <FrequencySelector
@@ -190,7 +192,7 @@ export default function CreateHabitScreen({ navigation }) {
                         loading={loading}
                     />
                 </Card>
-                <Text style={styles.ideasSectionTitle}>
+                <Text style={[styles.ideasSectionTitle, { color: theme.textSecondary }]}>
                     Ideas de hábitos populares
                 </Text>
                 <PopularIdeas
@@ -205,6 +207,9 @@ export default function CreateHabitScreen({ navigation }) {
                 message={alertMessage}
                 type={alertType}
                 onClose={handleCloseAlert}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </SafeAreaView>
     );
@@ -251,12 +256,12 @@ const styles = StyleSheet.create({
     label: {
         ...TYPOGRAPHY.bodyMD,
         fontWeight: "700",
-        color: "#334155",
+        color: COLORS.textPrimary,
         marginBottom: 10,
     },
 
     inputContainer: {
-        backgroundColor: COLORS.background,
+        backgroundColor: COLORS.white,
         borderWidth: 1,
         borderColor: COLORS.border,
         borderRadius: 16,
@@ -281,7 +286,7 @@ const styles = StyleSheet.create({
     ideasSectionTitle: {
         fontSize: 16,
         fontWeight: "800",
-        color: "#334155",
+        color: COLORS.textSecondary,
         marginBottom: 15,
         marginTop: 15,
     },

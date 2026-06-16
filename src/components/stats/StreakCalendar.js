@@ -11,15 +11,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
 
-export default function StreakCalendar({ data }) {
+export default function StreakCalendar({
+    data,
+    cardColor,
+    titleColor,
+    subtitleColor,
+}) {
     return (
         /* Contenedor principal del calendario con bordes suavizados y sombra de profundidad media */
-        <View style={styles.card}>
-            <Text style={styles.title}>
+        <View style={[styles.card, { backgroundColor: cardColor}]}>
+            <Text style={[styles.title, { color: titleColor}]}>
                 Calendario de Rachas
             </Text>
 
-            <Text style={styles.subtitle}>
+            <Text style={[styles.subtitle, { color: subtitleColor }]}>
                 Últimos 28 días según historial real
             </Text>
 
@@ -72,9 +77,10 @@ export default function StreakCalendar({ data }) {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: COLORS.white,
         borderRadius: 28,
         padding: 20,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
         ...SHADOWS.medium,
     },
     title: {
@@ -106,7 +112,7 @@ const styles = StyleSheet.create({
     empty: {
         flex: 1,
         borderRadius: 8,
-        backgroundColor: "#f1f5f9",
+        backgroundColor: "#dedbdb",
     },
     legendRow: {
         flexDirection: "row",
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
     legendEmpty: {
         width: 12,
         height: 12,
-        backgroundColor: "#f1f5f9",
+        backgroundColor: "#dedbdb",
         borderRadius: 4,
         marginRight: 6,
     },

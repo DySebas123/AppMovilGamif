@@ -1,36 +1,50 @@
+import { Platform } from 'react-native';
+
 const SHADOWS = {
-    small: {
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
+    small: Platform.select({
+        ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.05,
+            shadowRadius: 4,
         },
-        shadowOpacity: 0.05,
-        shadowRadius: 4,
-    },
+        android: {
+            elevation: 2,
+        },
+        web: {
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)',
+        },
+    }),
 
-    medium: {
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4,
+    medium: Platform.select({
+        ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.08,
+            shadowRadius: 8,
         },
-        shadowOpacity: 0.08,
-        shadowRadius: 8,
-    },
+        android: {
+            elevation: 5,
+        },
+        web: {
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.08)',
+        },
+    }),
 
-    large: {
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 6,
+    large: Platform.select({
+        ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 6 },
+            shadowOpacity: 0.12,
+            shadowRadius: 12,
         },
-        shadowOpacity: 0.12,
-        shadowRadius: 12,
-    },
+        android: {
+            elevation: 8,
+        },
+        web: {
+            boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.12)',
+        },
+    }),
 };
 
 export default SHADOWS;

@@ -18,6 +18,7 @@ export default function SettingItem({
     last,
     isDestructive,
     onPress,
+    labelColor,
 }) {
     return (
         /* Componente tactil que remueve el borde inferior de forma condicional si es el ultimo elemento */
@@ -48,6 +49,7 @@ export default function SettingItem({
                         style={[
                             styles.label,
                             isDestructive && styles.labelDestructive,
+                            { color: labelColor}
                         ]}
                     >
                         {label}

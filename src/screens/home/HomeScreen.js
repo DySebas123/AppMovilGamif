@@ -15,7 +15,9 @@ import FloatingAddButton from "../../components/home/FloatingAddButton";
 
 import { useHabits } from "../../context/HabitContext";
 import { useAuth } from "../../context/AuthContext";
+import { useSettings } from "../../context/SettingsContext";
 
+import { LinearGradient } from "expo-linear-gradient";
 import { getRandomQuote } from "../../services/quoteService";
 
 import COLORS from "../../styles/colors";
@@ -35,6 +37,8 @@ export default function HomeScreen({ navigation }) {
         bestStreak,
         deleteHabit,
     } = useHabits();
+
+    const { theme } = useSettings();
 
     // Obtiene los datos del usuario actualmente autenticado
     const { user } = useAuth();
@@ -90,19 +94,22 @@ export default function HomeScreen({ navigation }) {
     // Renderiza una pantalla de carga mientras se obtienen los datos del contexto
     if (loading) {
         return (
-            <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color={COLORS.primary}/>
+            <View style={[styles.loaderContainer, {backgroundColor: theme.background }]}> 
+                <ActivityIndicator size="large" color={theme.primary}/>
             </View>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}> 
             <StatusBar
-                barStyle="dark-content"
-                backgroundColor={COLORS.white}
+                barStyle={theme.darkMode ? "light-content" : "dark-content"}
+                backgroundColor={theme.background}
             />
-            <View style={styles.headerContainer}>
+            <LinearGradient
+                colors={["#06402B", "#065f46"]}
+                style={[styles.headerContainer]}
+            >
                 <HomeHeader
                     userName={userName}
                     userInitial={userInitial}
@@ -112,8 +119,9 @@ export default function HomeScreen({ navigation }) {
                     level={level}
                     xp={xp}
                     progressPercentage={progressPercentage}
+                    theme={theme}
                 />
-            </View>
+            </LinearGradient>
             <ScrollView
                 style={styles.content}
                 showsVerticalScrollIndicator={false}
@@ -122,40 +130,56 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.statsRow}>
                     <StatsCard
                         icon="trophy-outline"
-                        iconColor={COLORS.primary}
-                        backgroundColor="#dbeafe"
+                        iconColor={"#3b82f6"}
+                        iconContColor={theme.surface}
+                        cardColor={theme.secondarySurface}
                         title="Puntos"
                         value={`${xp}`}
+                        theme={theme}
+                        titleColor={theme.textSecondary}
+                        valueColor={theme.textPrimary}
                     />
                     <StatsCard
                         icon="flame-outline"
-                        iconColor="#ea580c"
-                        backgroundColor="#ffedd5"
+                        iconColor={"#f97316"}
+                        iconContColor={theme.surface}
+                        cardColor={theme.secondarySurface}
                         title="Mejor Racha"
                         value={`${bestStreak} días`}
+                        theme={theme}
+                        titleColor={theme.textSecondary}
+                        valueColor={theme.textPrimary}
                     />
                 </View>
                 <View style={styles.statsRow}>
                     <StatsCard
                         icon="checkmark-circle-outline"
-                        iconColor={COLORS.success}
-                        backgroundColor="#dcfce7"
+                        iconColor={theme.success}
+                        iconContColor={theme.surface}
+                        cardColor={theme.secondarySurface}
                         title="Completados"
                         value={`${completedHabits}`}
+                        theme={theme}
+                        titleColor={theme.textSecondary}
+                        valueColor={theme.textPrimary}
                     />
                     <StatsCard
                         icon="star-outline"
-                        iconColor="#9333ea"
-                        backgroundColor="#f3e8ff"
+                        iconColor={"#a855f7"}
+                        iconContColor={theme.surface}
+                        cardColor={theme.secondarySurface}
                         title="Nivel"
                         value={`${level}`}
+                        theme={theme}
+                        titleColor={theme.textSecondary}
+                        valueColor={theme.textPrimary}
                     />
                 </View>
                 {/* Banner de texto motivacional obtenido desde el servicio externo */}
                 <QuoteBanner quote={quote?.text} />
                 <View style={styles.sectionHeader}>
-                    <SectionTitle title="Hábitos de Hoy" />
-                    <Text style={styles.completedText}>
+                    <SectionTitle title="Hábitos de Hoy" theme={theme} />
+                    <Text style={[styles.completedText, { color: theme.textSecondary }] }>
                         {completedHabits}/{habits.length} completados
                     </Text>
                 </View>
@@ -170,6 +194,7 @@ export default function HomeScreen({ navigation }) {
                         onPress={() => toggleHabit(habit.id)}
                         onDelete={() => handleDeleteHabit(habit)}
                         onLongPress={() => handleEditHabit(habit)}
+                        cardColor={theme.secondarySurface}
                     />
                 ))}
                 <View style={{ height: 120 }} />
@@ -190,6 +215,9 @@ export default function HomeScreen({ navigation }) {
                 cancelText="Cancelar"
                 onClose={cancelDeleteHabit}
                 onConfirm={confirmDeleteHabit}
+                containerColor={theme.surface}
+                titleColor={theme.textPrimary}
+                messageColor={theme.textSecondary}
             />
         </SafeAreaView>
     );
@@ -210,7 +238,6 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        backgroundColor: COLORS.white,
         paddingTop: 60,
         paddingHorizontal: SPACING.lg,
         paddingBottom: SPACING.lg,
@@ -223,6 +250,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: SPACING.lg,
         paddingTop: 22,
+        backgroundColor: 'transparent',
     },
 
     statsRow: {

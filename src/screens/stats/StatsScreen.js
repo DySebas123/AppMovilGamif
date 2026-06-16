@@ -14,11 +14,13 @@ import WeeklyActivityChart from "../../components/stats/WeeklyActivityChart";
 import StreakCalendar from "../../components/stats/StreakCalendar";
 
 import { useHabits } from "../../context/HabitContext";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SPACING from "../../styles/spacing";
 import TYPOGRAPHY from "../../styles/typography";
 import SHADOWS from "../../styles/shadows";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Transforma un objeto Date en una cadena con formato estandarizado YYYY-MM-DD
 const formatDate = (date) => {
@@ -50,6 +52,7 @@ const getDayLabel = (dateString) => {
 };
 
 export default function StatsScreen() {
+    const { theme } = useSettings();
     // Consume las estadisticas acumuladas e informacion global del contexto de habitos
     const {
         habits,
@@ -144,16 +147,19 @@ export default function StatsScreen() {
     ];
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <LinearGradient
+                colors={["#06402B", "#065f46"]}
+                style={[styles.header]}
+            >
+                <Text style={[styles.headerTitle, { color: "#ffffff" }]}> 
                     Estadísticas
                 </Text>
 
-                <Text style={styles.headerSubtitle}>
+                <Text style={[styles.headerSubtitle, { color: "#e4e4e4" }]}>
                     Tu progreso y rendimiento en HabitQuest
                 </Text>
-            </View>
+            </LinearGradient>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -163,6 +169,9 @@ export default function StatsScreen() {
                 <WeeklyActivityChart
                     data={weeklyData}
                     level={level}
+                    titleColor={theme.textPrimary}
+                    subtitleColor={theme.textSecondary}
+                    cardColor={theme.surface}
                 />
 
                 {/* Cuadricula adaptativa de tarjetas informativas */}
@@ -174,53 +183,61 @@ export default function StatsScreen() {
                             value={stat.value}
                             icon={stat.icon}
                             colors={stat.colors}
+                            cardColor={theme.surface}
+                            valueColor={theme.textPrimary}
+                            labelColor={theme.textSecondary}
                         />
                     ))}
                 </View>
 
                 {/* Contenedor tipo lista con el desglose de totales de la cuenta */}
                 <Card style={styles.summaryCard}>
-                    <Text style={styles.cardTitle}>
+                    <Text style={[styles.cardTitle, { color: theme.textPrimary }]}>
                         Resumen General
                     </Text>
 
                     <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>
+                        <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>
                             Hábitos activos
                         </Text>
 
-                        <Text style={styles.summaryValue}>
+                        <Text style={[styles.summaryValue, { color: theme.textPrimary }]}>
                             {totalHabits}
                         </Text>
                     </View>
 
-                    <View style={styles.divider} />
+                    <View style={[styles.divider, { backgroundColor: theme.border }]} />
 
                     <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>
+                        <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>
                             Hábitos pendientes hoy
                         </Text>
 
-                        <Text style={styles.summaryValue}>
+                        <Text style={[styles.summaryValue, { color: theme.textPrimary }]}>
                             {pendingHabits}
                         </Text>
                     </View>
 
-                    <View style={styles.divider} />
+                    <View style={[styles.divider, { backgroundColor: theme.border }]} />
 
                     <View style={styles.summaryRow}>
-                        <Text style={styles.summaryLabel}>
+                        <Text style={[styles.summaryLabel, { color: theme.textSecondary }]}>
                             XP para siguiente nivel
                         </Text>
 
-                        <Text style={styles.summaryValue}>
+                        <Text style={[styles.summaryValue, { color: theme.textPrimary }]}>
                             {progressPercentage}/100
                         </Text>
                     </View>
                 </Card>
 
                 {/* Mapa de calor de consistencia basado en los ultimos 28 dias */}
-                <StreakCalendar data={calendarData} />
+                <StreakCalendar
+                    data={calendarData}
+                    cardColor={theme.surface}
+                    titleColor={theme.textPrimary}
+                    subtitleColor={theme.textSecondary}
+                />
 
                 <View style={{ height: 100 }} />
             </ScrollView>
@@ -235,7 +252,6 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        backgroundColor: COLORS.white,
         paddingHorizontal: SPACING.lg,
         paddingTop: 60,
         paddingBottom: SPACING.lg,
@@ -250,7 +266,7 @@ const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
-        fontSize: 14,
+        fontSize: 16,
         color: COLORS.textSecondary,
         marginTop: 4,
     },
@@ -270,6 +286,8 @@ const styles = StyleSheet.create({
 
     summaryCard: {
         marginBottom: 20,
+        borderWidth: 1,
+        borderColor: "#f1f5f9",
     },
 
     cardTitle: {
@@ -299,6 +317,6 @@ const styles = StyleSheet.create({
 
     divider: {
         height: 1,
-        backgroundColor: "#f1f5f9",
+        backgroundColor: COLORS.border,
     },
 });

@@ -8,6 +8,7 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 
+import { useSettings } from "../context/SettingsContext";
 import COLORS from '../styles/colors';
 import SHADOWS from "../styles/shadows";
 
@@ -17,6 +18,8 @@ export default function MainButton({
     loading = false,
     colors,
 }) {
+    const { theme } = useSettings();
+
     return (
         /* Contenedor interactivo bloqueado de forma automatica durante estados de carga */
         <TouchableOpacity
@@ -27,16 +30,16 @@ export default function MainButton({
         >
             {/* Capa de fondo con degradado lineal horizontal por defecto */}
             <LinearGradient
-                colors={colors || [COLORS.primary, COLORS.secondary]}
+                colors={colors || [theme.primary, theme.secondary]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
             >
                 {/* Renderizado condicional para alternar entre el indicador de espera y el texto del boton */}
                 {loading ? (
-                    <ActivityIndicator color="#fff" />
+                    <ActivityIndicator color={theme.white} />
                 ) : (
-                    <Text style={styles.btnText}>
+                    <Text style={[styles.btnText, { color: theme.white }]}>
                         {title}
                     </Text>
                 )}
