@@ -1,243 +1,396 @@
 # HabitQuest 📱✨
 
-Aplicación móvil desarrollada con React Native y Expo para la gestión de hábitos, seguimiento de progreso y sistema de recompensas gamificado.
+Aplicación móvil desarrollada con **React Native + Expo** para la gestión inteligente de hábitos, incorporando gamificación, autenticación segura mediante JWT, consumo de API REST y funcionalidades nativas del dispositivo.
 
 ---
 
 # 📌 Descripción del Proyecto
 
-HabitQuest es una aplicación enfocada en ayudar a los usuarios a crear hábitos saludables y mantener constancia mediante estadísticas, recompensas, niveles, rachas y seguimiento diario.
+HabitQuest es una aplicación móvil diseñada para ayudar a los usuarios a desarrollar hábitos saludables mediante un sistema de gamificación que incentiva la constancia y el progreso personal.
 
-## La aplicación permite:
-
-- Crear hábitos personalizados
-- Editar y eliminar hábitos
-- Marcar hábitos completados
-- Gestionar progreso diario
-- Visualizar estadísticas dinámicas
-- Desbloquear logros y recompensas
-- Simular días para pruebas funcionales
-- Administrar perfil y configuraciones
-- Persistencia local de datos
-- Consumo de datos dinámicos mediante archivo JSON mock local
+La aplicación permite administrar hábitos diarios, visualizar estadísticas, obtener recompensas, personalizar el perfil del usuario y utilizar funcionalidades nativas como cámara, galería, GPS y notificaciones.
 
 ---
 
-# 🎯 Objetivo del Proyecto
+# 🎯 Objetivos del Proyecto
 
-Desarrollar una aplicación móvil moderna utilizando React Native y Expo aplicando:
+Desarrollar una aplicación móvil moderna aplicando buenas prácticas de Ingeniería de Software mediante:
 
-- Componentización reutilizable
-- Manejo de estado global con Context API
-- Persistencia de datos local
-- Navegación entre pantallas
-- Consumo de API mock local
-- Manejo de errores y estados de carga
-- Diseño responsive y UI moderna
-- Arquitectura escalable y organizada
-
----
-
-# 🛠️ Tecnologías Utilizadas
-
-- React Native
-- Expo
-- JavaScript
-- Context API
-- AsyncStorage
-- Expo Linear Gradient
-- Expo Vector Icons
+* Arquitectura modular y escalable.
+* Componentización reutilizable.
+* Navegación mediante React Navigation.
+* Consumo de API REST propia.
+* Autenticación mediante JWT.
+* Integración de funcionalidades nativas.
+* Persistencia de información en Back-end.
+* Interfaz moderna y responsive.
 
 ---
 
-# 📂 Estructura General
+# 🚀 Funcionalidades Implementadas
 
-```bash
+## Autenticación
+
+* Registro de usuarios.
+* Inicio de sesión.
+* Autenticación mediante JWT.
+* Validación de token.
+* Cierre de sesión.
+
+---
+
+## Gestión de Perfil
+
+* Edición de nombre.
+* Edición de correo.
+* Cambio de foto de perfil.
+* Captura desde cámara.
+* Selección desde galería.
+* Obtención de ubicación mediante GPS.
+* Persistencia de perfil en Back-end.
+
+---
+
+## Gestión de Hábitos
+
+* Crear hábitos.
+* Editar hábitos.
+* Eliminar hábitos.
+* Marcar hábitos completados.
+* Gestión automática de rachas.
+* Sistema de XP.
+* Sistema de niveles.
+* Progreso diario.
+
+---
+
+## Estadísticas
+
+* XP acumulado.
+* Nivel alcanzado.
+* Hábitos completados.
+* Mejor racha.
+* Total de hábitos.
+
+---
+
+## Sistema de Recompensas
+
+* Logros desbloqueables.
+* Progreso gamificado.
+* Sistema de experiencia.
+
+---
+
+## Configuración
+
+* Tema claro.
+* Tema oscuro.
+* Activación de notificaciones.
+* Simulación de días.
+* Reinicio de progreso.
+* Configuración sincronizada con Back-end.
+
+---
+
+## Frases Motivacionales
+
+* Obtención dinámica desde el Back-end.
+* Selección aleatoria.
+* Consumo mediante API REST.
+
+---
+
+# 🛠 Tecnologías Utilizadas
+
+## Front-end
+
+* React Native
+* Expo
+* JavaScript (ES6+)
+* React Navigation
+* Context API
+* Axios
+* Expo Image Picker
+* Expo Location
+* Expo Notifications
+* Expo Linear Gradient
+* Expo Vector Icons
+
+---
+
+## Back-end
+
+* Node.js
+* Express
+* JWT (jsonwebtoken)
+* bcryptjs
+* Multer
+* CORS
+* dotenv
+
+---
+
+## Persistencia
+
+Durante esta etapa académica la aplicación utiliza archivos JSON como almacenamiento local del servidor.
+
+Archivos principales:
+
+* users.json
+* habits.json
+* progress.json
+* settings.json
+* motivationalQuotes.json
+
+La arquitectura fue diseñada para permitir una futura migración a MySQL sin modificar la lógica de negocio.
+
+---
+
+# 📂 Arquitectura del Proyecto
+
+## Front-end
+
+```text
 src/
 │
 ├── components/
+│
 ├── context/
+│
 ├── navigation/
+│
 ├── screens/
+│
 ├── services/
+│
 ├── styles/
-├── data/
+│
+├── hooks/
+│
+├── utils/
+│
 └── assets/
 ```
+
 ---
 
-# 📦 Instalación del Proyecto
+## Back-end
 
-## 1️⃣ Clonar repositorio
-
-```bash
-git clone <URL_DEL_REPOSITORIO>
+```text
+backend/
+│
+├── src/
+│
+├── config/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── utils/
+├── data/
+├── uploads/
+│
+├── app.js
+└── server.js
 ```
 
-## 2️⃣ Instalar dependencias
+La arquitectura sigue una separación por capas:
+
+* Configuración
+* Controladores
+* Servicios
+* Modelos
+* Rutas
+* Utilidades
+
+lo que facilita el mantenimiento y escalabilidad del proyecto.
+
+---
+
+# 🌐 API REST Implementada
+
+## Autenticación
+
+POST
+
+```
+/api/auth/register
+```
+
+POST
+
+```
+/api/auth/login
+```
+
+GET
+
+```
+/api/auth/profile
+```
+
+PUT
+
+```
+/api/auth/profile
+```
+
+---
+
+## Hábitos
+
+GET
+
+```
+/api/habits
+```
+
+POST
+
+```
+/api/habits
+```
+
+PUT
+
+```
+/api/habits/:id
+```
+
+DELETE
+
+```
+/api/habits/:id
+```
+
+---
+
+## Configuración
+
+GET
+
+```
+/api/settings
+```
+
+PUT
+
+```
+/api/settings
+```
+
+---
+
+## Frases Motivacionales
+
+GET
+
+```
+/api/quotes/random
+```
+
+---
+
+## Subida de Imágenes
+
+POST
+
+```
+/api/upload/profile-image
+```
+
+---
+
+# 📱 Funcionalidades Nativas
+
+La aplicación utiliza diferentes capacidades del dispositivo:
+
+* Cámara.
+* Galería de imágenes.
+* Ubicación GPS.
+* Notificaciones locales.
+* Permisos dinámicos.
+
+---
+
+# 🔒 Seguridad
+
+La aplicación implementa:
+
+* JWT para autenticación.
+* Middleware de validación de token.
+* Encriptación de contraseñas mediante bcrypt.
+* Validaciones de formularios.
+* Manejo centralizado de errores.
+* Protección de rutas privadas.
+
+---
+
+# 💡 Innovaciones Implementadas
+
+Respecto al avance anterior se añadieron:
+
+* Arquitectura completa Cliente–Servidor.
+* API REST propia.
+* Persistencia centralizada.
+* Autenticación JWT.
+* Gestión profesional por capas.
+* Cambio de foto mediante cámara y galería.
+* Ubicación del usuario.
+* Configuración sincronizada con Back-end.
+* Modo oscuro dinámico.
+* Frases motivacionales consumidas desde la API.
+* Componentización avanzada.
+* Separación de lógica de negocio mediante Services.
+
+---
+
+# 📦 Instalación
+
+## Front-end
 
 ```bash
 npm install
 ```
 
-o
-
-```bash
-yarn install
-```
-
----
-
-# 🚀 Dependencias Utilizadas
-
-## Expo
-
-```bash
-npx expo install expo-linear-gradient
-npx expo install @expo/vector-icons
-```
-
-## Navegación
-
-```bash
-npm install @react-navigation/native
-npx expo install react-native-screens react-native-safe-area-context
-npm install @react-navigation/native-stack
-```
-
-## Async Storage
-
-```bash
-npx expo install @react-native-async-storage/async-storage
-```
-
----
-
-# ▶️ Ejecución del Proyecto
-
-## Iniciar servidor Expo
-
 ```bash
 npx expo start
 ```
 
-## Ejecutar en Android
+---
+
+## Back-end
 
 ```bash
-npx expo run:android
+cd backend
 ```
-
-## Ejecutar en Web
 
 ```bash
-npx expo start --web
+npm install
 ```
-
----
-
-# 📱 Funcionalidades Implementadas
-
-## 🏠 HomeScreen
-
-- Visualización de hábitos diarios
-- Barra de progreso
-- Estadísticas rápidas
-- Frases motivacionales dinámicas
-- Navegación rápida
-
-## ➕ CreateHabitScreen
-
-- Creación de hábitos
-- Selección de iconos
-- Frecuencia diaria o semanal
-- Validaciones de formulario
-
-## ✏️ EditHabitScreen
-
-- Edición de hábitos existentes
-- Actualización dinámica
-- Validaciones
-
-## 📊 StatsScreen
-
-- Estadísticas generales
-- Actividad semanal
-- Calendario de rachas
-- XP y progreso
-
-## 🏆 RewardsScreen
-
-- Sistema de logros
-- Desbloqueo de recompensas
-- Progreso de objetivos
-
-## 👤 ProfileScreen
-
-- Información del usuario
-- Estadísticas personales
-- Acceso a configuración
-
-## ⚙️ SettingsScreen
-
-- Configuración general
-- Simulación de días
-- Reinicio de progreso
-- Preferencias del usuario
-
----
-
-# 🌐 Consumo de API Mock Local
-
-Se implementó consumo de datos dinámicos mediante archivo JSON local.
-
-## Archivo utilizado
 
 ```bash
-src/data/quotes.json
+npm start
 ```
 
-## Servicio
+Servidor:
 
-```bash
-src/services/quoteService.js
+```
+http://localhost:3000
 ```
 
-## Características implementadas
-
-- Manejo de carga (loading)
-- Manejo de errores (try/catch)
-- Renderizado condicional
-- Obtención dinámica de frases motivacionales
-
 ---
 
-# 💾 Persistencia de Datos
+# 👨‍💻 Autores
 
-La aplicación utiliza AsyncStorage para almacenar:
+**Oliver Saúl Huamaní Tapara**
 
-- Hábitos
-- XP
-- Configuración
-- Historial
-- Progreso del usuario
+**Dylan Sebastián Ayala Vivanco**
 
----
+Universidad Tecnológica del Perú
 
-# 🧠 Arquitectura Implementada
+Ingeniería de Software
 
-El proyecto utiliza:
-
-- Context API para estado global
-- Componentes reutilizables
-- Separación por módulos
-- Servicios desacoplados
-- Estilos centralizados
-
----
-
-# 👨‍💻 Autor
-
-- Oliver Saúl Huamaní Tapara
-- Dylan Sebastian Ayala Vivanco
-
-Proyecto desarrollado para fines académicos utilizando React Native +
+2026
