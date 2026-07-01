@@ -131,6 +131,62 @@ Desarrollar una aplicación móvil moderna aplicando buenas prácticas de Ingeni
 
 ---
 
+# 📦 Dependencias
+
+## Front-end
+
+Instalar las dependencias principales:
+
+```bash
+npm install
+```
+
+Dependencias utilizadas:
+
+```bash
+npm install axios
+npm install @react-navigation/native
+npm install @react-navigation/bottom-tabs
+npm install @react-navigation/stack
+
+npx expo install react-native-screens
+npx expo install react-native-safe-area-context
+npx expo install @expo/vector-icons
+npx expo install expo-linear-gradient
+npx expo install expo-image-picker
+npx expo install expo-location
+npx expo install expo-notifications
+```
+
+---
+
+## Back-end
+
+Instalar las dependencias del servidor:
+
+```bash
+cd backend
+npm install
+```
+
+Dependencias utilizadas:
+
+```bash
+npm install express
+npm install cors
+npm install dotenv
+npm install jsonwebtoken
+npm install bcryptjs
+npm install multer
+npm install uuid
+```
+
+Dependencia de desarrollo:
+
+```bash
+npm install --save-dev nodemon
+```
+
 ## Persistencia
 
 Durante esta etapa académica la aplicación utiliza archivos JSON como almacenamiento local del servidor.
