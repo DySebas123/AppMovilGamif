@@ -1,8 +1,8 @@
 const habitModel = require("../models/habitModel");
 
-const getUserHabitData = (userId) => {
-    const habits = habitModel.getUserHabits(userId);
-    const progress = habitModel.getUserProgress(userId);
+const getUserHabitData = async (userId) => {
+    const habits = await habitModel.getUserHabits(userId);
+    const progress = await habitModel.getUserProgress(userId);
 
     return {
         status: 200,
@@ -12,7 +12,7 @@ const getUserHabitData = (userId) => {
     };
 };
 
-const createUserHabit = (userId, data) => {
+const createUserHabit = async (userId, data) => {
     const {
         title,
         type,
@@ -27,11 +27,19 @@ const createUserHabit = (userId, data) => {
         };
     }
 
-    const habit = habitModel.createHabit(userId, {
+    const habit = await habitModel.createHabit(userId, {
         title: title.trim(),
         type,
         icon,
     });
+
+    if (!habit) {
+        return {
+            status: 500,
+            success: false,
+            message: "No se pudo crear el hábito.",
+        };
+    }
 
     return {
         status: 201,
@@ -41,8 +49,8 @@ const createUserHabit = (userId, data) => {
     };
 };
 
-const updateUserHabit = (userId, habitId, data) => {
-    const habit = habitModel.updateHabit(
+const updateUserHabit = async (userId, habitId, data) => {
+    const habit = await habitModel.updateHabit(
         userId,
         habitId,
         data
@@ -64,8 +72,8 @@ const updateUserHabit = (userId, habitId, data) => {
     };
 };
 
-const deleteUserHabit = (userId, habitId) => {
-    const deleted = habitModel.deleteHabit(
+const deleteUserHabit = async (userId, habitId) => {
+    const deleted = await habitModel.deleteHabit(
         userId,
         habitId
     );
@@ -85,7 +93,7 @@ const deleteUserHabit = (userId, habitId) => {
     };
 };
 
-const toggleUserHabit = (userId, habitId, data) => {
+const toggleUserHabit = async (userId, habitId, data) => {
     const {
         currentDate,
         previousDate,
@@ -99,7 +107,7 @@ const toggleUserHabit = (userId, habitId, data) => {
         };
     }
 
-    const result = habitModel.toggleHabit(
+    const result = await habitModel.toggleHabit(
         userId,
         habitId,
         currentDate,
@@ -123,8 +131,16 @@ const toggleUserHabit = (userId, habitId, data) => {
     };
 };
 
-const resetUserHabitData = (userId) => {
-    habitModel.resetUserData(userId);
+const resetUserHabitData = async (userId) => {
+    const reset = await habitModel.resetUserData(userId);
+
+    if (!reset) {
+        return {
+            status: 500,
+            success: false,
+            message: "No se pudieron reiniciar los datos.",
+        };
+    }
 
     return {
         status: 200,

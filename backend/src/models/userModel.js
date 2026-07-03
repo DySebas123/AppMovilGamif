@@ -1,135 +1,161 @@
-const {
-    getDataPath,
-    readJsonFile,
-    writeJsonFile,
-} = require("../utils/fileStorage");
+const supabase = require("../config/supabaseClient");
 
-const usersPath = getDataPath("users.json");
+const mapUserFromDB = (user) => {
+    if (!user) return null;
 
-const getAllUsers = () => {
-    return readJsonFile(usersPath);
+    return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        profileImage: user.profile_image || null,
+        location: user.location || null,
+        settings: user.settings || {
+            darkMode: false,
+            notifications: true,
+        },
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
+    };
 };
 
-const saveAllUsers = (users) => {
-    writeJsonFile(usersPath, users);
+const findUserByEmail = async (email) => {
+    const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("email", email.toLowerCase().trim())
+        .maybeSingle();
+
+    if (error) {
+        console.log("Error findUserByEmail:", error.message);
+        return null;
+    }
+
+    return mapUserFromDB(data);
 };
 
-const findUserByEmail = (email) => {
-    const users = getAllUsers();
+const findUserById = async (id) => {
+    const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
 
-    return users.find(
-        user => user.email === email.toLowerCase().trim()
-    );
+    if (error) {
+        console.log("Error findUserById:", error.message);
+        return null;
+    }
+
+    return mapUserFromDB(data);
 };
 
-const findUserById = (id) => {
-    const users = getAllUsers();
-
-    return users.find(
-        user => user.id === id
-    );
-};
-
-const createUser = (userData) => {
-    const users = getAllUsers();
-
+const createUser = async (userData) => {
     const newUser = {
         id: Date.now(),
         name: userData.name,
         email: userData.email,
         password: userData.password,
-        profileImage: null,
+        profile_image: null,
         location: null,
         settings: {
             darkMode: false,
             notifications: true,
+            language: "Español",
         },
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: null,
     };
 
-    users.push(newUser);
+    const { data, error } = await supabase
+        .from("users")
+        .insert(newUser)
+        .select()
+        .single();
 
-    saveAllUsers(users);
-
-    return newUser;
-};
-
-const updateUserProfile = (id, data) => {
-    const users = getAllUsers();
-
-    const userIndex = users.findIndex(
-        user => user.id === id
-    );
-
-    if (userIndex === -1) {
-        return null;
+    if (error) {
+        console.log("Error createUser:", error.message);
+        throw error;
     }
 
-    users[userIndex] = {
-        ...users[userIndex],
+    return mapUserFromDB(data);
+};
+
+const emailExistsForAnotherUser = async (email, userId) => {
+    const { data, error } = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", email.toLowerCase().trim())
+        .neq("id", userId)
+        .maybeSingle();
+
+    if (error) {
+        console.log("Error emailExistsForAnotherUser:", error.message);
+        return false;
+    }
+
+    return !!data;
+};
+
+const updateUserProfile = async (id, data) => {
+    const updateData = {
         name: data.name,
         email: data.email,
-
-        profileImage:
+        profile_image:
             data.profileImage !== undefined
                 ? data.profileImage
-                : users[userIndex].profileImage || null,
-
+                : null,
         location:
             data.location !== undefined
                 ? data.location
-                : users[userIndex].location || null,
-
-        updatedAt: new Date().toISOString(),
+                : null,
+        updated_at: new Date().toISOString(),
     };
 
-    saveAllUsers(users);
+    const { data: updatedUser, error } = await supabase
+        .from("users")
+        .update(updateData)
+        .eq("id", id)
+        .select()
+        .single();
 
-    return users[userIndex];
-};
-
-const emailExistsForAnotherUser = (email, userId) => {
-    const users = getAllUsers();
-
-    return users.find(
-        user =>
-            user.email === email.toLowerCase().trim() &&
-            user.id !== userId
-    );
-};
-
-const updateUserSettings = (id, settings) => {
-    const users = getAllUsers();
-
-    const userIndex = users.findIndex(
-        user => user.id === id
-    );
-
-    if (userIndex === -1) {
+    if (error) {
+        console.log("Error updateUserProfile:", error.message);
         return null;
     }
 
-    users[userIndex] = {
-        ...users[userIndex],
+    return mapUserFromDB(updatedUser);
+};
+
+const updateUserSettings = async (id, settings) => {
+    const updateData = {
         settings: {
             darkMode: settings.darkMode,
             notifications: settings.notifications,
+            language: settings.language || "Español",
         },
-        updatedAt: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
     };
 
-    saveAllUsers(users);
+    const { data, error } = await supabase
+        .from("users")
+        .update(updateData)
+        .eq("id", id)
+        .select()
+        .single();
 
-    return users[userIndex];
+    if (error) {
+        console.log("Error updateUserSettings:", error.message);
+        return null;
+    }
+
+    return mapUserFromDB(data);
 };
 
 module.exports = {
-    getAllUsers,
-    saveAllUsers,
     findUserByEmail,
     findUserById,
     createUser,
     updateUserProfile,
     emailExistsForAnotherUser,
-    updateUserSettings
+    updateUserSettings,
 };

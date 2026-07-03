@@ -1,193 +1,234 @@
-const {
-    getDataPath,
-    readJsonFile,
-    writeJsonFile,
-} = require("../utils/fileStorage");
+const supabase = require("../config/supabaseClient");
 
-const habitsPath = getDataPath("habits.json");
-const progressPath = getDataPath("progress.json");
+const mapHabitFromDB = (habit) => {
+    if (!habit) return null;
 
-const getAllHabits = () => {
-    return readJsonFile(habitsPath);
+    return {
+        id: habit.id,
+        userId: habit.user_id,
+        title: habit.title,
+        type: habit.type,
+        icon: habit.icon,
+        completed: habit.completed || false,
+        streak: habit.streak || 0,
+        bestStreak: habit.best_streak || 0,
+        totalCompletions: habit.total_completions || 0,
+        lastCompleted: habit.last_completed || null,
+        history: habit.history || {},
+        createdAt: habit.created_at,
+        updatedAt: habit.updated_at,
+    };
 };
 
-const saveAllHabits = (habits) => {
-    writeJsonFile(habitsPath, habits);
+const mapProgressFromDB = (progress) => {
+    if (!progress) return null;
+
+    return {
+        userId: progress.user_id,
+        xp: progress.xp || 0,
+        level: progress.level || 1,
+        updatedAt: progress.updated_at,
+    };
 };
 
-const getAllProgress = () => {
-    return readJsonFile(progressPath);
+const getUserHabits = async (userId) => {
+    const { data, error } = await supabase
+        .from("habits")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        console.log("Error getUserHabits:", error.message);
+        return [];
+    }
+
+    return data.map(mapHabitFromDB);
 };
 
-const saveAllProgress = (progress) => {
-    writeJsonFile(progressPath, progress);
-};
+const getUserProgress = async (userId) => {
+    const { data, error } = await supabase
+        .from("progress")
+        .select("*")
+        .eq("user_id", userId)
+        .maybeSingle();
 
-const getUserHabits = (userId) => {
-    const habits = getAllHabits();
-
-    return habits.filter(
-        habit => habit.userId === userId
-    );
-};
-
-const getUserProgress = (userId) => {
-    const progressList = getAllProgress();
-
-    let progress = progressList.find(
-        item => item.userId === userId
-    );
-
-    if (!progress) {
-        progress = {
+    if (error) {
+        console.log("Error getUserProgress:", error.message);
+        return {
             userId,
             xp: 0,
-            createdAt: new Date().toISOString(),
+            level: 1,
         };
-
-        progressList.push(progress);
-        saveAllProgress(progressList);
     }
 
-    return progress;
+    if (!data) {
+        const newProgress = {
+            user_id: userId,
+            xp: 0,
+            level: 1,
+            updated_at: new Date().toISOString(),
+        };
+
+        const { data: insertedProgress, error: insertError } = await supabase
+            .from("progress")
+            .insert(newProgress)
+            .select()
+            .single();
+
+        if (insertError) {
+            console.log("Error create progress:", insertError.message);
+            return {
+                userId,
+                xp: 0,
+                level: 1,
+            };
+        }
+
+        return mapProgressFromDB(insertedProgress);
+    }
+
+    return mapProgressFromDB(data);
 };
 
-const saveUserProgress = (userId, xp) => {
-    const progressList = getAllProgress();
+const saveUserProgress = async (userId, xp) => {
+    const level = Math.floor(xp / 100) + 1;
 
-    const index = progressList.findIndex(
-        item => item.userId === userId
-    );
+    const progressData = {
+        user_id: userId,
+        xp,
+        level,
+        updated_at: new Date().toISOString(),
+    };
 
-    if (index === -1) {
-        progressList.push({
+    const { data, error } = await supabase
+        .from("progress")
+        .upsert(progressData, { onConflict: "user_id" })
+        .select()
+        .single();
+
+    if (error) {
+        console.log("Error saveUserProgress:", error.message);
+        return {
             userId,
             xp,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        });
-    } else {
-        progressList[index] = {
-            ...progressList[index],
-            xp,
-            updatedAt: new Date().toISOString(),
+            level,
         };
     }
 
-    saveAllProgress(progressList);
-
-    return getUserProgress(userId);
+    return mapProgressFromDB(data);
 };
 
-const createHabit = (userId, data) => {
-    const habits = getAllHabits();
-
+const createHabit = async (userId, data) => {
     const newHabit = {
         id: Date.now(),
-        userId,
+        user_id: userId,
         title: data.title,
         type: data.type || "Diario",
         icon: data.icon || "checkmark-circle",
         completed: false,
         streak: 0,
-        lastCompleted: null,
+        best_streak: 0,
+        total_completions: 0,
+        last_completed: null,
         history: {},
-        totalCompletions: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: null,
     };
 
-    habits.push(newHabit);
+    const { data: habit, error } = await supabase
+        .from("habits")
+        .insert(newHabit)
+        .select()
+        .single();
 
-    saveAllHabits(habits);
-
-    return newHabit;
-};
-
-const updateHabit = (userId, habitId, data) => {
-    const habits = getAllHabits();
-
-    const index = habits.findIndex(
-        habit =>
-            habit.id === Number(habitId) &&
-            habit.userId === userId
-    );
-
-    if (index === -1) {
+    if (error) {
+        console.log("Error createHabit:", error.message);
         return null;
     }
 
-    habits[index] = {
-        ...habits[index],
-        ...data,
-        updatedAt: new Date().toISOString(),
-    };
-
-    saveAllHabits(habits);
-
-    return habits[index];
+    return mapHabitFromDB(habit);
 };
 
-const deleteHabit = (userId, habitId) => {
-    const habits = getAllHabits();
+const updateHabit = async (userId, habitId, data) => {
+    const updateData = {
+        title: data.title,
+        type: data.type,
+        icon: data.icon,
+        updated_at: new Date().toISOString(),
+    };
 
-    const exists = habits.some(
-        habit =>
-            habit.id === Number(habitId) &&
-            habit.userId === userId
-    );
+    Object.keys(updateData).forEach((key) => {
+        if (updateData[key] === undefined) {
+            delete updateData[key];
+        }
+    });
 
-    if (!exists) {
+    const { data: habit, error } = await supabase
+        .from("habits")
+        .update(updateData)
+        .eq("id", Number(habitId))
+        .eq("user_id", userId)
+        .select()
+        .single();
+
+    if (error) {
+        console.log("Error updateHabit:", error.message);
+        return null;
+    }
+
+    return mapHabitFromDB(habit);
+};
+
+const deleteHabit = async (userId, habitId) => {
+    const { error, count } = await supabase
+        .from("habits")
+        .delete({ count: "exact" })
+        .eq("id", Number(habitId))
+        .eq("user_id", userId);
+
+    if (error) {
+        console.log("Error deleteHabit:", error.message);
         return false;
     }
 
-    const filteredHabits = habits.filter(
-        habit =>
-            !(
-                habit.id === Number(habitId) &&
-                habit.userId === userId
-            )
-    );
-
-    saveAllHabits(filteredHabits);
-
-    return true;
+    return count > 0;
 };
 
-const toggleHabit = (userId, habitId, currentDate, previousDate) => {
-    const habits = getAllHabits();
+const toggleHabit = async (userId, habitId, currentDate, previousDate) => {
+    const { data: habitData, error } = await supabase
+        .from("habits")
+        .select("*")
+        .eq("id", Number(habitId))
+        .eq("user_id", userId)
+        .maybeSingle();
 
-    const index = habits.findIndex(
-        habit =>
-            habit.id === Number(habitId) &&
-            habit.userId === userId
-    );
-
-    if (index === -1) {
+    if (error || !habitData) {
+        console.log("Error toggleHabit:", error?.message);
         return null;
     }
 
-    const habit = habits[index];
+    const habit = mapHabitFromDB(habitData);
     const currentHistory = habit.history || {};
     const isCompletedToday = currentHistory[currentDate] === true;
 
-    let progress = getUserProgress(userId);
+    let progress = await getUserProgress(userId);
+
+    let updatedHabitData;
 
     if (isCompletedToday) {
-        const newHistory = {
-            ...currentHistory,
-        };
-
+        const newHistory = { ...currentHistory };
         delete newHistory[currentDate];
 
-        habits[index] = {
-            ...habit,
+        updatedHabitData = {
             completed: false,
             history: newHistory,
             streak: Math.max((habit.streak || 0) - 1, 0),
-            lastCompleted:
+            last_completed:
                 habit.lastCompleted === currentDate
                     ? null
                     : habit.lastCompleted,
+            updated_at: new Date().toISOString(),
         };
     } else {
         let newStreak = habit.streak || 0;
@@ -200,46 +241,62 @@ const toggleHabit = (userId, habitId, currentDate, previousDate) => {
 
         const xpReward = habit.type === "Diario" ? 10 : 25;
 
-        progress = saveUserProgress(
+        progress = await saveUserProgress(
             userId,
             progress.xp + xpReward
         );
 
-        habits[index] = {
-            ...habit,
+        updatedHabitData = {
             completed: true,
             streak: newStreak,
-            lastCompleted: currentDate,
-            totalCompletions: (habit.totalCompletions || 0) + 1,
+            best_streak: Math.max(habit.bestStreak || 0, newStreak),
+            last_completed: currentDate,
+            total_completions: (habit.totalCompletions || 0) + 1,
             history: {
                 ...currentHistory,
                 [currentDate]: true,
             },
+            updated_at: new Date().toISOString(),
         };
     }
 
-    saveAllHabits(habits);
+    const { data: updatedHabit, error: updateError } = await supabase
+        .from("habits")
+        .update(updatedHabitData)
+        .eq("id", Number(habitId))
+        .eq("user_id", userId)
+        .select()
+        .single();
+
+    if (updateError) {
+        console.log("Error update toggleHabit:", updateError.message);
+        return null;
+    }
 
     return {
-        habit: habits[index],
+        habit: mapHabitFromDB(updatedHabit),
         progress,
     };
 };
 
-const resetUserData = (userId) => {
-    const habits = getAllHabits();
-    const progressList = getAllProgress();
+const resetUserData = async (userId) => {
+    const { error: habitsError } = await supabase
+        .from("habits")
+        .delete()
+        .eq("user_id", userId);
 
-    const filteredHabits = habits.filter(
-        habit => habit.userId !== userId
-    );
+    const { error: progressError } = await supabase
+        .from("progress")
+        .delete()
+        .eq("user_id", userId);
 
-    const filteredProgress = progressList.filter(
-        item => item.userId !== userId
-    );
-
-    saveAllHabits(filteredHabits);
-    saveAllProgress(filteredProgress);
+    if (habitsError || progressError) {
+        console.log(
+            "Error resetUserData:",
+            habitsError?.message || progressError?.message
+        );
+        return false;
+    }
 
     return true;
 };

@@ -164,7 +164,7 @@ export default function RegisterScreen({ navigation }) {
                     }}
                     error={errorEmail}
                 />
-
+                
                 <AuthInput
                     label="Contraseña"
                     icon="lock-closed-outline"

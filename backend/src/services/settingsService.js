@@ -3,10 +3,11 @@ const userModel = require("../models/userModel");
 const defaultSettings = {
     darkMode: false,
     notifications: true,
+    language: "Español",
 };
 
-const getUserSettings = (userId) => {
-    const user = userModel.findUserById(userId);
+const getUserSettings = async (userId) => {
+    const user = await userModel.findUserById(userId);
 
     if (!user) {
         return {
@@ -19,24 +20,40 @@ const getUserSettings = (userId) => {
     return {
         status: 200,
         success: true,
-        settings: user.settings || defaultSettings,
+        settings: {
+            ...defaultSettings,
+            ...(user.settings || {}),
+        },
     };
 };
 
-const updateUserSettings = (userId, settings) => {
-    const updatedUser = userModel.updateUserSettings(
-        userId,
-        {
-            darkMode: settings.darkMode,
-            notifications: settings.notifications,
-        }
-    );
+const updateUserSettings = async (userId, settings) => {
+    const currentUser = await userModel.findUserById(userId);
 
-    if (!updatedUser) {
+    if (!currentUser) {
         return {
             status: 404,
             success: false,
             message: "Usuario no encontrado.",
+        };
+    }
+
+    const newSettings = {
+        ...defaultSettings,
+        ...(currentUser.settings || {}),
+        ...settings,
+    };
+
+    const updatedUser = await userModel.updateUserSettings(
+        userId,
+        newSettings
+    );
+
+    if (!updatedUser) {
+        return {
+            status: 500,
+            success: false,
+            message: "No se pudo actualizar la configuración.",
         };
     }
 

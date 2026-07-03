@@ -17,6 +17,7 @@ const formatUserResponse = (user) => {
         settings: user.settings || {
             darkMode: false,
             notifications: true,
+            language: "Español",
         },
     };
 };
@@ -38,7 +39,7 @@ const registerUser = async ({ name, email, password }) => {
         };
     }
 
-    const userExists = userModel.findUserByEmail(email);
+    const userExists = await userModel.findUserByEmail(email);
 
     if (userExists) {
         return {
@@ -50,7 +51,7 @@ const registerUser = async ({ name, email, password }) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    userModel.createUser({
+    await userModel.createUser({
         name: name.trim(),
         email: email.toLowerCase().trim(),
         password: hashedPassword,
@@ -72,7 +73,7 @@ const loginUser = async ({ email, password }) => {
         };
     }
 
-    const user = userModel.findUserByEmail(email);
+    const user = await userModel.findUserByEmail(email);
 
     if (!user) {
         return {
@@ -106,8 +107,8 @@ const loginUser = async ({ email, password }) => {
     };
 };
 
-const getUserProfile = (userId) => {
-    const user = userModel.findUserById(userId);
+const getUserProfile = async (userId) => {
+    const user = await userModel.findUserById(userId);
 
     if (!user) {
         return {
@@ -140,7 +141,7 @@ const updateUserProfile = async (userId, data) => {
         };
     }
 
-    const existingUser = userModel.findUserById(userId);
+    const existingUser = await userModel.findUserById(userId);
 
     if (!existingUser) {
         return {
@@ -150,7 +151,7 @@ const updateUserProfile = async (userId, data) => {
         };
     }
 
-    const emailExists = userModel.emailExistsForAnotherUser(
+    const emailExists = await userModel.emailExistsForAnotherUser(
         email,
         userId
     );
@@ -179,12 +180,17 @@ const updateUserProfile = async (userId, data) => {
         };
     }
 
-    const updatedUser = userModel.updateUserProfile(
+    const finalProfileImage =
+        profileImage !== undefined
+            ? profileImage
+            : existingUser.profileImage || null;
+
+    const updatedUser = await userModel.updateUserProfile(
         userId,
         {
             name: name.trim(),
             email: email.toLowerCase().trim(),
-            profileImage,
+            profileImage: finalProfileImage,
             location: finalLocation,
         }
     );

@@ -10,6 +10,8 @@ const register = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al registrar usuario.",
@@ -36,6 +38,8 @@ const login = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al iniciar sesión.",
@@ -43,9 +47,9 @@ const login = async (req, res) => {
     }
 };
 
-const profile = (req, res) => {
+const profile = async (req, res) => {
     try {
-        const result = authService.getUserProfile(req.user.id);
+        const result = await authService.getUserProfile(req.user.id);
 
         if (!result.success) {
             return res.status(result.status).json({
@@ -60,6 +64,8 @@ const profile = (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al obtener perfil.",

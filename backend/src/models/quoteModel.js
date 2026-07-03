@@ -1,16 +1,30 @@
-const {
-    getDataPath,
-    readJsonFile,
-} = require("../utils/fileStorage");
+const supabase = require("../config/supabaseClient");
 
-const quotesPath = getDataPath("quotes.json");
+const mapQuoteFromDB = (quote) => {
+    if (!quote) return null;
 
-const getAllQuotes = () => {
-    return readJsonFile(quotesPath);
+    return {
+        id: quote.id,
+        text: quote.text,
+    };
 };
 
-const getRandomQuote = () => {
-    const quotes = getAllQuotes();
+const getAllQuotes = async () => {
+    const { data, error } = await supabase
+        .from("quotes")
+        .select("*")
+        .order("id", { ascending: true });
+
+    if (error) {
+        console.log("Error getAllQuotes:", error.message);
+        return [];
+    }
+
+    return data.map(mapQuoteFromDB);
+};
+
+const getRandomQuote = async () => {
+    const quotes = await getAllQuotes();
 
     if (!quotes || quotes.length === 0) {
         return null;

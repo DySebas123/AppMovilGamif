@@ -23,3 +23,4 @@ export const updateProfile = (data, token) => {
         },
     });
 };
+

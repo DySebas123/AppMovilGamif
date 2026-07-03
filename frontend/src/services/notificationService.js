@@ -1,14 +1,37 @@
 import { Platform } from "react-native";
-import * as Notifications from "expo-notifications";
 
+let Notifications = null;
 if (Platform.OS !== "web") {
-    Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: false,
-        }),
-    });
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+        if (
+            typeof args[0] === "string" &&
+            args[0].includes("expo-notifications: Android Push notifications")
+        ) {
+            return;
+        }
+        originalConsoleError(...args);
+    };
+
+    try {
+        Notifications = require("expo-notifications");
+    } catch (error) {
+        console.warn("Could not load expo-notifications:", error);
+    } finally {
+        console.error = originalConsoleError;
+    }
+}
+
+export function initializeNotifications() {
+    if (Platform.OS !== "web" && Notifications) {
+        Notifications.setNotificationHandler({
+            handleNotification: async () => ({
+                shouldShowAlert: true,
+                shouldPlaySound: true,
+                shouldSetBadge: false,
+            }),
+        });
+    }
 }
 
 export async function requestNotificationPermission() {
@@ -26,7 +49,7 @@ export async function scheduleDailyHabitReminder() {
         return {
             success: true,
             simulated: true,
-            message: "Recordatorio activo.",
+            message: "Recordatorio activado",
         };
     }
 
@@ -57,7 +80,7 @@ export async function cancelHabitReminders() {
         return {
             success: true,
             simulated: true,
-            message: "Recordatorio desactivado.",
+            message: "Recordatorio desactivado",
         };
     }
 

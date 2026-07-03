@@ -7,6 +7,7 @@ import {
     TextInput,
     SafeAreaView,
     ScrollView,
+    TouchableOpacity,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -29,33 +30,36 @@ import SHADOWS from "../../styles/shadows";
 import SPACING from "../../styles/spacing";
 import TYPOGRAPHY from "../../styles/typography";
 
+const icons = [
+    "checkmark-circle-outline",
+    "book-outline",
+    "heart-outline",
+    "cafe-outline",
+    "fitness-outline",
+    "musical-notes-outline",
+    "code-slash-outline",
+    "briefcase-outline",
+];
+
 export default function EditHabitScreen({ navigation, route }) {
-
-    // Recibe el objeto del habito desde los parametros de la ruta
     const { habit } = route.params;
-    // Extrae el metodo de actualizacion del contexto global de habitos
-    const { updateHabit } = useHabits();
 
+    const { updateHabit } = useHabits();
     const { theme } = useSettings();
 
-    // Inicializa los estados con los valores actuales del habito seleccionado
     const [title, setTitle] = useState(habit.title);
     const [frequency, setFrequency] = useState(habit.type);
+    const [selectedIcon, setSelectedIcon] = useState(
+        habit.icon || "checkmark-circle-outline"
+    );
 
-    // Estados para controlar la configuracion y visibilidad de la alerta
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertType, setAlertType] = useState("success");
     const [alertTitle, setAlertTitle] = useState("");
     const [alertMessage, setAlertMessage] = useState("");
     const [goBackAfterAlert, setGoBackAfterAlert] = useState(false);
 
-    // Modifica las propiedades y muestra la alerta en pantalla
-    const showAlert = (
-        type,
-        title,
-        message,
-        goBack = false
-    ) => {
+    const showAlert = (type, title, message, goBack = false) => {
         setAlertType(type);
         setAlertTitle(title);
         setAlertMessage(message);
@@ -63,20 +67,30 @@ export default function EditHabitScreen({ navigation, route }) {
         setAlertVisible(true);
     };
 
-    // Valida la informacion y procesa los cambios del habito
-    const handleUpdateHabit = () => {
-        // Valida que el titulo modificado no este vacio
+    const handleUpdateHabit = async () => {
         if (!title.trim()) {
-            showAlert("error", "Campo requerido",
-                "El nombre del hábito no puede estar vacío.");
+            showAlert(
+                "error",
+                "Campo requerido",
+                "El nombre del hábito no puede estar vacío."
+            );
             return;
         }
 
-        // Invoca el metodo del contexto para actualizar el registro por ID
-        updateHabit(habit.id, {
+        const result = await updateHabit(habit.id, {
             title: title.trim(),
             type: frequency,
+            icon: selectedIcon,
         });
+
+        if (result?.success === false) {
+            showAlert(
+                "error",
+                "Error",
+                result.message || "No se pudo actualizar el hábito."
+            );
+            return;
+        }
 
         showAlert(
             "success",
@@ -86,7 +100,6 @@ export default function EditHabitScreen({ navigation, route }) {
         );
     };
 
-    // Oculta la alerta y gestiona el retorno de pantalla si es necesario
     const handleCloseAlert = () => {
         setAlertVisible(false);
 
@@ -97,60 +110,144 @@ export default function EditHabitScreen({ navigation, route }) {
 
     return (
         <>
-            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <SafeAreaView
+                style={[
+                    styles.container,
+                    { backgroundColor: theme.background },
+                ]}
+            >
                 <AppHeader
                     title="Editar hábito"
                     icon="arrow-back"
                     onBack={() => navigation.goBack()}
                 />
+
                 <ScrollView
                     style={styles.content}
                     showsVerticalScrollIndicator={false}
                 >
-                    {/* Tarjeta de previsualizacion con los cambios en tiempo real */}
                     <HabitPreviewCard
                         label="Hábito seleccionado"
                         title={title}
                         frequency={frequency}
-                        icon={habit.icon || "checkmark-circle-outline"}
+                        icon={selectedIcon}
                     />
+
                     <Card>
-                        <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
+                        <Text
+                            style={[
+                                styles.sectionTitle,
+                                { color: theme.textPrimary },
+                            ]}
+                        >
                             Información del hábito
                         </Text>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>
+
+                        <Text
+                            style={[
+                                styles.label,
+                                { color: theme.textSecondary },
+                            ]}
+                        >
                             Nombre
                         </Text>
-                        <View style={styles.inputContainer}>
+
+                        <View
+                            style={[
+                                styles.inputContainer,
+                                {
+                                    backgroundColor: theme.secondarySurface,
+                                    borderColor: theme.border,
+                                },
+                            ]}
+                        >
                             <Ionicons
                                 name="create-outline"
                                 size={20}
-                                color={COLORS.textSecondary}
+                                color={theme.textSecondary}
                                 style={styles.inputIcon}
                             />
+
                             <TextInput
                                 value={title}
                                 onChangeText={setTitle}
-                                style={styles.input}
+                                style={[
+                                    styles.input,
+                                    { color: theme.textPrimary },
+                                ]}
                                 placeholder="Ej: Leer 30 minutos"
-                                placeholderTextColor="#94a3b8"
+                                placeholderTextColor={theme.textSecondary}
                             />
                         </View>
-                        <Text style={[styles.label, { color: theme.textSecondary }]}>
+
+                        <Text
+                            style={[
+                                styles.label,
+                                { color: theme.textSecondary },
+                            ]}
+                        >
+                            Ícono
+                        </Text>
+
+                        <View style={styles.iconGrid}>
+                            {icons.map((icon) => {
+                                const selected = selectedIcon === icon;
+
+                                return (
+                                    <TouchableOpacity
+                                        key={icon}
+                                        style={[
+                                            styles.iconButton,
+                                            {
+                                                backgroundColor: selected
+                                                    ? theme.primary
+                                                    : theme.secondarySurface,
+                                                borderColor: selected
+                                                    ? theme.primary
+                                                    : theme.border,
+                                            },
+                                        ]}
+                                        activeOpacity={0.8}
+                                        onPress={() => setSelectedIcon(icon)}
+                                    >
+                                        <Ionicons
+                                            name={icon}
+                                            size={24}
+                                            color={
+                                                selected
+                                                    ? "#ffffff"
+                                                    : theme.textSecondary
+                                            }
+                                        />
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </View>
+
+                        <Text
+                            style={[
+                                styles.label,
+                                { color: theme.textSecondary },
+                            ]}
+                        >
                             Frecuencia
                         </Text>
+
                         <FrequencySelector
                             frequency={frequency}
                             onChangeFrequency={setFrequency}
                         />
+
                         <InfoBox
                             text="Mantén el hábito actualizado para que tus estadísticas, rachas y recompensas reflejen mejor tu progreso."
                         />
+
                         <MainButton
                             title="Guardar cambios"
                             onPress={handleUpdateHabit}
                         />
                     </Card>
+
                     <View style={{ height: 120 }} />
                 </ScrollView>
             </SafeAreaView>
@@ -215,5 +312,23 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         fontSize: 16,
         color: COLORS.textPrimary,
+    },
+
+    iconGrid: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        rowGap: 14,
+        marginBottom: 24,
+    },
+
+    iconButton: {
+        width: "10%",
+        aspectRatio: 1,
+        borderRadius: 16,
+        borderWidth: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        ...SHADOWS.small,
     },
 });

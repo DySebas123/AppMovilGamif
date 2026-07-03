@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 
 const corsConfig = require("./config/cors");
 
@@ -16,8 +15,6 @@ app.use(corsConfig);
 app.use(express.json({
     limit: "10mb",
 }));
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
     res.json({

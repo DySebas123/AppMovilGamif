@@ -1,7 +1,7 @@
 const quoteModel = require("../models/quoteModel");
 
-const getRandomQuote = () => {
-    const quote = quoteModel.getRandomQuote();
+const getRandomQuote = async () => {
+    const quote = await quoteModel.getRandomQuote();
 
     if (!quote) {
         return {

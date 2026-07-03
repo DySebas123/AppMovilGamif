@@ -1,12 +1,16 @@
 const settingsService = require("../services/settingsService");
 
-const getSettings = (req, res) => {
+const getSettings = async (req, res) => {
     try {
-        const result = settingsService.getUserSettings(req.user.id);
+        const result = await settingsService.getUserSettings(
+            req.user.id
+        );
 
         return res.status(result.status).json(result);
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al obtener configuración.",
@@ -14,9 +18,9 @@ const getSettings = (req, res) => {
     }
 };
 
-const updateSettings = (req, res) => {
+const updateSettings = async (req, res) => {
     try {
-        const result = settingsService.updateUserSettings(
+        const result = await settingsService.updateUserSettings(
             req.user.id,
             req.body
         );
@@ -24,6 +28,8 @@ const updateSettings = (req, res) => {
         return res.status(result.status).json(result);
 
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al actualizar configuración.",

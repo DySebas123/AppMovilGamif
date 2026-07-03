@@ -75,8 +75,8 @@ export default function SettingsSwitchCard({
         >
             <SwitchItem
                 icon="notifications-outline"
-                title="Recordatorio diario"
-                subtitle="Notificación diaria a las 8:00 p. m."
+                title="Notificaciones"
+                subtitle="Recibe notificaciones importantes"
                 value={notifications}
                 onChange={onToggleNotifications}
                 theme={theme}

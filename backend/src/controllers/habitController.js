@@ -1,8 +1,8 @@
 const habitService = require("../services/habitService");
 
-const getHabits = (req, res) => {
+const getHabits = async (req, res) => {
     try {
-        const result = habitService.getUserHabitData(
+        const result = await habitService.getUserHabitData(
             req.user.id
         );
 
@@ -12,6 +12,8 @@ const getHabits = (req, res) => {
             progress: result.progress,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al obtener hábitos.",
@@ -19,9 +21,9 @@ const getHabits = (req, res) => {
     }
 };
 
-const createHabit = (req, res) => {
+const createHabit = async (req, res) => {
     try {
-        const result = habitService.createUserHabit(
+        const result = await habitService.createUserHabit(
             req.user.id,
             req.body
         );
@@ -39,6 +41,8 @@ const createHabit = (req, res) => {
             habit: result.habit,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al crear hábito.",
@@ -46,9 +50,9 @@ const createHabit = (req, res) => {
     }
 };
 
-const updateHabit = (req, res) => {
+const updateHabit = async (req, res) => {
     try {
-        const result = habitService.updateUserHabit(
+        const result = await habitService.updateUserHabit(
             req.user.id,
             req.params.id,
             req.body
@@ -67,6 +71,8 @@ const updateHabit = (req, res) => {
             habit: result.habit,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al actualizar hábito.",
@@ -74,9 +80,9 @@ const updateHabit = (req, res) => {
     }
 };
 
-const deleteHabit = (req, res) => {
+const deleteHabit = async (req, res) => {
     try {
-        const result = habitService.deleteUserHabit(
+        const result = await habitService.deleteUserHabit(
             req.user.id,
             req.params.id
         );
@@ -86,6 +92,8 @@ const deleteHabit = (req, res) => {
             message: result.message,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al eliminar hábito.",
@@ -93,9 +101,9 @@ const deleteHabit = (req, res) => {
     }
 };
 
-const toggleHabit = (req, res) => {
+const toggleHabit = async (req, res) => {
     try {
-        const result = habitService.toggleUserHabit(
+        const result = await habitService.toggleUserHabit(
             req.user.id,
             req.params.id,
             req.body
@@ -115,6 +123,8 @@ const toggleHabit = (req, res) => {
             progress: result.progress,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al completar hábito.",
@@ -122,9 +132,9 @@ const toggleHabit = (req, res) => {
     }
 };
 
-const resetHabits = (req, res) => {
+const resetHabits = async (req, res) => {
     try {
-        const result = habitService.resetUserHabitData(
+        const result = await habitService.resetUserHabitData(
             req.user.id
         );
 
@@ -133,6 +143,8 @@ const resetHabits = (req, res) => {
             message: result.message,
         });
     } catch (error) {
+        console.error(error);
+
         return res.status(500).json({
             success: false,
             message: "Error interno al reiniciar datos.",
