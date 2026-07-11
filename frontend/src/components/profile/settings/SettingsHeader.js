@@ -53,6 +53,7 @@ export default function SettingsHeader({ onBack }) {
 
 const styles = StyleSheet.create({
     header: {
+        width: "100%",
         paddingTop: 65,
         paddingBottom: 40,
         borderBottomLeftRadius: 30,
@@ -88,6 +89,8 @@ const styles = StyleSheet.create({
     },
 
     headerTitle: {
+        width: "100%",
+        textAlign: "center",
         fontSize: 30,
         fontWeight: "800",
         color: "#ffffff",
@@ -95,6 +98,8 @@ const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
+        width: "100%",
+        textAlign: "center",
         fontSize: 14,
         color: "rgba(255,255,255,0.85)",
         marginTop: 5,

@@ -43,6 +43,7 @@ export default function AuthHeader({
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         alignItems: "center",
         marginBottom: 28,
     },
@@ -61,13 +62,17 @@ const styles = StyleSheet.create({
         borderRadius: 26, // Sincroniza la curvatura con el contenedor padre para mantener la simetria
     },
     title: {
-        fontSize: 26,
+        width: "100%",
+        textAlign: "center",
+        fontSize: 25,
         fontWeight: "800",
         color: COLORS.textPrimary,
-        marginBottom: 6,
+        marginBottom: 3,
     },
     subtitle: {
-        fontSize: 14,
+        width: "100%",
+        textAlign: "center",
+        fontSize: 13,
         color: COLORS.textSecondary,
         textAlign: "center",
     },

@@ -20,7 +20,7 @@ const TYPOGRAPHY = {
     },
 
     bodyMD: {
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: '400',
     },
 

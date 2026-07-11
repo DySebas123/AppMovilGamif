@@ -317,13 +317,14 @@ const styles = StyleSheet.create({
     iconGrid: {
         flexDirection: "row",
         flexWrap: "wrap",
-        justifyContent: "space-between",
-        rowGap: 14,
-        marginBottom: 24,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        gap: 12,
+        marginBottom: 21,
     },
 
     iconButton: {
-        width: "10%",
+        width: "16%",
         aspectRatio: 1,
         borderRadius: 16,
         borderWidth: 1,

@@ -121,6 +121,7 @@ export default function ProfileStatsGrid({
 
 const styles = StyleSheet.create({
     statsRow: {
+        width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 15,
@@ -154,6 +155,9 @@ const styles = StyleSheet.create({
     },
 
     statLabel: {
+        width: "100%",
+        textAlign: "center",
+        marginTop: 3,
         fontSize: 12,
     },
 });

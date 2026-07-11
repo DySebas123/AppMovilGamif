@@ -12,6 +12,8 @@ import RewardProgressCard from "../../components/rewards/RewardProgressCard";
 import AchievementCard from "../../components/rewards/AchievementCard";
 import NextAchievementCard from "../../components/rewards/NextAchievementCard";
 
+import { getAchievemnts } from "../../services/achievemnts"
+
 import { useHabits } from "../../context/HabitContext";
 import { useSettings } from "../../context/SettingsContext";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,110 +23,11 @@ import SPACING from "../../styles/spacing";
 import SHADOWS from "../../styles/shadows";
 import TYPOGRAPHY from "../../styles/typography";
 
-// Estructura de control que define y evalua las reglas para desbloquear cada logro
-const getAchievements = ({
-    totalCompletedHistory,
-    bestStreak,
-    level,
-    xp,
-    habits,
-}) => [
-    {
-        id: "1",
-        title: "Primer Paso",
-        description: "Completar tu primer hábito",
-        icon: "star",
-        badgeBg: ["#eab308", "#facc15"],
-        unlocked: totalCompletedHistory >= 1,
-        progress: totalCompletedHistory,
-        goal: 1,
-    },
-    {
-        id: "2",
-        title: "Racha de Fuego",
-        description: "Alcanzar una racha de 7 días",
-        icon: "flame",
-        badgeBg: ["#ea580c", "#f97316"],
-        unlocked: bestStreak >= 7,
-        progress: bestStreak,
-        goal: 7,
-    },
-    {
-        id: "3",
-        title: "Constancia Total",
-        description: "Tener 5 hábitos activos",
-        icon: "list",
-        badgeBg: ["#06b6d4", "#3b82f6"],
-        unlocked: habits.length >= 5,
-        progress: habits.length,
-        goal: 5,
-    },
-    {
-        id: "4",
-        title: "Maestro",
-        description: "Alcanzar el nivel 5",
-        icon: "ribbon",
-        badgeBg: ["#a855f7", "#ec4899"],
-        unlocked: level >= 5,
-        progress: level,
-        goal: 5,
-    },
-    {
-        id: "5",
-        title: "Campeón",
-        description: "Llegar a una racha de 30 días",
-        icon: "trophy",
-        badgeBg: ["#f59e0b", "#fbbf24"],
-        unlocked: bestStreak >= 30,
-        progress: bestStreak,
-        goal: 30,
-    },
-    {
-        id: "6",
-        title: "Objetivo Cumplido",
-        description: "Acumular 1000 XP",
-        icon: "medal",
-        badgeBg: ["#10b981", "#22c55e"],
-        unlocked: xp >= 1000,
-        progress: xp,
-        goal: 1000,
-    },
-];
-
 export default function RewardsScreen() {
     // Obtiene las variables de progreso actuales del contexto de habitos
-    const {
-        bestStreak,
-        level,
-        xp,
-        habits,
-    } = useHabits();
+    const { achievements } = useHabits();
 
     const { theme } = useSettings();
-
-    // Calcula y memoriza la sumatoria acumulada de todas las finalizaciones historicas
-    const totalCompletedHistory = useMemo(() => {
-        return habits.reduce((total, habit) => {
-            return total + (habit.totalCompletions || 0);
-        }, 0);
-    }, [habits]);
-
-    // Memoriza el listado de logros actualizado para evitar recalculos innecesarios
-    const achievements = useMemo(() => {
-        return getAchievements({
-            totalCompletedHistory,
-            bestStreak,
-            level,
-            xp,
-            habits,
-        });
-    }, [
-        totalCompletedHistory,
-        bestStreak,
-        level,
-        xp,
-        habits,
-    ]);
 
     // Cuenta de forma dinamica cuantos logros cumplen con la condicion de desbloqueado
     const unlockedAchievements = achievements.filter(
@@ -211,7 +114,7 @@ const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
-        fontSize: 16,
+        fontSize: 13,
         color: COLORS.textSecondary,
         fontWeight: "500",
         marginTop: 2,

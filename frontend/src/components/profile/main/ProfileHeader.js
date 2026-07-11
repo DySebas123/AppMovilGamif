@@ -71,6 +71,8 @@ const styles = StyleSheet.create({
 
     profileInfo: {
         alignItems: "center",
+        width: "100%",
+        paddingHorizontal: 20,
     },
 
     avatarContainer: {
@@ -98,12 +100,16 @@ const styles = StyleSheet.create({
     },
 
     userName: {
+        width: "100%",
+        textAlign: "center",
         color: "#fff",
         fontSize: 24,
         fontWeight: "bold",
     },
-
+    
     userEmail: {
+        width: "100%",
+        textAlign: "center",
         color: "rgba(255,255,255,0.8)",
         fontSize: 14,
         marginBottom: 20,

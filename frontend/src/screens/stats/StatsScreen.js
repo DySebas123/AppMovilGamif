@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     },
 
     headerSubtitle: {
-        fontSize: 16,
+        fontSize: 13,
         color: COLORS.textSecondary,
         marginTop: 4,
     },

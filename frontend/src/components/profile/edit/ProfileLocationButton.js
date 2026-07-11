@@ -87,9 +87,10 @@ const styles = StyleSheet.create({
     },
 
     locationInfo: {
+        width: "100%",
         backgroundColor: "#ecfdf5",
         borderRadius: 16,
-        padding: 12,
+        padding: 18,
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
@@ -97,10 +98,13 @@ const styles = StyleSheet.create({
     },
 
     locationInfoText: {
+        width: "100%",
+        textAlign: "left",
         flex: 1,
         color: "#0f766e",
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: "700",
-        lineHeight: 18,
+        lineHeight: 20,
+        paddingLeft: 10
     },
 });

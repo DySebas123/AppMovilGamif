@@ -18,32 +18,29 @@ export default function AuthFooterLink({
 }) {
     return (
         /* Contenedor inline horizontal para alinear de forma fluida el texto explicativo y el enlace interactivo */
-        <View style={styles.container}>
-            <Text style={styles.text}>
-                {text}
+        <Text style={styles.container}>
+            <Text style={styles.text}>{text} {""}</Text>
+            <Text
+                style={styles.link}
+                onPress={onPress}
+                suppressHighlighting={true}
+            >
+                {linkText}
             </Text>
-
-            {/* Componente tactil que encapsula unicamente la etiqueta del hipervinculo de navegacion */}
-            <TouchableOpacity onPress={onPress}>
-                <Text style={styles.link}>
-                    {linkText}
-                </Text>
-            </TouchableOpacity>
-        </View>
+        </Text>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
+        width: "100%",
+        textAlign: "center",
         marginTop: SPACING.lg,
+        paddingHorizontal: 20,
     },
     text: {
         color: COLORS.textSecondary,
         fontSize: TYPOGRAPHY.bodyMD.fontSize, // Sincroniza el tamano de fuente con la tipografia base global
-        marginRight: 5, // Separa el texto plano del boton interactivo de manera estatica
     },
     link: {
         color: COLORS.primary,

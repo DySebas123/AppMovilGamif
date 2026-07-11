@@ -151,12 +151,16 @@ const styles = StyleSheet.create({
     },
 
     userName: {
+        width: "100%",
+        textAlign: "center",
         fontSize: 24,
         fontWeight: "800",
         color: "#ffffff",
     },
 
     userEmail: {
+        width: "100%",
+        textAlign: "center",
         fontSize: 14,
         color: "rgba(255,255,255,0.8)",
         marginTop: 4,

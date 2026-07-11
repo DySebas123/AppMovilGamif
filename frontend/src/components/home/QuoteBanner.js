@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     bannerText: {
         color: COLORS.white,
-        fontSize: 15,
+        fontSize: 13.5,
         fontWeight: "700",
         flex: 1, // Absorbe el espacio disponible permitiendo el centrado correcto junto al icono
         textAlign: "center",

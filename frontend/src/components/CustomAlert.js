@@ -146,14 +146,16 @@ const styles = StyleSheet.create({
         color: "#0f172a",
         marginBottom: 10,
         textAlign: "center",
+        width: "100%"
     },
 
     message: {
+        width: "100%",
+        alignSelf: "stretch",
         textAlign: "center",
         color: "#64748b",
-        fontSize: 15,
-        lineHeight: 22,
-        marginBottom: 24,
+        fontSize: 13,
+        marginBottom: 24
     },
 
     button: {

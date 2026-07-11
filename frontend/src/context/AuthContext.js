@@ -65,6 +65,7 @@ export function AuthProvider({ children }) {
 
             setToken(token);
             setUser(user);
+            console.log("Usuario logueado:", user);
             setIsAuthenticated(true);
 
             return {

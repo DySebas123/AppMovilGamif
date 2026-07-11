@@ -74,15 +74,15 @@ const styles = StyleSheet.create({
     },
 
     greeting: {
-        fontSize: 24,
+        fontSize: 21,
         fontWeight: "800",
         color: "#ffffff",
     },
 
     subtitle: {
         marginTop: 4,
-        fontSize: 15,
-        color: "#a0a0a0",
+        fontSize: 13.5,
+        color: "#c0c0c0",
     },
 
     avatarContainer: {

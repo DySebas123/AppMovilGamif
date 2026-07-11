@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.white,
         width: '48%', // Permite el espaciado automatico si se combina con un flexWrap 'space-between'
-        padding: 16,
+        padding: 12,
         borderRadius: 18,
         flexDirection: 'row',
         alignItems: 'center',
@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: 8,
     },
     textContainer: {
         flex: 1,
     },
     title: {
-        fontSize: 13,
+        fontSize: 11.5,
         color: COLORS.textSecondary,
         marginBottom: 2,
     },

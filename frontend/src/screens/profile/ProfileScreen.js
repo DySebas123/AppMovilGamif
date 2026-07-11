@@ -93,7 +93,7 @@ export default function ProfileScreen({ navigation }) {
             <CustomAlert
                 visible={logoutAlertVisible}
                 title="Cerrar sesión"
-                message="¿Deseas cerrar tu sesión actual?"
+                message="¿Deseas cerrar sesión?"
                 type="warning"
                 confirmMode
                 confirmText="Salir"

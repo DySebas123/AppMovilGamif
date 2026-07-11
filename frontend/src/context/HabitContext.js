@@ -4,10 +4,15 @@ import React, {
     useState,
     useMemo,
     useEffect,
+    useRef,
 } from "react";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useAuth } from "./AuthContext";
 import * as habitService from "../services/habitService";
+import { getAchievements } from "../services/achievemnts";
+import { sendAchievementNotification } from "../services/notificationService";
 
 const HabitContext = createContext();
 
@@ -44,16 +49,26 @@ const normalizeHabitsByDate = (habits, currentDate) => {
     });
 };
 
+const NOTIFIED_ACHIEVEMENTS_KEY = "@habitquest_notified_achievements";
+
 export function HabitProvider({ children }) {
     const {
         token,
         isAuthenticated,
+        user,
     } = useAuth();
+
+    const userId = user?.id;
 
     const [habits, setHabits] = useState([]);
     const [xp, setXp] = useState(0);
     const [demoDayOffset, setDemoDayOffset] = useState(0);
     const [loading, setLoading] = useState(true);
+
+    const notifiedAchievementsRef = useRef(new Set());
+    const [notifiedHydrated, setNotifiedHydrated] = useState(false);
+
+    const [celebratingAchievement, setCelebratingAchievement] = useState(null);
 
     const currentDate = useMemo(() => {
         return getDateWithOffset(demoDayOffset);
@@ -66,13 +81,45 @@ export function HabitProvider({ children }) {
     useEffect(() => {
         if (isAuthenticated && token) {
             loadHabitsFromBackend();
+            hydrateNotifiedAchievements();
         } else {
             setHabits([]);
             setXp(0);
             setDemoDayOffset(0);
             setLoading(false);
+            notifiedAchievementsRef.current = new Set();
+            setNotifiedHydrated(false);
         }
     }, [isAuthenticated, token, currentDate]);
+
+    const hydrateNotifiedAchievements = async () => {
+        try {
+            const key = `${NOTIFIED_ACHIEVEMENTS_KEY}_${userId || "guest"}`;
+            const stored = await AsyncStorage.getItem(key);
+
+            notifiedAchievementsRef.current = new Set(
+                stored ? JSON.parse(stored) : []
+            );
+        } catch (error) {
+            console.log("Error hydrating notified achievements:", error);
+            notifiedAchievementsRef.current = new Set();
+        } finally {
+            setNotifiedHydrated(true);
+        }
+    };
+
+    const persistNotifiedAchievements = async () => {
+        try {
+            const key = `${NOTIFIED_ACHIEVEMENTS_KEY}_${userId || "guest"}`;
+
+            await AsyncStorage.setItem(
+                key,
+                JSON.stringify(Array.from(notifiedAchievementsRef.current))
+            );
+        } catch (error) {
+            console.log("Error persisting notified achievements:", error);
+        }
+    };
 
     const loadHabitsFromBackend = async () => {
         try {
@@ -108,6 +155,75 @@ export function HabitProvider({ children }) {
     const progressPercentage = useMemo(() => {
         return xp % 100;
     }, [xp]);
+
+    const completedHabits = useMemo(() => {
+        return habits.filter(habit => habit.completed).length;
+    }, [habits]);
+
+    const totalHabits = useMemo(() => {
+        return habits.length;
+    }, [habits]);
+
+    const bestStreak = useMemo(() => {
+        if (habits.length === 0) return 0;
+
+        return Math.max(
+            ...habits.map(habit => habit.streak || 0)
+        );
+    }, [habits]);
+
+    const totalCompletedHistory = useMemo(() => {
+        return habits.reduce((total, habit) => {
+            return total + (habit.totalCompletions || 0);
+        }, 0);
+    }, [habits]);
+
+    const achievements = useMemo(() => {
+        return getAchievements({
+            totalCompletedHistory,
+            bestStreak,
+            level,
+            xp,
+            habits,
+        });
+    }, [totalCompletedHistory, bestStreak, level, xp, habits]);
+
+    useEffect(() => {
+        if (!notifiedHydrated || loading) {
+            return;
+        }
+
+        const newlyUnlocked = achievements.filter(
+            item =>
+                item.unlocked &&
+                !notifiedAchievementsRef.current.has(item.id)
+        );
+
+        if (newlyUnlocked.length === 0) {
+            return;
+        }
+
+        (async () => {
+            for (const achievement of newlyUnlocked) {
+                try {
+                    const result = await sendAchievementNotification({
+                        title: achievement.title,
+                        description: achievement.description,
+                    });
+
+                    console.log("Resultado de la notificación:", result);
+                } catch (error) {
+                    console.log("Error al enviar notificación de logro:", error);
+                }
+
+                notifiedAchievementsRef.current.add(achievement.id);
+            }
+
+            setCelebratingAchievement(newlyUnlocked[0]);
+
+            await persistNotifiedAchievements();
+        })();
+    }, [achievements, notifiedHydrated, loading]);
 
     const addHabit = async (habit) => {
         try {
@@ -264,6 +380,9 @@ export function HabitProvider({ children }) {
             setXp(0);
             setDemoDayOffset(0);
 
+            notifiedAchievementsRef.current = new Set();
+            await persistNotifiedAchievements();
+
             return {
                 success: true,
                 message: "Progreso reiniciado correctamente.",
@@ -277,29 +396,6 @@ export function HabitProvider({ children }) {
             };
         }
     };
-
-    const completedHabits = useMemo(() => {
-        return habits.filter(habit => habit.completed).length;
-    }, [habits]);
-
-    const totalHabits = useMemo(() => {
-        return habits.length;
-    }, [habits]);
-
-    const bestStreak = useMemo(() => {
-        if (habits.length === 0) return 0;
-
-        return Math.max(
-            ...habits.map(habit => habit.streak || 0)
-        );
-    }, [habits]);
-
-    const totalCompletedHistory = useMemo(() => {
-        return habits.reduce((total, habit) => {
-            return total + (habit.totalCompletions || 0);
-        }, 0);
-    }, [habits]);
-
     return (
         <HabitContext.Provider
             value={{
@@ -309,6 +405,10 @@ export function HabitProvider({ children }) {
                 xp,
                 level,
                 bestStreak,
+
+                achievements,
+                celebratingAchievement,
+                dismissCelebration: () => setCelebratingAchievement(null),
 
                 currentDate,
                 previousDate,

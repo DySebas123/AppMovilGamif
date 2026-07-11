@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     },
 
     headerContainer: {
-        paddingTop: 60,
+        paddingTop: 70,
         paddingHorizontal: SPACING.lg,
         paddingBottom: SPACING.lg,
         borderBottomLeftRadius: 30,
