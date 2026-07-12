@@ -5,6 +5,7 @@ const {
     login,
     profile,
     updateProfile,
+    deleteAccount,
 } = require("../controllers/authController");
 
 const {
@@ -20,5 +21,7 @@ router.post("/login", login);
 router.get("/profile", verifyToken, profile);
 
 router.put("/profile", verifyToken, updateProfile);
+
+router.delete("/account", verifyToken, deleteAccount);
 
 module.exports = router;

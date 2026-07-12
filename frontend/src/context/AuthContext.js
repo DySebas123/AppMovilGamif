@@ -171,6 +171,24 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const deleteAccount = async() => {
+        try {
+            const response = await authService.deleteAccount(token);
+            logout();
+            return {
+                success: true,
+                message: response.data.message,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message:
+                    error.response?.data?.message ||
+                    "Error al eliminar la cuenta."
+            }
+        }
+    }
+
     const logout = () => {
         setToken(null);
         setUser(null);
@@ -191,6 +209,7 @@ export function AuthProvider({ children }) {
                 updateUser,
                 updateProfileImage,
                 updateUserLocation,
+                deleteAccount,
                 validateToken,
             }}
         >

@@ -24,3 +24,10 @@ export const updateProfile = (data, token) => {
     });
 };
 
+export const deleteAccount = (token) => {
+    return api.delete("/auth/account", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};

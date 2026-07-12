@@ -151,6 +151,39 @@ const updateUserSettings = async (id, settings) => {
     return mapUserFromDB(data);
 };
 
+const deleteUser = async (id) => {
+    const { error: progressError } = await supabase
+        .from("progress")
+        .delete()
+        .eq("user_id", id);
+
+    if (progressError) {
+        console.log("Error deleting progress:", progressError.message);
+        throw progressError;
+    }
+
+    const { error: habitsError } = await supabase
+        .from("habits")
+        .delete()
+        .eq("user_id", id);
+
+    if (habitsError) {
+        console.log("Error deleting habits:", habitsError.message);
+        throw habitsError;
+    }
+
+    const { error } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", id);
+
+    if (error) {
+        console.log("Error deleteUser:", error.message);
+        throw error;
+    }
+    return true;
+};
+
 module.exports = {
     findUserByEmail,
     findUserById,
@@ -158,4 +191,5 @@ module.exports = {
     updateUserProfile,
     emailExistsForAnotherUser,
     updateUserSettings,
+    deleteUser
 };

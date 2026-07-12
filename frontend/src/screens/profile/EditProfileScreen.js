@@ -5,6 +5,7 @@ import {
     StyleSheet,
     SafeAreaView,
     ScrollView,
+    Alert
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -27,6 +28,7 @@ export default function EditProfileScreen({ navigation }) {
         updateUser,
         updateProfileImage,
         updateUserLocation,
+        deleteAccount,
     } = useAuth();
 
     const { theme } = useSettings();
@@ -216,6 +218,29 @@ export default function EditProfileScreen({ navigation }) {
         }
     };
 
+    const handleDelete = () => {
+        Alert.alert(
+            "Eliminar cuenta",
+            "Esta acción es permanente. Se borrarán todos tus hábitos, progresos y logros. ¿Estás seguro de continuar?",
+            [
+                { text: "Cancelar", style: "cancel"},
+                {
+                    text: "Eliminar",
+                    style: "destructive",
+                    onPress: async() => {
+                        const result = await deleteAccount();
+                        if(!result.success) {
+                            showErrorAlert(
+                                "Error al eliminar cuenta",
+                                result.message
+                            );
+                        }
+                    },
+                },
+            ]
+        )
+    }
+
     const userInitial =
         name?.charAt(0)?.toUpperCase() || "U";
 
@@ -264,6 +289,7 @@ export default function EditProfileScreen({ navigation }) {
                                 setErrorEmail("");
                             }}
                             onSave={handleSave}
+                            onDelete={handleDelete}
                         />
 
                         <ProfileInfoCard theme={theme} />

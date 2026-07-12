@@ -103,9 +103,26 @@ const updateProfile = async (req, res) => {
     }
 };
 
+const deleteAccount = async (req, res) => {
+    try {
+        const result = await authService.deleteAccount(req.user.id);
+        return res.status(result.status).json({
+            success: result.success,
+            message: result.message,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Error interno al eliminar la cuenta."
+        });
+    }
+}
+
 module.exports = {
     register,
     login,
     profile,
     updateProfile,
+    deleteAccount
 };

@@ -8,6 +8,7 @@ const COLORS = {
 
     textPrimary: '#0f172a',
     textSecondary: '#64748b',
+    textThird: '#7f8b9b',
 
     border: '#e2e8f0',
 

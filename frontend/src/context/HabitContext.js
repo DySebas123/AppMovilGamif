@@ -10,6 +10,7 @@ import React, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useAuth } from "./AuthContext";
+import { useSettings } from "./SettingsContext";
 import * as habitService from "../services/habitService";
 import { getAchievements } from "../services/achievemnts";
 import { sendAchievementNotification } from "../services/notificationService";
@@ -59,6 +60,8 @@ export function HabitProvider({ children }) {
     } = useAuth();
 
     const userId = user?.id;
+
+    const { settings } = useSettings();
 
     const [habits, setHabits] = useState([]);
     const [xp, setXp] = useState(0);
@@ -205,21 +208,27 @@ export function HabitProvider({ children }) {
 
         (async () => {
             for (const achievement of newlyUnlocked) {
-                try {
-                    const result = await sendAchievementNotification({
-                        title: achievement.title,
-                        description: achievement.description,
-                    });
-
-                    console.log("Resultado de la notificación:", result);
-                } catch (error) {
-                    console.log("Error al enviar notificación de logro:", error);
+                if(settings?.notifications !==false) {
+                    try {
+                        const result = await sendAchievementNotification({
+                            title: achievement.title,
+                            description: achievement.description,
+                        });
+    
+                        console.log("Resultado de la notificación:", result);
+                    } catch (error) {
+                        console.log("Error al enviar notificación de logro:", error);
+                    }
+                } else {
+                    console.log("Notificaciones desactivadas por el usuario")
                 }
 
                 notifiedAchievementsRef.current.add(achievement.id);
             }
 
-            setCelebratingAchievement(newlyUnlocked[0]);
+            setTimeout(() => {
+                setCelebratingAchievement(newlyUnlocked[0]);
+            }, 1500);
 
             await persistNotifiedAchievements();
         })();

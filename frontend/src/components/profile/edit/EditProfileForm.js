@@ -20,6 +20,7 @@ export default function EditProfileForm({
     onChangeName,
     onChangeEmail,
     onSave,
+    onDelete,
 }) {
     return (
         <View
@@ -127,6 +128,14 @@ export default function EditProfileForm({
                 <MainButton
                     title="Guardar cambios"
                     onPress={onSave}
+                />
+            </View>
+
+            <View style={{ marginTop: 15 }}>
+                <MainButton
+                    title="Borrar Cuenta"
+                    onPress={onDelete}
+                    colors={[theme.danger, theme.danger]}
                 />
             </View>
         </View>

@@ -10,6 +10,7 @@ import {
 
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useSettings } from "../../context/SettingsContext";
 
 import COLORS from "../../styles/colors";
 import SHADOWS from "../../styles/shadows";
@@ -19,6 +20,9 @@ export default function AchievementUnlockedModal({
     visible,
     onClose,
 }) {
+
+    const { theme } = useSettings();
+
     if (!achievement) {
         return null;
     }
@@ -31,7 +35,7 @@ export default function AchievementUnlockedModal({
             onRequestClose={onClose}
         >
             <View style={styles.overlay}>
-                <View style={styles.card}>
+                <View style={[styles.card, { backgroundColor: theme.surface }]}>
                     <LinearGradient
                         colors={achievement.badgeBg || ["#eab308", "#facc15"]}
                         start={{ x: 0, y: 0 }}
@@ -49,11 +53,11 @@ export default function AchievementUnlockedModal({
                         ¡Nuevo logro desbloqueado!
                     </Text>
 
-                    <Text style={styles.title}>
+                    <Text style={[styles.title, {color: theme.textPrimary}]}>
                         {achievement.title}
                     </Text>
 
-                    <Text style={styles.description}>
+                    <Text style={[styles.description, {color: theme.textSecondary}]}>
                         {achievement.description}
                     </Text>
 
@@ -99,21 +103,23 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     eyebrow: {
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: "700",
-        color: COLORS.textSecondary,
+        color: COLORS.textThird,
         textTransform: "uppercase",
         letterSpacing: 1,
-        marginBottom: 6,
+        marginBottom: 10,
     },
     title: {
+        width: "100%",
         fontSize: 22,
         fontWeight: "800",
         color: COLORS.textPrimary,
         textAlign: "center",
-        marginBottom: 8,
+        marginBottom: 3,
     },
     description: {
+        width: "100%",
         fontSize: 14,
         color: COLORS.textSecondary,
         textAlign: "center",

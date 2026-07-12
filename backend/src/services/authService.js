@@ -211,9 +211,30 @@ const updateUserProfile = async (userId, data) => {
     };
 };
 
+const deleteAccount = async (userId) => {
+    const existingUser = await userModel.findUserById(userId);
+
+    if (!existingUser) {
+        return {
+            status: 404,
+            success: false,
+            message: "Usuario no encontrado.",
+        };
+    }
+
+    await userModel.deleteUser(userId);
+
+    return {
+        status: 200,
+        success: true,
+        message: "Cuenta eliminada correctamente.",
+    };
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getUserProfile,
     updateUserProfile,
+    deleteAccount,
 };
