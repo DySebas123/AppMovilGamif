@@ -14,6 +14,14 @@ Toda la información se almacena de forma persistente mediante **Supabase Postgr
 
 ---
 
+# Descargar la aplicación
+
+![QR de descargas](./frontend/assets/images/qr-apk.png)
+
+o descárgalo aquí [aquí](https://github.com/DySebas123/AppMovilGamif/releases/download/v1.0.0/HabitQuest.apk)
+
+---
+
 # 🎯 Objetivos del Proyecto
 
 Desarrollar una aplicación móvil moderna aplicando buenas prácticas de Ingeniería de Software mediante:
@@ -181,6 +189,8 @@ npx expo install expo-image-picker
 npx expo install expo-location
 
 npx expo install expo-notifications
+
+npx expo install expo-font
 ```
 
 ---
@@ -631,6 +641,9 @@ Respecto al avance inicial del proyecto se incorporaron las siguientes mejoras:
 - Frases motivacionales dinámicas.
 - Componentización avanzada.
 - Arquitectura modular y escalable.
+- DDespliegue del backend en la nube (Render).
+- Generación de builds nativos multiplataforma con EAS Build (APK instalable para Android).
+- Gestión segura de variables de entorno y credenciales mediante archivos ".env" excluidos del control de versiones.
 
 ---
 

@@ -1,29 +1,42 @@
 {
   "expo": {
-    "name": "proyecto",
-    "slug": "proyecto",
+    "name": "HabitQuest",
+    "slug": "habitquest",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/images/logoHQ.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.proyecto.habitquest",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logoHQ.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.proyecto.habitquest",
       "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "94b8307b-fb58-4feb-bd0a-52682e27761a"
+      }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
