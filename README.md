@@ -16,7 +16,7 @@ Toda la información se almacena de forma persistente mediante **Supabase Postgr
 
 # Descargar la aplicación
 
-![QR de descargas](./frontend/assets/images/qr-apk.png)
+<img src="./frontend/assets/images/qr-apk.png" width="150" alt="QR de descarga del APK">
 
 o descárgalo aquí [aquí](https://github.com/DySebas123/AppMovilGamif/releases/download/v1.0.0/HabitQuest.apk)
 
